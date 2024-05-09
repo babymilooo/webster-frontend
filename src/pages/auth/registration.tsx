@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Img } from 'react-image';
 import { Link } from 'react-router-dom';
 
-const Login = () => {
+const Registration = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -21,7 +21,7 @@ const Login = () => {
             <div className="col-span-3"></div>
             <div className="z-10 col-span-2 m-2 rounded-lg border bg-background shadow-lg">
                 <div className="flex h-full w-full flex-col items-center justify-center text-2xl">
-                    <p className="w-1/2 text-center font-bold">Welcome back!</p>
+                    <p className="w-1/2 text-center font-bold">Create new account!</p>
                     <div className="w-1/2">
                         <Label className="font-bold">email *</Label>
                         <Input
@@ -38,11 +38,11 @@ const Login = () => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <span className="mt-2 w-1/2 cursor-pointer text-end text-xs text-foreground text-green-600 underline">
+                    <span className="mt-2 w-1/2 text-end text-xs text-background  underline select-none">
                         Forgot password?
                     </span>
                     <button className=" mt-4 w-1/2 rounded-lg bg-green-600 p-[12px] text-sm text-background text-white">
-                        Login
+                        Sign up
                     </button>
 
                     <p className="mt-8 w-1/2 border-t"></p>
@@ -61,9 +61,9 @@ const Login = () => {
                     </button>
 
                     <span className="mt-4 w-1/2 text-center text-xs text-foreground">
-                        Don't have an account?{' '}
+                        Already have an account?{' '}
                         <span className="cursor-pointer text-green-600 underline">
-                            <Link to="/auth/registration">Sign up</Link>
+                            <Link to="/auth/registration">Sign in</Link>
                         </span>
                     </span>
                 </div>
@@ -72,4 +72,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Registration;

@@ -1,19 +1,24 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
+import MainLayout from './MainLayout';
 
 const App = () => {
     return (
-        <div className="flex h-full flex-col items-center justify-center select-none">
-            <div className=" flex animate-fade-right gap-3 text-5xl  font-bold text-foreground animate-duration-[1500ms] animate-ease-out">
-                <p className="">Welcome to</p>
-                <div className="">
-                    ElephArt
+        <MainLayout>
+            <div className="flex h-full select-none flex-col items-center justify-center">
+                <div className=" flex animate-fade-right gap-3 text-5xl  font-bold text-foreground animate-duration-[1500ms] animate-ease-out">
+                    <p className="">Welcome to</p>
+                    <div className="">ElephArt</div>
+                </div>
+                <p className="animate-fade-right text-2xl text-foreground animate-duration-[1500ms] animate-ease-out">
+                    create your masterpieces with us!
+                </p>
+                <div className="animate-fade animate-delay-[1000ms] animate-duration-[1500ms] animate-once animate-ease-out">
+                    <button className="mt-5 animate-jump rounded-3xl bg-gray-400 px-5 py-3 font-bold animate-delay-[1000ms] animate-duration-[1000ms] animate-once animate-ease-out">
+                        <Link to="/home">Get Start</Link>
+                    </button>
                 </div>
             </div>
-            <p className="animate-fade-right text-2xl text-foreground animate-duration-[1500ms] animate-ease-out">
-                create your masterpieces with us!
-            </p>
-            <div className="font-bold mt-5 bg-gray-400 p-2 px-4 rounded-3xl cursor-pointer">Get Start</div>
-        </div>
+        </MainLayout>
     );
 };
 

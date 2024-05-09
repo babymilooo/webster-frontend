@@ -1,5 +1,5 @@
 import { Img } from 'react-image';
-import { Skeleton } from '../ui/skeleton';
+import { Skeleton } from '../components/ui/skeleton';
 
 const Navbar = () => {
     return (
@@ -7,18 +7,6 @@ const Navbar = () => {
             <div className="container flex h-14 max-w-screen-2xl items-center">
                 <div className="flex">
                     <div className="flex cursor-pointer items-center text-xl text-foreground">
-                        {/* <Image
-                            src="/bigLogo.png"
-                            alt="logo"
-                            height={40}
-                            width={35}
-                        />
-                        <Image
-                            src="/logoWord.png"
-                            alt="word"
-                            height={40}
-                            width={100}
-                        /> */}
                         <Img
                             src="../src/public/logo.png"
                             alt="My Image"
