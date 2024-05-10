@@ -3,9 +3,9 @@ import { ReactNode } from 'react';
 
 const HomeLayout = ({ children }: { children: ReactNode }) => {
     return (
-        <div className="h-full">
+        <div className="pt-[50px] h-full">
             <HomeSideBar />
-            <main className="h-full pl-[300px] flex">{children}</main>
+            <main className="h-full pl-[250px] flex">{children}</main>
         </div>
     );
 };

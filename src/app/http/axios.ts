@@ -1,7 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 export const API_URL = import.meta.env.VITE_API_URL as string;
-
 const $api = axios.create({
     withCredentials: true,
     baseURL: API_URL,

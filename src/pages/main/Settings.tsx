@@ -5,8 +5,8 @@ const Settings = () => {
     return (
         <MainLayout>
             <HomeLayout>
-                <div className="flex h-full items-center justify-center">
-                    <h1 className="text-center text-4xl font-bold">Settings</h1>
+                <div className="flex h-full w-full pl-4 pr-2 pt-4">
+                    <div className="h-full w-full rounded-t-lg bg-background"></div>
                 </div>
             </HomeLayout>
         </MainLayout>

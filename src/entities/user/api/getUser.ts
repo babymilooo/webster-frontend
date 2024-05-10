@@ -1,9 +1,11 @@
-import axios from 'axios';
 import { API_URL } from '../index';
+import $api from '@/app/http/axios';
 
 export async function getUser() {
-    const response = await axios.get(`${API_URL}/auth/refreshToken`, {
-        withCredentials: true,
-    });
+    const response = await $api.post(
+        `${API_URL}/auth/refreshToken`,
+        {},
+        { withCredentials: true },
+    );
     return response.data;
 }

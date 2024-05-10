@@ -2,16 +2,17 @@ import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { useUserStore } from '@/entities/user';
 import { useState } from 'react';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const RegUser = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const registerUser = useUserStore((state) => state.registerUser);
+    const navigate = useNavigate();
 
     const handleRegistration = async () => {
         registerUser(email, password);
-        return redirect('/home');
+        return navigate('/home');
     };
 
     return (

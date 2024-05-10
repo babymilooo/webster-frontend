@@ -9,7 +9,7 @@ import {
 } from '@radix-ui/react-icons';
 const HomeSideBar = () => {
     return (
-        <div className="fixed my-[65px] mb-2 ml-2 h-full w-[250px] rounded-lg bg-background">
+        <div className="fixed my-4 ml-2 h-full w-[250px] rounded-lg bg-background">
             <div className="mx-4 mt-6 flex h-full flex-col">
                 <UserCard />
                 <div className="mt-4 w-full">

@@ -16,10 +16,11 @@ interface UserState {
     user: User | null;
     isLoading: boolean;
     isLogin: boolean;
+    checked: boolean;
     setUser: (user: User | null) => void;
     loginUser: (email: string, password: string) => void;
     registerUser: (email: string, password: string) => void;
-    checkAuth: () => void;
+    checkAuth: () => object | null;
     logoutUser: () => void;
 }
 
@@ -29,6 +30,7 @@ export const useUserStore = create<UserState>()(
             user: null,
             isLoading: false,
             isLogin: false,
+            checked: false,
             setUser: (user) => set({ user }),
             loginUser: async (email, password) => {
                 set({ isLoading: true });
@@ -67,10 +69,14 @@ export const useUserStore = create<UserState>()(
                         set({ user });
                         set({ isLogin: true });
                     }
+                    set({ checked: true });
+                    return user;
                 } catch (error) {
                     console.error(error);
                 }
                 set({ isLoading: false });
+                set({ checked: true });
+                return null;
             },
 
             logoutUser: () => set({ user: null }),
