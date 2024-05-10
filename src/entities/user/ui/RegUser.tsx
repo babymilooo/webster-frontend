@@ -1,6 +1,6 @@
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
-import { useUserStore } from '@/entities/user/model/userStore';
+import { useUserStore } from '@/entities/user';
 import { useState } from 'react';
 import { redirect } from 'react-router-dom';
 

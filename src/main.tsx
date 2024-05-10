@@ -7,6 +7,9 @@ import Login from './pages/auth/login';
 import RootLayout from './RootLayout';
 import Home from './pages/main/Home';
 import Registration from './pages/auth/registration';
+import Projects from './pages/main/Projects';
+import Templates from './pages/main/Templates';
+import Settings from './pages/main/Settings';
 const rootElement = document.getElementById('root') as HTMLElement;
 const root = ReactDOM.createRoot(rootElement);
 
@@ -26,6 +29,18 @@ const router = createBrowserRouter([
     {
         path: '/home',
         element: <Home />,
+    },
+    {
+        path: '/projects',
+        element: <Projects />,
+    },
+    {
+        path: '/Templates',
+        element: <Templates />,
+    },
+    {
+        path: '/Settings',
+        element: <Settings />,
     },
 ]);
 

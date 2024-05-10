@@ -2,7 +2,7 @@ import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUserStore } from '@/entities/user/model/userStore';
+import { useUserStore } from '@/entities/user';
 export const LoginUser = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

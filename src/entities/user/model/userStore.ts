@@ -4,9 +4,12 @@ import { devtools } from 'zustand/middleware';
 import { getUser, loginUser, regUser } from '../index';
 
 interface User {
-    id: number;
-    name: string;
+    _id: number;
+    userName: string;
     email: string;
+    profilePicture: string;
+    emailVerified: boolean;
+    role: string;
 }
 
 interface UserState {
