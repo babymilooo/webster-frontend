@@ -7,7 +7,7 @@ import { UserCard } from '@/entities/user';
 
 const Navbar = () => {
     const isLogin = useUserStore((state) => state.isLogin);
-    const isLoading = useUserStore((state) => state.isLoading);
+    const isLoaded = useUserStore((state) => state.isLoaded);
     return (
         <header className="fixed top-0 z-50 w-full bg-background">
             <div className="container flex h-14 max-w-screen-2xl items-center">
@@ -22,15 +22,12 @@ const Navbar = () => {
                         />
                     </div>
                 </div>
-                {isLoading && (
-                    <div className="flex flex-1 items-center justify-end space-x-2">
-                        <div className="flex items-center space-x-4">
-                            <Skeleton className="h-12 w-12 rounded-full" />
-                        </div>
+                {!isLoaded ? (
+                    <div className="flex items-center space-x-4">
+                        <Skeleton className="h-12 w-12 rounded-full" />
+                        <Skeleton className="h-4 w-[250px]" />
                     </div>
-                )}
-
-                {isLogin ? (
+                ) : isLogin ? (
                     <div className="flex flex-1 items-center justify-end space-x-2">
                         <UserCard />
                     </div>

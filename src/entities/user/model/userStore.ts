@@ -14,7 +14,7 @@ interface User {
 
 interface UserState {
     user: User | null;
-    isLoading: boolean;
+    isLoaded: boolean;
     isLogin: boolean;
     checked: boolean;
     setUser: (user: User | null) => void;
@@ -28,12 +28,11 @@ export const useUserStore = create<UserState>()(
     devtools(
         immer((set) => ({
             user: null,
-            isLoading: false,
+            isLoaded: false,
             isLogin: false,
             checked: false,
             setUser: (user) => set({ user }),
             loginUser: async (email, password) => {
-                set({ isLoading: true });
                 try {
                     const response = await loginUser(email, password);
                     const user = response;
@@ -44,10 +43,9 @@ export const useUserStore = create<UserState>()(
                 } catch (error) {
                     console.error(error);
                 }
-                set({ isLoading: false });
+                set({ isLoaded: true });
             },
             registerUser: async (email, password) => {
-                set({ isLoading: true });
                 try {
                     const response = await regUser(email, password);
                     const user = response;
@@ -58,10 +56,9 @@ export const useUserStore = create<UserState>()(
                 } catch (error) {
                     console.error(error);
                 }
-                set({ isLoading: false });
+                set({ isLoaded: true });
             },
             checkAuth: async () => {
-                set({ isLoading: true });
                 try {
                     const response = await getUser();
                     const user = response;
@@ -69,12 +66,13 @@ export const useUserStore = create<UserState>()(
                         set({ user });
                         set({ isLogin: true });
                     }
+                    set({ isLoaded: true });
                     set({ checked: true });
                     return user;
                 } catch (error) {
                     console.error(error);
                 }
-                set({ isLoading: false });
+                set({ isLoaded: true });
                 set({ checked: true });
                 return null;
             },
