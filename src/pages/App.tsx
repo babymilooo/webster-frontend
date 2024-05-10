@@ -13,7 +13,7 @@ const App = () => {
                     create your masterpieces with us!
                 </p>
                 <div className="animate-fade animate-delay-[1000ms] animate-duration-[1500ms] animate-once animate-ease-out">
-                    <button className="mt-5 animate-jump rounded-3xl bg-gray-400 px-5 py-3 font-bold animate-delay-[1000ms] animate-duration-[1000ms] animate-once animate-ease-out">
+                    <button className="mt-5 animate-jump rounded-3xl bg-green-600 px-5 py-3 font-bold animate-delay-[1000ms] animate-duration-[1000ms] animate-once animate-ease-out">
                         <Link to="/home">Get Start</Link>
                     </button>
                 </div>

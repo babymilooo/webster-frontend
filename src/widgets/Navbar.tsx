@@ -1,7 +1,12 @@
 import { Img } from 'react-image';
-import { Skeleton } from '../components/ui/skeleton';
+import { Skeleton } from '../shared/ui/skeleton';
+import { useUserStore } from '@/entities/user/model/userStore';
+import { Button } from '@/shared/ui/button';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
+    const isLogin = useUserStore((state) => state.isLogin);
+
     return (
         <header className="fixed top-0 z-50 w-full bg-background">
             <div className="container flex h-14 max-w-screen-2xl items-center">
@@ -16,11 +21,22 @@ const Navbar = () => {
                         />
                     </div>
                 </div>
-                <div className="flex flex-1 items-center justify-end space-x-2">
-                    <div className="flex items-center space-x-4">
-                        <Skeleton className="h-12 w-12 rounded-full" />
+                {isLogin ? (
+                    <div className="flex flex-1 items-center justify-end space-x-2">
+                        <div className="flex items-center space-x-4">
+                            <Skeleton className="h-12 w-12 rounded-full" />
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <div className="flex flex-1 items-center justify-end space-x-2">
+                        <Button variant="ghost">
+                            <Link to="/auth/login">Login</Link>
+                        </Button>
+                        <button className=" rounded-3xl bg-green-600 px-6 py-3 text-xs font-bold">
+                            <Link to="/auth/registration">Sign up</Link>
+                        </button>
+                    </div>
+                )}
             </div>
         </header>
     );

@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './pages/App';
 import Login from './pages/auth/login';
 import RootLayout from './RootLayout';
-import Home from './pages/Home';
+import Home from './pages/main/Home';
 import Registration from './pages/auth/registration';
 const rootElement = document.getElementById('root') as HTMLElement;
 const root = ReactDOM.createRoot(rootElement);
