@@ -22,6 +22,7 @@ export const RegUser = () => {
                 <Input
                     placeholder="Email"
                     type="email"
+                    autoComplete="email"
                     onChange={(e) => setEmail(e.target.value)}
                 />
             </div>
@@ -30,6 +31,7 @@ export const RegUser = () => {
                 <Input
                     placeholder="Password"
                     type="password"
+                    autoComplete="new-password"
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
