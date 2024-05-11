@@ -15,6 +15,7 @@ module.exports = {
       jsx: true,
     },
   },
+  
   plugins: ['react', 'react-hooks', 'prettier', '@typescript-eslint'],
   extends: [
     'eslint:recommended',
@@ -24,7 +25,9 @@ module.exports = {
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
   ],
-  rules: {},
+  rules: {
+    'prettier/prettier': 'warn'
+  },
   globals: {
     Edit: 'writable',
     console: 'writable',
