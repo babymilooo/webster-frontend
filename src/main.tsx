@@ -11,6 +11,7 @@ import Projects from './pages/main/Projects';
 import Templates from './pages/main/Templates';
 import Settings from './pages/main/Settings';
 import ProjectId from './pages/project/ProjectId';
+import { Playground } from './pages/playground/Playground';
 const rootElement = document.getElementById('root') as HTMLElement;
 const root = ReactDOM.createRoot(rootElement);
 
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
     {
         path: '/Settings',
         element: <Settings />,
+    },
+    {
+        path: '/playground',
+        element: <Playground />,
     },
 ]);
 

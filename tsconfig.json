@@ -12,7 +12,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "allowJs": false,
+    "allowJs": true,
+    "checkJs": false,
     "esModuleInterop": true,
 
     /* Linting */
