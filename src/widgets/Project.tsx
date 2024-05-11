@@ -1,41 +1,53 @@
-import { useState, useEffect } from 'react';
-import { fabric } from 'fabric';
+import { useEffect, useRef } from 'react';
+import Konva from 'konva';
 
 export const Project = () => {
-    const [canvas, setCanvas] = useState<fabric.Canvas | null>(null); // Use fabric.Canvas type or null
+    const canvasElementRef = useRef<HTMLDivElement | null>(null);
+    const stageRef = useRef<Konva.Stage | null>(null);
 
     useEffect(() => {
-        const newCanvas = initCanvas(); // Call initCanvas to get the fabric.Canvas instance
-        if (newCanvas) {
-            setCanvas(newCanvas); // Set the canvas state after initialization
-        }
+        const initStage = () => {
+            if (!canvasElementRef.current) return;
+            const stage = new Konva.Stage({
+                container: canvasElementRef.current,
+                width: 640,
+                height: 480,
+            });
+            stageRef.current = stage;
+        };
+
+        initStage();
+        return () => {
+            stageRef.current?.destroy();
+        };
     }, []);
 
-    const initCanvas = () => {
-        const canvas = new fabric.Canvas('canvas', {
-            height: 800,
-            width: 800,
-            backgroundColor: 'pink',
+    const addCircle = () => {
+        const stage = stageRef.current;
+        if (!stage) return;
+
+        const layer = new Konva.Layer();
+        const circle = new Konva.Circle({
+            x: stage.width() / 2,
+            y: stage.height() / 2,
+            radius: 70,
+            fill: 'red',
+            stroke: 'black',
+            strokeWidth: 4,
+            draggable: true,
         });
-        return canvas; // Return the fabric.Canvas instance
-    };
 
-    const handleAddCircle = () => {
-        if (canvas) {
-            const circle = new fabric.Circle({
-                radius: 50,
-                fill: 'red',
-                left: 400,
-                top: 200,
-            });
-            canvas.add(circle);
-        }
-    };
+        layer.add(circle);
+        stage.add(layer);
 
+        layer.draw();
+    };
     return (
         <div>
-            <button onClick={handleAddCircle}>Add Circle</button>
-            <canvas id="canvas" />
+            <button onClick={addCircle}>Add Circle</button>
+            <div className="m-auto border border-solid border-black">
+                <div id="canvas" ref={canvasElementRef} />
+            </div>
         </div>
     );
 };
