@@ -26,7 +26,8 @@ module.exports = {
     'plugin:react-hooks/recommended',
   ],
   rules: {
-    'prettier/prettier': 'warn'
+    'prettier/prettier': 'warn',
+    'react/prop-types': 'off'
   },
   globals: {
     Edit: 'writable',
