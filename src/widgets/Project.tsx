@@ -14,6 +14,21 @@ export const Project = () => {
                 height: 480,
             });
             stageRef.current = stage;
+
+            stage.on('pointerdown', (e) => {
+                console.log(e);
+                if (e.target.getType() === 'Stage') {
+                    const transformers = stage.find('Transformer');
+                    // console.log(transformers);
+
+                    transformers.forEach((tr) => {
+                        // console.log(tr.getType());
+
+                        if (tr.getType() === 'Group')
+                            (tr as Konva.Transformer).nodes([]);
+                    });
+                }
+            });
         };
 
         initStage();
@@ -27,6 +42,7 @@ export const Project = () => {
         if (!stage) return;
 
         const layer = new Konva.Layer();
+        const transformer = new Konva.Transformer();
         const circle = new Konva.Circle({
             x: stage.width() / 2,
             y: stage.height() / 2,
@@ -38,7 +54,12 @@ export const Project = () => {
         });
 
         layer.add(circle);
+        layer.add(transformer);
+
         stage.add(layer);
+        circle.on('click tap', (e) => {
+            transformer.nodes([circle]);
+        });
 
         layer.draw();
     };
