@@ -10,6 +10,7 @@ import Registration from './pages/auth/registration';
 import Projects from './pages/main/Projects';
 import Templates from './pages/main/Templates';
 import Settings from './pages/main/Settings';
+import ProjectId from './pages/project/ProjectId';
 const rootElement = document.getElementById('root') as HTMLElement;
 const root = ReactDOM.createRoot(rootElement);
 
@@ -36,7 +37,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/projects/:id',
-        element: <Projects />,
+        element: <ProjectId />,
     },
     {
         path: '/Templates',
