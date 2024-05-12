@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import Konva from 'konva';
+import { Brushes, EraserBrush, PencilBrush } from '@/pages/project/brushes';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -68,9 +69,43 @@ export const Project = () => {
 
         layer.draw();
     };
+    const drawingLayerRef = useRef<Konva.Layer | null>(null);
+    const enableDrawing = () => {
+        if (!stageRef.current) return;
+
+        let isNew = true;
+        let layer = null;
+        if (drawingLayerRef.current) {
+            layer = drawingLayerRef.current;
+            isNew = false;
+        } else layer = new Konva.Layer();
+        drawingLayerRef.current = layer;
+        const brush = new PencilBrush(stageRef.current, layer);
+        if (isNew) stageRef.current.add(layer);
+        Brushes.applyBrushToStage(stageRef.current, brush);
+        layer.draw();
+    };
+
+    const enableErasing = () => {
+        if (!stageRef.current) return;
+        let isNew = true;
+        let layer = null;
+        if (drawingLayerRef.current) {
+            layer = drawingLayerRef.current;
+            isNew = false;
+        } else layer = new Konva.Layer();
+        drawingLayerRef.current = layer;
+        const brush = new EraserBrush(stageRef.current, layer);
+        if (isNew) stageRef.current.add(layer);
+        Brushes.applyBrushToStage(stageRef.current, brush);
+        layer.draw();
+    };
+
     return (
         <div>
             <button onClick={addCircle}>Add Circle</button>
+            <button onClick={enableDrawing}>Start Drawing</button>
+            <button onClick={enableErasing}>Start Erasing</button>
             <div className="m-auto border border-solid border-black">
                 <div id="canvas" ref={canvasElementRef} />
             </div>
