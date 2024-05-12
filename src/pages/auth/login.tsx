@@ -1,5 +1,5 @@
 import { LoginUser } from '@/entities/user';
-import SignUpGoogle from '@/features/Google/ui/SignUpGoogle';
+import SignUpGoogle from '@/entities/user/ui/SignUpGoogle';
 
 import { Link } from 'react-router-dom';
 
@@ -24,7 +24,7 @@ const Login = () => {
                     <p className="absolute bottom-[384px] mt-4 bg-background px-3 text-xs text-muted-foreground">
                         Or, Login with
                     </p>
-                    
+
                     <SignUpGoogle />
                     <span className="mt-4 w-1/2 text-center text-xs text-foreground">
                         Don't have an account?{' '}

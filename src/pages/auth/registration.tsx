@@ -1,6 +1,5 @@
 import { RegUser } from '@/entities/user';
-import SignUpGoogle from '@/features/Google/ui/SignUpGoogle';
-import { Img } from 'react-image';
+import SignUpGoogle from '@/entities/user/ui/SignUpGoogle';
 import { Link } from 'react-router-dom';
 
 const Registration = () => {
