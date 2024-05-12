@@ -3,7 +3,9 @@ import { fabric } from 'fabric';
 
 export const Project = () => {
     const [canvas, setCanvas] = useState<fabric.Canvas | null>(null); // Use fabric.Canvas type or null
-
+    const [isSelecting, setIsSelecting] = useState(false);
+    const [startPoint, setStartPoint] = useState(null);
+    const [selection, setSelection] = useState(true);
     useEffect(() => {
         const newCanvas = initCanvas(); // Call initCanvas to get the fabric.Canvas instance
         if (newCanvas) {
@@ -15,7 +17,8 @@ export const Project = () => {
         const canvas = new fabric.Canvas('canvas', {
             height: 800,
             width: 800,
-            backgroundColor: 'pink',
+            backgroundColor: 'white',
+            selection: selection,
         });
         return canvas; // Return the fabric.Canvas instance
     };
@@ -31,6 +34,10 @@ export const Project = () => {
             canvas.add(circle);
         }
     };
+
+    canvas?.on('object:added', (e) => {
+        console.log('Object added:', e.target);
+    });
 
     return (
         <div>

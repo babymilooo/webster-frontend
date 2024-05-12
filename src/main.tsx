@@ -11,6 +11,7 @@ import Projects from './pages/main/Projects';
 import Templates from './pages/main/Templates';
 import Settings from './pages/main/Settings';
 import ProjectId from './pages/project/ProjectId';
+import Callback from './pages/callback/Callback';
 const rootElement = document.getElementById('root') as HTMLElement;
 const root = ReactDOM.createRoot(rootElement);
 
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
         path: '/Settings',
         element: <Settings />,
     },
+    {
+        path: '/Callback',
+        element: <Callback />,
+    }
 ]);
 
 root.render(

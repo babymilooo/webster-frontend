@@ -1,4 +1,5 @@
 import { RegUser } from '@/entities/user';
+import SignUpGoogle from '@/features/Google/ui/SignUpGoogle';
 import { Img } from 'react-image';
 import { Link } from 'react-router-dom';
 
@@ -25,16 +26,7 @@ const Registration = () => {
                     <p className="absolute bottom-[384px] mt-4 bg-background px-3 text-xs text-muted-foreground">
                         Or, Login with
                     </p>
-                    <button className=" mt-8 flex w-1/2  items-center justify-center gap-2 rounded-lg border bg-white p-[9px] text-sm text-black">
-                        <Img
-                            src="../src/public/google.svg"
-                            alt="My Image"
-                            loader={<div>Loading...</div>}
-                            unloader={<div>Failed to load image.</div>}
-                            className="h-6"
-                        />
-                        Sign up with google
-                    </button>
+                    <SignUpGoogle />
 
                     <span className="mt-4 w-1/2 text-center text-xs text-foreground">
                         Already have an account?{' '}
