@@ -5,6 +5,18 @@ export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
     const stageRef = useRef<Konva.Stage | null>(null);
 
+    const clearAllSelection = (stage?: Konva.Stage | null) => {
+        if (!stage) return;
+        const transformers = stage.find('Transformer');
+        // console.log(transformers);
+
+        transformers.forEach((tr) => {
+            // console.log(tr.getType());
+
+            if (tr.getType() === 'Group') (tr as Konva.Transformer).nodes([]);
+        });
+    };
+
     useEffect(() => {
         const initStage = () => {
             if (!canvasElementRef.current) return;
@@ -16,17 +28,9 @@ export const Project = () => {
             stageRef.current = stage;
 
             stage.on('pointerdown', (e) => {
-                console.log(e);
+                // console.log(e);
                 if (e.target.getType() === 'Stage') {
-                    const transformers = stage.find('Transformer');
-                    // console.log(transformers);
-
-                    transformers.forEach((tr) => {
-                        // console.log(tr.getType());
-
-                        if (tr.getType() === 'Group')
-                            (tr as Konva.Transformer).nodes([]);
-                    });
+                    clearAllSelection(stage);
                 }
             });
         };
@@ -58,6 +62,7 @@ export const Project = () => {
 
         stage.add(layer);
         circle.on('click tap', (e) => {
+            clearAllSelection(stageRef.current);
             transformer.nodes([circle]);
         });
 
