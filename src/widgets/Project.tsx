@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react';
 import Konva from 'konva';
-import { Brushes, EraserBrush, PencilBrush } from '@/pages/project/brushes';
+import { AddCircle, Erasing } from '@/entities/project';
+import { StartDrawing } from '@/entities/project';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
     const stageRef = useRef<Konva.Stage | null>(null);
-
+    const drawingLayerRef = useRef<Konva.Layer | null>(null);
+    
     const clearAllSelection = (stage?: Konva.Stage | null) => {
         if (!stage) return;
         const transformers = stage.find('Transformer');
@@ -42,70 +44,13 @@ export const Project = () => {
         };
     }, []);
 
-    const addCircle = () => {
-        const stage = stageRef.current;
-        if (!stage) return;
 
-        const layer = new Konva.Layer();
-        const transformer = new Konva.Transformer();
-        const circle = new Konva.Circle({
-            x: stage.width() / 2,
-            y: stage.height() / 2,
-            radius: 70,
-            fill: 'red',
-            stroke: 'black',
-            strokeWidth: 4,
-            draggable: true,
-        });
-
-        layer.add(circle);
-        layer.add(transformer);
-
-        stage.add(layer);
-        circle.on('click tap', (e) => {
-            clearAllSelection(stageRef.current);
-            transformer.nodes([circle]);
-        });
-
-        layer.draw();
-    };
-    const drawingLayerRef = useRef<Konva.Layer | null>(null);
-    const enableDrawing = () => {
-        if (!stageRef.current) return;
-
-        let isNew = true;
-        let layer = null;
-        if (drawingLayerRef.current) {
-            layer = drawingLayerRef.current;
-            isNew = false;
-        } else layer = new Konva.Layer();
-        drawingLayerRef.current = layer;
-        const brush = new PencilBrush(stageRef.current, layer);
-        if (isNew) stageRef.current.add(layer);
-        Brushes.applyBrushToStage(stageRef.current, brush);
-        layer.draw();
-    };
-
-    const enableErasing = () => {
-        if (!stageRef.current) return;
-        let isNew = true;
-        let layer = null;
-        if (drawingLayerRef.current) {
-            layer = drawingLayerRef.current;
-            isNew = false;
-        } else layer = new Konva.Layer();
-        drawingLayerRef.current = layer;
-        const brush = new EraserBrush(stageRef.current, layer);
-        if (isNew) stageRef.current.add(layer);
-        Brushes.applyBrushToStage(stageRef.current, brush);
-        layer.draw();
-    };
 
     return (
         <div>
-            <button onClick={addCircle}>Add Circle</button>
-            <button onClick={enableDrawing}>Start Drawing</button>
-            <button onClick={enableErasing}>Start Erasing</button>
+            <AddCircle stageRef={stageRef} clearAllSelection={clearAllSelection} />
+            <StartDrawing stageRef={stageRef} drawingLayerRef={drawingLayerRef} />
+            <Erasing stageRef={stageRef} drawingLayerRef={drawingLayerRef} />
             <div className="m-auto border border-solid border-black">
                 <div id="canvas" ref={canvasElementRef} />
             </div>
