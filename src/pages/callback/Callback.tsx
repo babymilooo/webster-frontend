@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { signUpGoogleCallback } from '@/entities/user/api/signUpGoogle';
 import { useNavigate } from 'react-router-dom';
+import { useUserStore } from '@/entities/user';
 
 const Callback = () => {
     const [isProcessing, setIsProcessing] = useState(false);
     const navigate = useNavigate();
-    
+    const setUser = useUserStore((state) => state.setUser);
+
     useEffect(() => {
         (async () => {
             const queryParams =
@@ -19,22 +21,18 @@ const Callback = () => {
                 try {
                     const response = await signUpGoogleCallback(code);
                     if (response?.status === 200) {
-                        console.log(response);
-                        //toast.success('Successfully authenticated with Google.');
+                        setUser(response.data);
                         return navigate('/home');
                     }
                 } catch (error) {
                     console.error(error);
-                    //toast.error('Authorization error. Please try again.');
                     return navigate('/auth/login');
                 }
             }
         })();
     }, []);
 
-    return (
-        <div>Loading...</div>
-    );
+    return <div>Loading...</div>;
 };
 
 export default Callback;
