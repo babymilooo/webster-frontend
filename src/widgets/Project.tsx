@@ -1,48 +1,114 @@
-import { useState, useEffect } from 'react';
-import { fabric } from 'fabric';
+import { useEffect, useRef } from 'react';
+import Konva from 'konva';
+import { Brushes, EraserBrush, PencilBrush } from '@/pages/project/brushes';
 
 export const Project = () => {
-    const [canvas, setCanvas] = useState<fabric.Canvas | null>(null); // Use fabric.Canvas type or null
-    const [isSelecting, setIsSelecting] = useState(false);
-    const [startPoint, setStartPoint] = useState(null);
-    const [selection, setSelection] = useState(true);
+    const canvasElementRef = useRef<HTMLDivElement | null>(null);
+    const stageRef = useRef<Konva.Stage | null>(null);
+
+    const clearAllSelection = (stage?: Konva.Stage | null) => {
+        if (!stage) return;
+        const transformers = stage.find('Transformer');
+        // console.log(transformers);
+
+        transformers.forEach((tr) => {
+            // console.log(tr.getType());
+
+            if (tr.getType() === 'Group') (tr as Konva.Transformer).nodes([]);
+        });
+    };
+
     useEffect(() => {
-        const newCanvas = initCanvas(); // Call initCanvas to get the fabric.Canvas instance
-        if (newCanvas) {
-            setCanvas(newCanvas); // Set the canvas state after initialization
-        }
+        const initStage = () => {
+            if (!canvasElementRef.current) return;
+            const stage = new Konva.Stage({
+                container: canvasElementRef.current,
+                width: 640,
+                height: 480,
+            });
+            stageRef.current = stage;
+
+            stage.on('pointerdown', (e) => {
+                // console.log(e);
+                if (e.target.getType() === 'Stage') {
+                    clearAllSelection(stage);
+                }
+            });
+        };
+
+        initStage();
+        return () => {
+            stageRef.current?.destroy();
+        };
     }, []);
 
-    const initCanvas = () => {
-        const canvas = new fabric.Canvas('canvas', {
-            height: 800,
-            width: 800,
-            backgroundColor: 'white',
-            selection: selection,
+    const addCircle = () => {
+        const stage = stageRef.current;
+        if (!stage) return;
+
+        const layer = new Konva.Layer();
+        const transformer = new Konva.Transformer();
+        const circle = new Konva.Circle({
+            x: stage.width() / 2,
+            y: stage.height() / 2,
+            radius: 70,
+            fill: 'red',
+            stroke: 'black',
+            strokeWidth: 4,
+            draggable: true,
         });
-        return canvas; // Return the fabric.Canvas instance
+
+        layer.add(circle);
+        layer.add(transformer);
+
+        stage.add(layer);
+        circle.on('click tap', (e) => {
+            clearAllSelection(stageRef.current);
+            transformer.nodes([circle]);
+        });
+
+        layer.draw();
+    };
+    const drawingLayerRef = useRef<Konva.Layer | null>(null);
+    const enableDrawing = () => {
+        if (!stageRef.current) return;
+
+        let isNew = true;
+        let layer = null;
+        if (drawingLayerRef.current) {
+            layer = drawingLayerRef.current;
+            isNew = false;
+        } else layer = new Konva.Layer();
+        drawingLayerRef.current = layer;
+        const brush = new PencilBrush(stageRef.current, layer);
+        if (isNew) stageRef.current.add(layer);
+        Brushes.applyBrushToStage(stageRef.current, brush);
+        layer.draw();
     };
 
-    const handleAddCircle = () => {
-        if (canvas) {
-            const circle = new fabric.Circle({
-                radius: 50,
-                fill: 'red',
-                left: 400,
-                top: 200,
-            });
-            canvas.add(circle);
-        }
+    const enableErasing = () => {
+        if (!stageRef.current) return;
+        let isNew = true;
+        let layer = null;
+        if (drawingLayerRef.current) {
+            layer = drawingLayerRef.current;
+            isNew = false;
+        } else layer = new Konva.Layer();
+        drawingLayerRef.current = layer;
+        const brush = new EraserBrush(stageRef.current, layer);
+        if (isNew) stageRef.current.add(layer);
+        Brushes.applyBrushToStage(stageRef.current, brush);
+        layer.draw();
     };
-
-    canvas?.on('object:added', (e) => {
-        console.log('Object added:', e.target);
-    });
 
     return (
         <div>
-            <button onClick={handleAddCircle}>Add Circle</button>
-            <canvas id="canvas" />
+            <button onClick={addCircle}>Add Circle</button>
+            <button onClick={enableDrawing}>Start Drawing</button>
+            <button onClick={enableErasing}>Start Erasing</button>
+            <div className="m-auto border border-solid border-black">
+                <div id="canvas" ref={canvasElementRef} />
+            </div>
         </div>
     );
 };
