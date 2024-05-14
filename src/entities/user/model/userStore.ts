@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { devtools } from 'zustand/middleware';
-import { getUser, loginUser, regUser } from '../index';
+import { getUser, loginUser, regUser, signUpGoogle } from '../index';
 
 interface User {
     _id: number;
@@ -19,6 +19,7 @@ interface UserState {
     checked: boolean;
     setUser: (user: User | null) => void;
     loginUser: (email: string, password: string) => void;
+    loginGoogle: () => void;
     registerUser: (email: string, password: string) => void;
     checkAuth: () => object | null;
     logoutUser: () => void;
@@ -76,7 +77,20 @@ export const useUserStore = create<UserState>()(
                 set({ checked: true });
                 return null;
             },
-
+            loginGoogle: async () => {
+                try {
+                    const response = await signUpGoogle();
+                    const user = response;
+                    if (user) {
+                        set({ user });
+                        set({ isLogin: true });
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+                set({ isLoaded: true });
+            },
+            
             logoutUser: () => set({ user: null }),
         })),
     ),
