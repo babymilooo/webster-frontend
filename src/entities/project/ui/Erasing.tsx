@@ -1,5 +1,6 @@
 import Konva from 'konva';
-import { Brushes, EraserBrush } from '@/entities/project';
+import { Brushes, EraserBrush, useProjectStore } from '@/entities/project';
+import { useEffect } from 'react';
 
 type ErasingProps = {
     stageRef: React.RefObject<Konva.Stage>;
@@ -10,8 +11,12 @@ export const Erasing: React.FC<ErasingProps> = ({
     stageRef,
     drawingLayerRef,
 }) => {
-    const enableErasing = () => {
+    const state = useProjectStore((state) => state.state);
+
+    useEffect(() => {
+        if (state !== 'Erasing') return;
         if (!stageRef.current) return;
+
         let isNew = true;
         let layer = null;
         if (drawingLayerRef.current) {
@@ -23,7 +28,7 @@ export const Erasing: React.FC<ErasingProps> = ({
         if (isNew) stageRef.current.add(layer);
         Brushes.applyBrushToStage(stageRef.current, brush);
         layer.draw();
-    };
+    }, [state, stageRef, drawingLayerRef]);
 
-    return <button onClick={enableErasing}>Start Erasing</button>;
+    return null;
 };

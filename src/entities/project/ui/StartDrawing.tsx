@@ -1,6 +1,7 @@
 import Konva from 'konva';
-import { PencilBrush } from '@/entities/project/index';
-import { Brushes } from '@/entities/project/index';
+import { PencilBrush, useProjectStore } from '@/entities/project';
+import { Brushes } from '@/entities/project';
+import { useEffect } from 'react';
 type StartDrawing = {
     stageRef: React.RefObject<Konva.Stage>;
     drawingLayerRef: React.MutableRefObject<Konva.Layer | null>;
@@ -10,8 +11,11 @@ export const StartDrawing: React.FC<StartDrawing> = ({
     stageRef,
     drawingLayerRef,
 }) => {
-    const enableDrawing = () => {
+    const state = useProjectStore((state) => state.state);
+
+    useEffect(() => {
         if (!stageRef.current) return;
+        if (state !== 'Drawing') return;
 
         let isNew = true;
         let layer = null;
@@ -24,7 +28,7 @@ export const StartDrawing: React.FC<StartDrawing> = ({
         if (isNew) stageRef.current.add(layer);
         Brushes.applyBrushToStage(stageRef.current, brush);
         layer.draw();
-    };
+    }, [state, stageRef, drawingLayerRef]);
 
-    return <button onClick={enableDrawing}>Start Drawing</button>;
+    return null;
 };

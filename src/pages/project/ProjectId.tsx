@@ -8,7 +8,7 @@ const ProjectId = () => {
     return (
         <MainLayout>
             <ProjectLayout>
-                <div className="h-full w-full flex flex-col items-center justify-center">
+                <div className="h-full w-full flex flex-col items-center justify-center bg-neutral-200">
                     <p>Project {id}</p>
                     <Project />
                 </div>
