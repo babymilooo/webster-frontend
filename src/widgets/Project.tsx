@@ -1,6 +1,11 @@
 import { useEffect, useRef } from 'react';
 import Konva from 'konva';
-import { AddCircle, Erasing, SelectionArea } from '@/entities/project';
+import {
+    AddCircle,
+    Erasing,
+    SelectionArea,
+    useProjectStore,
+} from '@/entities/project';
 import { StartDrawing } from '@/entities/project';
 import { AddRect } from '@/entities/project';
 
@@ -8,6 +13,7 @@ export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
     const stageRef = useRef<Konva.Stage | null>(null);
     const drawingLayerRef = useRef<Konva.Layer | null>(null);
+    const setStage = useProjectStore((state) => state.setStage);
 
     const clearAllSelection = (stage?: Konva.Stage | null) => {
         if (!stage) return;
@@ -30,7 +36,7 @@ export const Project = () => {
                 height: 480,
             });
             stageRef.current = stage;
-
+            setStage(stage);
             // stage.on('pointerdown', (e) => {
             //     console.log(e.target);
             //     if (e.target === stage) {

@@ -1,6 +1,7 @@
 import Konva from 'konva';
 import { useEffect, useRef, useState } from 'react';
 import { useProjectStore } from '@/entities/project';
+import { getLayerCreationIndex } from '../lib/layerCreationIndex';
 
 type AddRectProps = {
     stageRef: React.RefObject<Konva.Stage>;
@@ -18,19 +19,23 @@ export const AddRect: React.FC<AddRectProps> = ({
         null,
     );
     const state = useProjectStore((state) => state.state);
+    const toggleLayersSwitch = useProjectStore(
+        (state) => state.toggleLayersSwitch,
+    );
     useEffect(() => {
         if (!stageRef.current) return;
 
         const stage = stageRef.current;
 
         if (state === 'CreateRect') {
-            const layer = new Konva.Layer();
-            const transformer = new Konva.Transformer();
-            layer.add(transformer);
-            stage.add(layer);
-            layerRef.current = layer;
-
             const handleMouseDown = () => {
+                const layer = new Konva.Layer();
+                layer.setAttrs({ creationIndex: getLayerCreationIndex() });
+                const transformer = new Konva.Transformer();
+                layer.add(transformer);
+                stage.add(layer);
+                toggleLayersSwitch();
+                layerRef.current = layer;
                 const pos = stage.getPointerPosition();
                 if (!pos) return;
 
@@ -74,7 +79,7 @@ export const AddRect: React.FC<AddRectProps> = ({
                     height: newHeight,
                 });
 
-                layer.batchDraw();
+                layerRef.current?.batchDraw();
             };
 
             const handleMouseUp = () => {
@@ -96,5 +101,5 @@ export const AddRect: React.FC<AddRectProps> = ({
         }
     }, [stageRef, isDrawing, rect, clearAllSelection, state]);
 
-    return null
+    return null;
 };

@@ -1,6 +1,7 @@
 import Konva from 'konva';
 import { useEffect, useRef, useState } from 'react';
 import { useProjectStore } from '@/entities/project';
+import { getLayerCreationIndex } from '../lib/layerCreationIndex';
 type AddCircleProps = {
     stageRef: React.RefObject<Konva.Stage>;
     clearAllSelection: (stage?: Konva.Stage | null) => void;
@@ -15,19 +16,24 @@ export const AddCircle: React.FC<AddCircleProps> = ({
     const layerRef = useRef<Konva.Layer | null>(null);
     // const [isAddCircleEnabled, setIsAddCircleEnabled] = useState(false);
     const state = useProjectStore((state) => state.state);
+    const toggleLayersSwitch = useProjectStore(
+        (state) => state.toggleLayersSwitch,
+    );
     useEffect(() => {
         if (!stageRef.current) return;
 
         const stage = stageRef.current;
 
         if (state === 'CreateCircle') {
-            const layer = new Konva.Layer();
-            const transformer = new Konva.Transformer();
-            layer.add(transformer);
-            stage.add(layer);
-            layerRef.current = layer;
-
             const handleMouseDown = () => {
+                const layer = new Konva.Layer();
+                layer.setAttrs({ creationIndex: getLayerCreationIndex() });
+                const transformer = new Konva.Transformer();
+                layer.add(transformer);
+                stage.add(layer);
+                toggleLayersSwitch();
+
+                layerRef.current = layer;
                 const pos = stage.getPointerPosition();
                 if (!pos) return;
 
@@ -62,14 +68,14 @@ export const AddCircle: React.FC<AddCircleProps> = ({
                         Math.pow(pos.y - circle.y(), 2),
                 );
                 circle.radius(radius);
-                layer.batchDraw();
+                layerRef.current?.batchDraw();
             };
 
             const handleMouseUp = () => {
                 setIsDrawing(false);
                 setCircle(null);
             };
-            
+
             stage.off('pointerdown pointermove pointerup');
             stage.on('pointerdown', handleMouseDown);
             stage.on('pointermove', handleMouseMove);

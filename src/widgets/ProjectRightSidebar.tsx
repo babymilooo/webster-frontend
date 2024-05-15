@@ -1,7 +1,10 @@
+import { LayersStack } from './LayersStack';
+
 const ProjectRightSidebar = () => {
     return (
-        <div className="fixed w-[300px] right-0 bg-red-500 h-full z-10">
+        <div className="fixed right-0 z-10 h-full w-[300px] bg-red-500">
             right
+            <LayersStack />
         </div>
     );
 };
