@@ -16,9 +16,6 @@ export const AddCircle: React.FC<AddCircleProps> = ({
     const layerRef = useRef<Konva.Layer | null>(null);
     // const [isAddCircleEnabled, setIsAddCircleEnabled] = useState(false);
     const state = useProjectStore((state) => state.state);
-    const toggleLayersSwitch = useProjectStore(
-        (state) => state.toggleLayersSwitch,
-    );
     useEffect(() => {
         if (!stageRef.current) return;
 
@@ -26,12 +23,11 @@ export const AddCircle: React.FC<AddCircleProps> = ({
 
         if (state === 'CreateCircle') {
             const handleMouseDown = () => {
-                const layer = new Konva.Layer();
-                layer.setAttrs({ creationIndex: getLayerCreationIndex() });
-                const transformer = new Konva.Transformer();
-                layer.add(transformer);
-                stage.add(layer);
-                toggleLayersSwitch();
+                const layer = useProjectStore.getState().selectedLayer;
+                if (!layer) return;
+                const transformer = layer.findOne(
+                    'Transformer',
+                ) as Konva.Transformer;
 
                 layerRef.current = layer;
                 const pos = stage.getPointerPosition();
@@ -82,9 +78,10 @@ export const AddCircle: React.FC<AddCircleProps> = ({
             stage.on('pointerup', handleMouseUp);
 
             return () => {
-                stage.off('pointerdown', handleMouseDown);
-                stage.off('pointermove', handleMouseMove);
-                stage.off('pointerup', handleMouseUp);
+                stage.off('pointerdown pointermove pointerup');
+                // stage.off('pointerdown', handleMouseDown);
+                // stage.off('pointermove', handleMouseMove);
+                // stage.off('pointerup', handleMouseUp);
             };
         }
     }, [stageRef, isDrawing, circle, clearAllSelection, state]);

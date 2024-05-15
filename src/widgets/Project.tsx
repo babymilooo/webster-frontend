@@ -8,12 +8,14 @@ import {
 } from '@/entities/project';
 import { StartDrawing } from '@/entities/project';
 import { AddRect } from '@/entities/project';
+import { getLayerCreationIndex } from '@/entities/project/lib/layerCreationIndex';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
     const stageRef = useRef<Konva.Stage | null>(null);
     const drawingLayerRef = useRef<Konva.Layer | null>(null);
     const setStage = useProjectStore((state) => state.setStage);
+    const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
 
     const clearAllSelection = (stage?: Konva.Stage | null) => {
         if (!stage) return;
@@ -36,14 +38,21 @@ export const Project = () => {
                 height: 480,
             });
             stageRef.current = stage;
+
+            const startLayer = new Konva.Layer();
+            const transformer = new Konva.Transformer();
+            startLayer.add(transformer);
+            startLayer.setAttrs({ creationIndex: getLayerCreationIndex() });
+            stage.add(startLayer);
             setStage(stage);
+            setSelectedLayer(startLayer);
             // stage.on('pointerdown', (e) => {
             //     console.log(e.target);
             //     if (e.target === stage) {
             //         clearAllSelection(stage);
             //     }
             // });
-            stage.on('mousedown', (e) => {
+            stage.on('pointerdown', (e) => {
                 if (e.target === stage) {
                     clearAllSelection(stage);
                 }

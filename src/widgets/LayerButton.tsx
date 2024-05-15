@@ -10,9 +10,12 @@ export const LayerButton: FC<{ layer: Konva.Layer; index?: number }> = ({
         (state) => state.toggleLayersSwitch,
     );
     const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
+    const selectedLayer = useProjectStore((state) => state.selectedLayer);
     return (
         <div
-            className="grid h-20 w-full grid-cols-3 grid-rows-1 "
+            className={`grid h-20 w-full grid-cols-3   grid-rows-1 ${
+                layer == selectedLayer ? 'bg-green-400' : ''
+            }`}
             onClick={() => setSelectedLayer(layer)}
         >
             <span className="flex items-center justify-center align-middle">

@@ -85,19 +85,19 @@ export const SelectionArea: React.FC<SelectionAreaProps> = ({ stageRef }) => {
                 layerRef.current.destroy();
                 layerRef.current = null;
             }
-            document.removeEventListener('mouseup', handleMouseUp);
-            document.removeEventListener('mousedown', handleMouseDown);
-            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('pointerup', handleMouseUp);
+            document.removeEventListener('pointerdown', handleMouseDown);
+            document.removeEventListener('pointermove', handleMouseMove);
         };
 
-        document.addEventListener('mouseup', handleMouseUp);
-        document.addEventListener('mousedown', handleMouseDown);
-        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('pointerup', handleMouseUp);
+        document.addEventListener('pointerdown', handleMouseDown);
+        document.addEventListener('pointermove', handleMouseMove);
 
         return () => {
-            document.removeEventListener('mouseup', handleMouseUp);
-            document.removeEventListener('mousedown', handleMouseDown);
-            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('pointerup', handleMouseUp);
+            document.removeEventListener('pointerdown', handleMouseDown);
+            document.removeEventListener('pointermove', handleMouseMove);
         };
     }, [stageRef, isDrawing, selectionRect, startPos, state]);
 

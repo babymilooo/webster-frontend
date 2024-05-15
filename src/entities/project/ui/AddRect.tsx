@@ -19,9 +19,6 @@ export const AddRect: React.FC<AddRectProps> = ({
         null,
     );
     const state = useProjectStore((state) => state.state);
-    const toggleLayersSwitch = useProjectStore(
-        (state) => state.toggleLayersSwitch,
-    );
     useEffect(() => {
         if (!stageRef.current) return;
 
@@ -29,12 +26,12 @@ export const AddRect: React.FC<AddRectProps> = ({
 
         if (state === 'CreateRect') {
             const handleMouseDown = () => {
-                const layer = new Konva.Layer();
-                layer.setAttrs({ creationIndex: getLayerCreationIndex() });
-                const transformer = new Konva.Transformer();
-                layer.add(transformer);
-                stage.add(layer);
-                toggleLayersSwitch();
+                const layer = useProjectStore.getState().selectedLayer;
+                if (!layer) return;
+                const transformer = layer.findOne(
+                    'Transformer',
+                ) as Konva.Transformer;
+
                 layerRef.current = layer;
                 const pos = stage.getPointerPosition();
                 if (!pos) return;
@@ -94,9 +91,10 @@ export const AddRect: React.FC<AddRectProps> = ({
             stage.on('pointerup', handleMouseUp);
 
             return () => {
-                stage.off('pointerdown', handleMouseDown);
-                stage.off('pointermove', handleMouseMove);
-                stage.off('pointerup', handleMouseUp);
+                stage.off('pointerdown pointermove pointerup');
+                // stage.off('pointerdown', handleMouseDown);
+                // stage.off('pointermove', handleMouseMove);
+                // stage.off('pointerup', handleMouseUp);
             };
         }
     }, [stageRef, isDrawing, rect, clearAllSelection, state]);

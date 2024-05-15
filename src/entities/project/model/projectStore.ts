@@ -1,14 +1,20 @@
-import { create } from 'zustand';
-import { immer } from 'zustand/middleware/immer';
-import { devtools } from 'zustand/middleware';
-import { createProject } from '../index';
 import Konva from 'konva';
+import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
+import { createProject } from '../index';
 
 interface Project {
     _id: number;
     title: string;
     width: number;
     height: number;
+}
+
+interface IBrushSettings {
+    width: number;
+    color: string;
+    selectedBrush?: string | null;
 }
 
 interface ProjectState {
@@ -18,12 +24,14 @@ interface ProjectState {
     stage: Konva.Stage | null;
     selectedLayer: Konva.Layer | null;
     changedLayersSwitch: boolean;
+    brushSettings: IBrushSettings;
     setProject: (project: Project | null) => void;
     createProject: (title: string, width: number, height: number) => void;
     setState: (state: string) => void;
     setStage: (stage: Konva.Stage) => void;
     setSelectedLayer: (layer: Konva.Layer) => void;
     toggleLayersSwitch: VoidFunction;
+    setBrushSettings: (settings: Partial<IBrushSettings>) => void;
 }
 
 export const useProjectStore = create<ProjectState>()(
@@ -35,6 +43,12 @@ export const useProjectStore = create<ProjectState>()(
             stage: null,
             selectedLayer: null,
             changedLayersSwitch: false,
+            brushSettings: {
+                width: 10,
+                color: '#000000',
+                selectedBrush: null,
+            },
+
             setProject: (project) => set({ project }),
             createProject: async (title, width, height) => {
                 try {
@@ -55,6 +69,11 @@ export const useProjectStore = create<ProjectState>()(
                 set((state) => ({
                     changedLayersSwitch: !state.changedLayersSwitch,
                 })),
+            setBrushSettings: (settings) => {
+                set((state) => ({
+                    brushSettings: { ...state.brushSettings, ...settings },
+                }));
+            },
         })),
     ),
 );

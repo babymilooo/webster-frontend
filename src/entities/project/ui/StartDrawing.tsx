@@ -4,7 +4,7 @@ import { Brushes } from '@/entities/project';
 import { useEffect } from 'react';
 import { getLayerCreationIndex } from '../lib/layerCreationIndex';
 type StartDrawing = {
-    stageRef: React.RefObject<Konva.Stage>;
+    stageRef?: React.RefObject<Konva.Stage>;
     drawingLayerRef: React.MutableRefObject<Konva.Layer | null>;
 };
 
@@ -13,29 +13,18 @@ export const StartDrawing: React.FC<StartDrawing> = ({
     drawingLayerRef,
 }) => {
     const state = useProjectStore((state) => state.state);
-    const toggleLayersSwitch = useProjectStore(
-        (state) => state.toggleLayersSwitch,
-    );
 
     useEffect(() => {
-        if (!stageRef.current) return;
         if (state !== 'Drawing') return;
-
-        let isNew = true;
-        let layer = null;
-        if (drawingLayerRef.current) {
-            layer = drawingLayerRef.current;
-            isNew = false;
-        } else layer = new Konva.Layer();
-        drawingLayerRef.current = layer;
-        const brush = new PencilBrush(stageRef.current, layer);
-        if (isNew) {
-            layer.setAttrs({ creationIndex: getLayerCreationIndex() });
-            stageRef.current.add(layer);
-            toggleLayersSwitch();
-        }
-        Brushes.applyBrushToStage(stageRef.current, brush);
-        layer.draw();
+        const stage = useProjectStore.getState().stage;
+        if (!stage) return;
+        const brush = new PencilBrush();
+        Brushes.applyBrushToStage(stage, brush);
+        // layer.draw();
+        return () => {
+            if (!stage) return;
+            stage.off('pointerdown pointermove pointerup');
+        };
     }, [state, stageRef, drawingLayerRef]);
 
     return null;
