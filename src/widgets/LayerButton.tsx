@@ -2,16 +2,22 @@ import { useProjectStore } from '@/entities/project';
 import Konva from 'konva';
 import { FC } from 'react';
 
-export const LayerButton: FC<{ layer: Konva.Layer; index: number }> = ({
+export const LayerButton: FC<{ layer: Konva.Layer; index?: number }> = ({
     layer,
     index,
 }) => {
     const toggleLayersSwitch = useProjectStore(
         (state) => state.toggleLayersSwitch,
     );
+    const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
     return (
-        <div className="h-20 w-40 grid-cols-3 grid-rows-1 items-center justify-items-center gap-1">
-            <div>Layer {layer.getAttr('creationIndex')}</div>
+        <div
+            className="grid h-20 w-full grid-cols-3 grid-rows-1 "
+            onClick={() => setSelectedLayer(layer)}
+        >
+            <span className="flex items-center justify-center align-middle">
+                Layer {layer.getAttr('creationIndex')}
+            </span>
             <button
                 type="button"
                 onClick={() => {
