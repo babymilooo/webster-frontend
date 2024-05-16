@@ -118,32 +118,33 @@ export const SelectionArea: React.FC<SelectionAreaProps> = ({ stageRef }) => {
                 return
             }
 
-            setState('transform');
-            transformer.on('transformstart', () => {
-                console.log(state);
-                // setState('transform'); // Отключаем режим выделения
-                console.log('transformstart');
-                document.removeEventListener('pointerup', handleMouseUp);
-                document.removeEventListener('pointerdown', handleMouseDown);
-                document.removeEventListener('pointermove', handleMouseMove);
-            });
+            // stage.off('pointerup');
+            // stage.off('pointerdown');
+            // stage.off('pointermove');
+            // transformer.on('transformstart', () => {
+            //     console.log('transformstart');
+            //     setState('transform');
+            //     // setState('transform'); // Отключаем режим выделения
 
-            transformer.on('transformend', () => {
-                console.log('transformend');
-                // Здесь можно добавить логику для включения выделения после завершения трансформации
-                // setState('SelectionArea'); // Включаем режим выделения
-            });
+            // });
+
+            // transformer.on('transformend', () => {
+            //     console.log('transformend');
+            //     // Здесь можно добавить логику для включения выделения после завершения трансформации
+            //     setState('SelectionArea'); // Включаем режим выделения
+            // });
+
+            transformer.off('transformend');
             selectedLayer?.batchDraw(); // Перерисовываем слой
         };
 
-        document.addEventListener('pointerup', handleMouseUp);
-        document.addEventListener('pointerdown', handleMouseDown);
-        document.addEventListener('pointermove', handleMouseMove);
-
+        stage.on('pointerup', handleMouseUp);
+        stage.on('pointerdown', handleMouseDown);
+        stage.on('pointermove', handleMouseMove);
         return () => {
-            document.removeEventListener('pointerup', handleMouseUp);
-            document.removeEventListener('pointerdown', handleMouseDown);
-            document.removeEventListener('pointermove', handleMouseMove);
+            stage.off('pointerup');
+            stage.off('pointerdown');
+            stage.off('pointermove');
         };
     }, [stageRef, isDrawing, selectionRect, startPos, state]);
 
