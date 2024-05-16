@@ -11,6 +11,8 @@ export const LayerButton: FC<{ layer: Konva.Layer; index?: number }> = ({
     );
     const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
     const selectedLayer = useProjectStore((state) => state.selectedLayer);
+
+    if (layer.getAttr('hidden')) return null;
     return (
         <div
             className={`grid h-20 w-full grid-cols-3   grid-rows-1 ${

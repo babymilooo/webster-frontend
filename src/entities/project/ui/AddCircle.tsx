@@ -6,9 +6,7 @@ type AddCircleProps = {
     stageRef: React.RefObject<Konva.Stage>;
 };
 
-export const AddCircle: React.FC<AddCircleProps> = ({
-    stageRef,
-}) => {
+export const AddCircle: React.FC<AddCircleProps> = ({ stageRef }) => {
     const [isDrawing, setIsDrawing] = useState(false);
     const [circle, setCircle] = useState<Konva.Circle | null>(null);
     const layerRef = useRef<Konva.Layer | null>(null);
@@ -45,6 +43,7 @@ export const AddCircle: React.FC<AddCircleProps> = ({
                     clearAllSelection(stageRef.current);
                     transformer.nodes([newCircle]);
                 });
+                transformer.add(newCircle);
 
                 layer.add(newCircle);
                 setCircle(newCircle);

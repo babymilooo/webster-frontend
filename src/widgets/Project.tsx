@@ -52,9 +52,7 @@ export const Project = () => {
 
     return (
         <div>
-            <AddCircle
-                stageRef={stageRef}
-            />
+            <AddCircle stageRef={stageRef} />
             <AddRect
                 stageRef={stageRef}
                 clearAllSelection={clearAllSelection}
@@ -67,7 +65,7 @@ export const Project = () => {
             <Erasing stageRef={stageRef} drawingLayerRef={drawingLayerRef} />
 
             <AddImage stageRef={stageRef} />
-            
+
             <SelectionArea stageRef={stageRef} />
             <div className="m-auto border border-solid border-black">
                 <div id="canvas" ref={canvasElementRef} />
