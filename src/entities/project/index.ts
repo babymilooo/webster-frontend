@@ -9,3 +9,4 @@ export { AddRect } from './ui/AddRect';
 export { createProject } from './api/createProject';
 export { useProjectStore } from './model/projectStore';
 export { clearAllSelection } from './lib/clearAllSelection';
+export {AddImage} from './ui/AddImage';

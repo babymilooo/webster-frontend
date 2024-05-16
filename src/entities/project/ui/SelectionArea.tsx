@@ -15,7 +15,7 @@ export const SelectionArea: React.FC<SelectionAreaProps> = ({ stageRef }) => {
     );
     const state = useProjectStore((state) => state.state);
     const selectedLayer = useProjectStore((state) => state.selectedLayer);
-    const setState = useProjectStore((state) => state.setState);
+    // const setState = useProjectStore((state) => state.setState);
     useEffect(() => {
         if (!stageRef.current) return;
 

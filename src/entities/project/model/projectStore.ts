@@ -25,6 +25,8 @@ interface ProjectState {
     selectedLayer: Konva.Layer | null;
     changedLayersSwitch: boolean;
     brushSettings: IBrushSettings;
+    SelectedImage: string | null;
+    setSelectredImage: (image: string | null) => void;
     setProject: (project: Project | null) => void;
     createProject: (title: string, width: number, height: number) => void;
     setState: (state: string) => void;
@@ -48,7 +50,8 @@ export const useProjectStore = create<ProjectState>()(
                 color: '#000000',
                 selectedBrush: null,
             },
-
+            SelectedImage: null,
+            setSelectredImage: (image) => set({ SelectedImage: image }),
             setProject: (project) => set({ project }),
             createProject: async (title, width, height) => {
                 try {

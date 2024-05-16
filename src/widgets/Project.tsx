@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import Konva from 'konva';
 import {
     AddCircle,
+    AddImage,
     Erasing,
     SelectionArea,
     clearAllSelection,
@@ -65,6 +66,8 @@ export const Project = () => {
 
             <Erasing stageRef={stageRef} drawingLayerRef={drawingLayerRef} />
 
+            <AddImage stageRef={stageRef} />
+            
             <SelectionArea stageRef={stageRef} />
             <div className="m-auto border border-solid border-black">
                 <div id="canvas" ref={canvasElementRef} />
