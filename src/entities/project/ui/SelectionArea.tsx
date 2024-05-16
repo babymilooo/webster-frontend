@@ -14,7 +14,8 @@ export const SelectionArea: React.FC<SelectionAreaProps> = ({ stageRef }) => {
         null,
     );
     const state = useProjectStore((state) => state.state);
-
+    const selectedLayer = useProjectStore((state) => state.selectedLayer);
+    const setState = useProjectStore((state) => state.setState);
     useEffect(() => {
         if (!stageRef.current) return;
 
@@ -27,7 +28,9 @@ export const SelectionArea: React.FC<SelectionAreaProps> = ({ stageRef }) => {
         layerRef.current = layer;
 
         const handleMouseDown = () => {
+            if (state !== 'SelectionArea') return;
             const pos = stage.getPointerPosition();
+            console.log('pos', pos);
             if (!pos) return;
 
             const newRect = new Konva.Rect({
@@ -35,7 +38,7 @@ export const SelectionArea: React.FC<SelectionAreaProps> = ({ stageRef }) => {
                 y: pos.y,
                 width: 0,
                 height: 0,
-                fill: 'rgba(0, 0, 255, 0.3)', // Полупрозрачный синий цвет для выделения
+                fill: 'rgba(0, 0, 220, 0.3)', // Полупрозрачный синий цвет для выделения
                 stroke: 'blue',
                 strokeWidth: 2,
                 draggable: false,
@@ -81,13 +84,56 @@ export const SelectionArea: React.FC<SelectionAreaProps> = ({ stageRef }) => {
             setIsDrawing(false);
             setSelectionRect(null);
             setStartPos(null);
-            if (layerRef.current) {
-                layerRef.current.destroy();
-                layerRef.current = null;
+
+            // Находим все фигуры на сцене
+            const shapes = stageRef.current?.find(
+                'Circle, Rect, Ellipse, Line',
+            );
+            if (!shapes || !shapes.length) return;
+
+            // Находим трансформер на слое
+            const transformer = selectedLayer?.findOne(
+                'Transformer',
+            ) as Konva.Transformer;
+            if (!transformer) return;
+
+            // Проверяем длину массива узлов
+            // if (transformer._nodes.length === 0) {
+            //     return
+            // }
+
+            // Фильтруем выбранные фигуры
+            const selectedShapes = shapes.filter((shape) => {
+                const shapeBox = shape.getClientRect();
+                const selectionBox = selectionRect?.getClientRect();
+                if (!selectionBox) return false; // Check if selectionRect is null
+                return Konva.Util.haveIntersection(shapeBox, selectionBox);
+            });
+
+            // Устанавливаем выбранные узлы для трансформера
+            transformer.nodes(selectedShapes);
+
+            console.log('transformer', transformer.getNodes());
+            if (selectedShapes.length > 0) {
+                return
             }
-            document.removeEventListener('pointerup', handleMouseUp);
-            document.removeEventListener('pointerdown', handleMouseDown);
-            document.removeEventListener('pointermove', handleMouseMove);
+
+            setState('transform');
+            transformer.on('transformstart', () => {
+                console.log(state);
+                // setState('transform'); // Отключаем режим выделения
+                console.log('transformstart');
+                document.removeEventListener('pointerup', handleMouseUp);
+                document.removeEventListener('pointerdown', handleMouseDown);
+                document.removeEventListener('pointermove', handleMouseMove);
+            });
+
+            transformer.on('transformend', () => {
+                console.log('transformend');
+                // Здесь можно добавить логику для включения выделения после завершения трансформации
+                // setState('SelectionArea'); // Включаем режим выделения
+            });
+            selectedLayer?.batchDraw(); // Перерисовываем слой
         };
 
         document.addEventListener('pointerup', handleMouseUp);

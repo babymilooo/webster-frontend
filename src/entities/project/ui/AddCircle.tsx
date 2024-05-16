@@ -1,15 +1,13 @@
 import Konva from 'konva';
 import { useEffect, useRef, useState } from 'react';
-import { useProjectStore } from '@/entities/project';
-import { getLayerCreationIndex } from '../lib/layerCreationIndex';
+import { clearAllSelection, useProjectStore } from '@/entities/project';
+// import { getLayerCreationIndex } from '../lib/layerCreationIndex';
 type AddCircleProps = {
     stageRef: React.RefObject<Konva.Stage>;
-    clearAllSelection: (stage?: Konva.Stage | null) => void;
 };
 
 export const AddCircle: React.FC<AddCircleProps> = ({
     stageRef,
-    clearAllSelection,
 }) => {
     const [isDrawing, setIsDrawing] = useState(false);
     const [circle, setCircle] = useState<Konva.Circle | null>(null);

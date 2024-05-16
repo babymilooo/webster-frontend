@@ -4,6 +4,7 @@ import {
     AddCircle,
     Erasing,
     SelectionArea,
+    clearAllSelection,
     useProjectStore,
 } from '@/entities/project';
 import { StartDrawing } from '@/entities/project';
@@ -16,18 +17,6 @@ export const Project = () => {
     const drawingLayerRef = useRef<Konva.Layer | null>(null);
     const setStage = useProjectStore((state) => state.setStage);
     const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
-
-    const clearAllSelection = (stage?: Konva.Stage | null) => {
-        if (!stage) return;
-        const transformers = stage.find('Transformer');
-        // console.log(transformers);
-
-        transformers.forEach((tr) => {
-            // console.log(tr.getType());
-
-            if (tr.getType() === 'Group') (tr as Konva.Transformer).nodes([]);
-        });
-    };
 
     useEffect(() => {
         const initStage = () => {
@@ -46,13 +35,8 @@ export const Project = () => {
             stage.add(startLayer);
             setStage(stage);
             setSelectedLayer(startLayer);
-            // stage.on('pointerdown', (e) => {
-            //     console.log(e.target);
-            //     if (e.target === stage) {
-            //         clearAllSelection(stage);
-            //     }
-            // });
-            stage.on('pointerdown', (e) => {
+
+            stage.on('mousedown', (e) => {
                 if (e.target === stage) {
                     clearAllSelection(stage);
                 }
@@ -69,7 +53,6 @@ export const Project = () => {
         <div>
             <AddCircle
                 stageRef={stageRef}
-                clearAllSelection={clearAllSelection}
             />
             <AddRect
                 stageRef={stageRef}
