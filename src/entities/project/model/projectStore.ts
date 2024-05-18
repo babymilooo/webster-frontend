@@ -21,11 +21,13 @@ interface ProjectState {
     project: Project | null;
     isLoaded: boolean;
     state: string;
+    drawState: string;
     stage: Konva.Stage | null;
     selectedLayer: Konva.Layer | null;
     changedLayersSwitch: boolean;
     brushSettings: IBrushSettings;
     SelectedImage: string | null;
+    setDrawState: (state: string) => void;
     setSelectredImage: (image: string | null) => void;
     setProject: (project: Project | null) => void;
     createProject: (title: string, width: number, height: number) => void;
@@ -42,6 +44,7 @@ export const useProjectStore = create<ProjectState>()(
             project: null,
             isLoaded: false,
             state: '',
+            drawState: '',
             stage: null,
             selectedLayer: null,
             changedLayersSwitch: false,
@@ -51,6 +54,7 @@ export const useProjectStore = create<ProjectState>()(
                 selectedBrush: null,
             },
             SelectedImage: null,
+            setDrawState: (state) => set({ drawState: state }),
             setSelectredImage: (image) => set({ SelectedImage: image }),
             setProject: (project) => set({ project }),
             createProject: async (title, width, height) => {

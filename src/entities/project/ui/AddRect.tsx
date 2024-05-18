@@ -19,12 +19,13 @@ export const AddRect: React.FC<AddRectProps> = ({
         null,
     );
     const state = useProjectStore((state) => state.state);
+    const drawState = useProjectStore((state) => state.drawState);
     useEffect(() => {
         if (!stageRef.current) return;
 
         const stage = stageRef.current;
 
-        if (state === 'CreateRect') {
+        if (state === 'CreateFigure' && drawState === 'Rect') {
             const handleMouseDown = () => {
                 const layer = useProjectStore.getState().selectedLayer;
                 if (!layer) return;
@@ -97,7 +98,7 @@ export const AddRect: React.FC<AddRectProps> = ({
                 // stage.off('pointerup', handleMouseUp);
             };
         }
-    }, [stageRef, isDrawing, rect, clearAllSelection, state]);
+    }, [stageRef, isDrawing, rect, clearAllSelection, state, drawState]);
 
     return null;
 };

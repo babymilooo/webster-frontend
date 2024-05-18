@@ -52,7 +52,7 @@ const ProjectLeftSidebar = () => {
                 <div className="flex h-10 w-full items-center justify-center">
                     <BoxIcon
                         className="h-6 w-6 cursor-pointer text-foreground"
-                        onClick={() => setState('CreateRect')}
+                        onClick={() => setState('CreateFigure')}
                     />
                 </div>
                 <div className="flex h-10 w-full items-center justify-center">

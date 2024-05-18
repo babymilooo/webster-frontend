@@ -12,12 +12,18 @@ export const AddCircle: React.FC<AddCircleProps> = ({ stageRef }) => {
     const layerRef = useRef<Konva.Layer | null>(null);
     // const [isAddCircleEnabled, setIsAddCircleEnabled] = useState(false);
     const state = useProjectStore((state) => state.state);
+    const drawState = useProjectStore((state) => state.drawState);
+
+    useEffect(() => {
+        console.log('sadasdsa');
+    }, []);
+
     useEffect(() => {
         if (!stageRef.current) return;
 
         const stage = stageRef.current;
 
-        if (state === 'CreateCircle') {
+        if (state === 'CreateFigure' && drawState === 'Circle') {
             const handleMouseDown = () => {
                 const layer = useProjectStore.getState().selectedLayer;
                 if (!layer) return;
@@ -39,11 +45,14 @@ export const AddCircle: React.FC<AddCircleProps> = ({ stageRef }) => {
                     draggable: true,
                 });
 
-                newCircle.on('click tap', () => {
+                newCircle.on('dblclick', () => {
                     clearAllSelection(stageRef.current);
                     transformer.nodes([newCircle]);
+                    transformer.show();
+                    layer.batchDraw();
                 });
-                transformer.add(newCircle);
+
+                // transformer.add(newCircle);
 
                 layer.add(newCircle);
                 setCircle(newCircle);
@@ -81,7 +90,7 @@ export const AddCircle: React.FC<AddCircleProps> = ({ stageRef }) => {
                 // stage.off('pointerup', handleMouseUp);
             };
         }
-    }, [stageRef, isDrawing, circle, clearAllSelection, state]);
+    }, [stageRef, isDrawing, circle, clearAllSelection, state, drawState]);
 
     return null;
 };
