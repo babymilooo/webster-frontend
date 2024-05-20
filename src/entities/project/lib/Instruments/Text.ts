@@ -33,6 +33,7 @@ export class TextInstrument {
             fontSize: 20,
             draggable: true,
             width: 200,
+            name: 'object',
         });
 
         newText.on('transform', () => {

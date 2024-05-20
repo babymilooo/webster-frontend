@@ -40,6 +40,7 @@ export class RectInstrument implements IInstuments {
             stroke: 'black',
             strokeWidth: 4,
             draggable: false,
+            name: 'object',
         });
 
         newRect.on('click tap', () => {

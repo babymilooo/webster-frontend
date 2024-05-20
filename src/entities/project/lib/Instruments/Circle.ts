@@ -38,6 +38,7 @@ export class CircleInstrument implements IInstuments {
             stroke: 'black',
             strokeWidth: 4,
             draggable: false,
+            name: 'object',
         });
 
         newCircle.on('dblclick', () => {
