@@ -12,6 +12,7 @@ import { StartDrawing } from '@/entities/project';
 import { AddRect } from '@/entities/project';
 import { getLayerCreationIndex } from '@/entities/project/lib/layerCreationIndex';
 import DrawLine from '@/entities/project/ui/DrawLine';
+import { AddText } from '@/entities/project/ui/AddText';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -70,6 +71,8 @@ export const Project = () => {
             <SelectionArea stageRef={stageRef} />
 
             <DrawLine stageRef={stageRef} />
+
+            <AddText stageRef={stageRef} />
             <div className="m-auto border border-solid border-black">
                 <div id="canvas" ref={canvasElementRef} />
             </div>

@@ -1,31 +1,32 @@
 import Konva from 'konva';
 import { useEffect, useRef, useState } from 'react';
-import { useProjectStore } from '@/entities/project';
+import { clearAllSelection, useProjectStore } from '@/entities/project';
 
-type AddRectProps = {
+type AddTextProps = {
     stageRef: React.RefObject<Konva.Stage>;
-    clearAllSelection: (stage?: Konva.Stage | null) => void;
 };
 
-export const AddRect: React.FC<AddRectProps> = ({
-    stageRef,
-    clearAllSelection,
-}) => {
+export const AddText: React.FC<AddTextProps> = ({ stageRef }) => {
     const [isDrawing, setIsDrawing] = useState(false);
-    const [rect, setRect] = useState<Konva.Rect | null>(null);
+    const [text, setText] = useState<Konva.Text | null>(null);
     const layerRef = useRef<Konva.Layer | null>(null);
+    const state = useProjectStore((state) => state.state);
     const [startPos, setStartPos] = useState<{ x: number; y: number } | null>(
         null,
     );
-    const state = useProjectStore((state) => state.state);
-    const drawState = useProjectStore((state) => state.drawState);
+
+    useEffect(() => {
+        console.log('AddText useEffect');
+    }, []);
+
     useEffect(() => {
         if (!stageRef.current) return;
 
         const stage = stageRef.current;
 
-        if (state === 'CreateFigure' && drawState === 'Rect') {
+        if (state === 'Text') {
             const handleMouseDown = () => {
+                console.log('handleMouseDown');
                 const layer = useProjectStore.getState().selectedLayer;
                 if (!layer) return;
                 const transformer = layer.findOne(
@@ -36,30 +37,53 @@ export const AddRect: React.FC<AddRectProps> = ({
                 const pos = stage.getPointerPosition();
                 if (!pos) return;
 
-                const newRect = new Konva.Rect({
+                const newText = new Konva.Text({
                     x: pos.x,
                     y: pos.y,
                     width: 0,
                     height: 0,
-                    fill: 'none',
-                    stroke: 'black',
+                    fill: 'black',
+                    text: 'Editable text',
+                    fontSize: 20,
                     strokeWidth: 4,
                     draggable: true,
                 });
 
-                newRect.on('click tap', () => {
+                newText.on('dblclick', () => {
                     clearAllSelection(stageRef.current);
-                    transformer.nodes([newRect]);
+                    transformer.nodes([newText]);
+                    transformer.show();
+                    layer.batchDraw();
+
+                    // Show text input for editing
+                    const textArea = document.createElement('textarea');
+                    textArea.value = newText.text();
+                    textArea.style.position = 'absolute';
+                    textArea.style.left = newText.x() + 'px';
+                    textArea.style.top = newText.y() + 'px';
+                    textArea.style.width = newText.width() + 'px';
+                    textArea.style.height = newText.height() + 'px';
+                    textArea.style.zIndex = '10';
+                    document.body.appendChild(textArea);
+
+                    textArea.focus();
+                    textArea.addEventListener('blur', () => {
+                        newText.text(textArea.value);
+                        document.body.removeChild(textArea);
+                        layer.batchDraw();
+                    });
                 });
 
-                layer.add(newRect);
-                setRect(newRect);
+                // transformer.add(newText);
+
+                layer.add(newText);
+                setText(newText);
                 setStartPos(pos);
                 setIsDrawing(true);
             };
 
             const handleMouseMove = () => {
-                if (!isDrawing || !rect || !startPos) return;
+                if (!isDrawing || !text || !startPos) return;
 
                 const pos = stage.getPointerPosition();
                 if (!pos) return;
@@ -69,7 +93,7 @@ export const AddRect: React.FC<AddRectProps> = ({
                 const newWidth = Math.abs(pos.x - startPos.x);
                 const newHeight = Math.abs(pos.y - startPos.y);
 
-                rect.setAttrs({
+                text.setAttrs({
                     x: newX,
                     y: newY,
                     width: newWidth,
@@ -81,7 +105,7 @@ export const AddRect: React.FC<AddRectProps> = ({
 
             const handleMouseUp = () => {
                 setIsDrawing(false);
-                setRect(null);
+                setText(null);
                 setStartPos(null);
             };
 
@@ -97,7 +121,7 @@ export const AddRect: React.FC<AddRectProps> = ({
                 // stage.off('pointerup', handleMouseUp);
             };
         }
-    }, [stageRef, isDrawing, rect, clearAllSelection, state, drawState]);
+    }, [stageRef, isDrawing, text, clearAllSelection, state]);
 
     return null;
 };

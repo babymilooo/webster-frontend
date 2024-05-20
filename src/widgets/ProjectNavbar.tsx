@@ -1,5 +1,5 @@
 import { useProjectStore } from '@/entities/project';
-import { CircleIcon, HomeIcon, SlashIcon } from '@radix-ui/react-icons';
+import { CircleIcon, HomeIcon, SlashIcon, TextIcon } from '@radix-ui/react-icons';
 import {
     BoxIcon,
     CursorArrowIcon,
@@ -33,16 +33,27 @@ export const ProjectNavbar = () => {
                         <BoxIcon className="h-6 w-6 cursor-pointer text-foreground" />
                         <div className="ml-10 flex gap-2">
                             <BoxIcon
-                                className={`h-6 w-6 p-[2px] cursor-pointer text-foreground rounded-md ${drawState === 'Rect' ? 'bg-muted-foreground' : ''}`}
-                                
+                                className={`h-6 w-6 cursor-pointer rounded-md p-[2px] text-foreground ${
+                                    drawState === 'Rect'
+                                        ? 'bg-muted-foreground'
+                                        : ''
+                                }`}
                                 onClick={() => setDrawState('Rect')}
                             />
                             <CircleIcon
-                                className={`h-6 w-6 p-[2px] cursor-pointer text-foreground rounded-md ${drawState === 'Circle' ? 'bg-muted-foreground' : ''}`}
+                                className={`h-6 w-6 cursor-pointer rounded-md p-[2px] text-foreground ${
+                                    drawState === 'Circle'
+                                        ? 'bg-muted-foreground'
+                                        : ''
+                                }`}
                                 onClick={() => setDrawState('Circle')}
                             />
                             <SlashIcon
-                                className={`h-6 w-6 p-[2px] cursor-pointer text-foreground rounded-md ${drawState === 'Line' ? 'bg-muted-foreground' : ''}`}
+                                className={`h-6 w-6 cursor-pointer rounded-md p-[2px] text-foreground ${
+                                    drawState === 'Line'
+                                        ? 'bg-muted-foreground'
+                                        : ''
+                                }`}
                                 onClick={() => setDrawState('Line')}
                             />
                         </div>
@@ -60,6 +71,11 @@ export const ProjectNavbar = () => {
                 return (
                     <ImageIcon className="h-6 w-6 cursor-pointer text-foreground" />
                 );
+            case 'Text':
+                return (
+                    <TextIcon className="h-6 w-6 cursor-pointer text-foreground" />
+                );
+
             default:
                 return null;
         }

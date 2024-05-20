@@ -6,6 +6,7 @@ import {
     GroupIcon,
     ImageIcon,
     Pencil1Icon,
+    TextIcon,
 } from '@radix-ui/react-icons';
 import { useRef } from 'react';
 
@@ -79,6 +80,12 @@ const ProjectLeftSidebar = () => {
                         onChange={handleImageChange}
                         className="hidden"
                         ref={inputRef}
+                    />
+                </div>
+                <div className="flex h-10 w-full items-center justify-center">
+                    <TextIcon
+                        className="h-6 w-6 cursor-pointer text-foreground"
+                        onClick={() => setState('Text')}
                     />
                 </div>
             </div>
