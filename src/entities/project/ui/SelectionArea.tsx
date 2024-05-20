@@ -117,7 +117,7 @@ export const SelectionArea: React.FC<SelectionAreaProps> = () => {
             setStartPos(null);
 
             // Находим все фигуры на сцене
-            const shapes = selectedLayer.find('Circle, Rect, Ellipse, Line, Text');
+            const shapes = selectedLayer.find('Circle, Rect, Ellipse, Line, Text, Image');
             if (!shapes || !shapes.length) return;
             // console.log(shapes);
 

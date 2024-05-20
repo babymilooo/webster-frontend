@@ -13,6 +13,7 @@ import { AddRect } from '@/entities/project';
 import { getLayerCreationIndex } from '@/entities/project/lib/layerCreationIndex';
 import DrawLine from '@/entities/project/ui/DrawLine';
 import { AddText } from '@/entities/project/ui/AddText';
+import KonvaSnappingDemo from '@/entities/project/lib/SnapPositions';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -38,6 +39,8 @@ export const Project = () => {
             stage.add(startLayer);
             setStage(stage);
             setSelectedLayer(startLayer);
+
+            new KonvaSnappingDemo(stage, startLayer);
 
             stage.on('mousedown', (e) => {
                 if (e.target === stage) {
@@ -69,7 +72,7 @@ export const Project = () => {
 
             <DrawLine stageRef={stageRef} />
 
-            <AddText stageRef={stageRef} />
+            <AddText />
             <div className="m-auto border border-solid border-black">
                 <div id="canvas" ref={canvasElementRef} />
             </div>

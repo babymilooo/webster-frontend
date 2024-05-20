@@ -1,10 +1,8 @@
 import Konva from 'konva';
-import { IInstuments } from './types';
 import { clearAllSelection, useProjectStore } from '@/entities/project';
 import { setOffDragable } from '../setDragable';
 
 export class TextInstrument {
-    type: string = 'Text';
     isDrawing: boolean = false;
     text: Konva.Text | null = null;
 
