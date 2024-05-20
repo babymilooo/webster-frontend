@@ -9,11 +9,11 @@ export const AddText = () => {
         if (!stage) return;
         if (state === 'Text') {
             const Instrument = new TextInstrument();
-            stage.off('pointerdown pointermove pointerup');
+            stage.off('click');
             Instrument.applyTextToStage();
 
             return () => {
-                stage.off('pointerdown pointermove pointerup');
+                stage.off('click');
             };
         }
     }, [state]);

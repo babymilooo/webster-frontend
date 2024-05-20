@@ -18,9 +18,7 @@ export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
 
         const layer = useProjectStore.getState().selectedLayer;
         if (!layer) return;
-        const transformer = layer.findOne(
-            'Transformer',
-        ) as Konva.Transformer;
+        const transformer = layer.findOne('Transformer') as Konva.Transformer;
 
         // const stage = stageRef.current;
 
