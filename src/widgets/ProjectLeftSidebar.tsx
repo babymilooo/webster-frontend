@@ -1,4 +1,5 @@
 import { useProjectStore } from '@/entities/project';
+import { setOnDragable } from '@/entities/project/lib/setDragable';
 import {
     BoxIcon,
     CursorArrowIcon,
@@ -41,7 +42,10 @@ const ProjectLeftSidebar = () => {
                 <div className="flex h-10 w-full items-center justify-center">
                     <CursorArrowIcon
                         className="h-6 w-6 cursor-pointer text-foreground"
-                        onClick={() => setState('Drag')}
+                        onClick={() => {
+                            setState('Drag');
+                            setOnDragable();
+                        }}
                     />
                 </div>
                 <div className="flex h-10 w-full items-center justify-center">
