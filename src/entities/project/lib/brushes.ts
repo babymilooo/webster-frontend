@@ -54,6 +54,7 @@ export class PencilBrush implements IBaseBrush {
             // add point twice, so we have some drawings even on a simple click
             points: [pos.x, pos.y, pos.x, pos.y],
         });
+        this.lastLine.setAttrs({ handdrawn: true });
         target.add(this.lastLine);
     };
     onPointerMove: (e: KonvaEventObject<PointerEvent>) => void = (e) => {
@@ -84,6 +85,7 @@ export class PencilBrush implements IBaseBrush {
             // add point twice, so we have some drawings even on a simple click
             points: [pos.x, pos.y, pos.x, pos.y],
         });
+        this.lastLine.setAttrs({ handdrawn: true });
         target.add(this.lastLine);
     };
     onPointerUp: (e: KonvaEventObject<PointerEvent>) => void = (e) => {
@@ -116,6 +118,7 @@ export class EraserBrush implements IBaseBrush {
             // add point twice, so we have some drawings even on a simple click
             points: [pos.x, pos.y, pos.x, pos.y],
         });
+        this.lastLine.setAttrs({ handdrawn: true });
         target.add(this.lastLine);
     };
     onPointerMove: (e: KonvaEventObject<PointerEvent>) => void = (e) => {
@@ -147,6 +150,7 @@ export class EraserBrush implements IBaseBrush {
             // add point twice, so we have some drawings even on a simple click
             points: [pos.x, pos.y, pos.x, pos.y],
         });
+        this.lastLine.setAttrs({ handdrawn: true });
         target.add(this.lastLine);
     };
     onPointerUp: (e: KonvaEventObject<PointerEvent>) => void = (e) => {

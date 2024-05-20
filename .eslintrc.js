@@ -27,7 +27,8 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': 'warn',
-    'react/prop-types': 'off'
+    'react/prop-types': 'off',
+    '@typescript-eslint/no-inferrable-types': 'warn'
   },
   globals: {
     Edit: 'writable',

@@ -1,14 +1,16 @@
 import Konva from 'konva';
-import { clearAllSelection, useProjectStore } from '@/entities/project';
 import { IInstuments } from './types';
+import { useProjectStore } from '../../model/projectStore';
 import { setOffDragable } from '../setDragable';
+import { clearAllSelection } from '../clearAllSelection';
 
-export class CircleInstrument implements IInstuments {
-    type: string = 'Circle';
-    isDrawing: boolean = false;
-    circle: Konva.Circle | null = null;
+export class RectInstrument implements IInstuments {
+    type = 'Rect';
+    isDrawing = false;
+    rect: Konva.Rect | null = null;
+    startPos: { x: number; y: number } | null = null;
 
-    applyCircleToStage() {
+    applyToStage() {
         const stage = useProjectStore.getState().stage;
 
         if (stage) {
@@ -18,58 +20,64 @@ export class CircleInstrument implements IInstuments {
             stage.on('pointermove', this.onPointerMove);
             stage.on('pointerup', this.onPointerUp);
         }
-
-        useProjectStore.getState();
     }
+
     onPointerDown() {
         const layer = useProjectStore.getState().selectedLayer;
         const stage = useProjectStore.getState().stage;
-        if (!stage || !layer) return;
+        if (!layer || !stage) return;
         const transformer = layer.findOne('Transformer') as Konva.Transformer;
 
         const pos = stage.getPointerPosition();
         if (!pos) return;
 
-        const newCircle = new Konva.Circle({
+        const newRect = new Konva.Rect({
             x: pos.x,
             y: pos.y,
-            radius: 0,
-            fill: 'red',
+            width: 0,
+            height: 0,
+            fill: 'none',
             stroke: 'black',
             strokeWidth: 4,
             draggable: false,
         });
 
-        newCircle.on('dblclick', () => {
+        newRect.on('click tap', () => {
             clearAllSelection(stage);
-            transformer.nodes([newCircle]);
-            transformer.show();
-            layer.batchDraw();
+            transformer.nodes([newRect]);
         });
 
-        layer.add(newCircle);
-        this.circle = newCircle;
+        layer.add(newRect);
+        this.rect = newRect;
+        this.startPos = pos;
         this.isDrawing = true;
     }
     onPointerMove() {
-        if (!this.isDrawing || !this.circle) return;
-        const stage = useProjectStore.getState().stage;
         const layer = useProjectStore.getState().selectedLayer;
-
-        if (!stage || !layer) return;
+        const stage = useProjectStore.getState().stage;
+        if (!layer || !stage) return;
+        if (!this.isDrawing || !this.rect || !this.startPos) return;
 
         const pos = stage.getPointerPosition();
         if (!pos) return;
 
-        const radius = Math.sqrt(
-            Math.pow(pos.x - this.circle.x(), 2) +
-                Math.pow(pos.y - this.circle.y(), 2),
-        );
-        this.circle.radius(radius);
+        const newX = Math.min(pos.x, this.startPos.x);
+        const newY = Math.min(pos.y, this.startPos.y);
+        const newWidth = Math.abs(pos.x - this.startPos.x);
+        const newHeight = Math.abs(pos.y - this.startPos.y);
+
+        this.rect.setAttrs({
+            x: newX,
+            y: newY,
+            width: newWidth,
+            height: newHeight,
+        });
+
         layer.batchDraw();
     }
     onPointerUp() {
         this.isDrawing = false;
-        this.circle = null;
+        this.rect = null;
+        this.startPos = null;
     }
 }

@@ -55,10 +55,7 @@ export const Project = () => {
     return (
         <div>
             <AddCircle stageRef={stageRef} />
-            <AddRect
-                stageRef={stageRef}
-                clearAllSelection={clearAllSelection}
-            />
+            <AddRect />
             <StartDrawing
                 stageRef={stageRef}
                 drawingLayerRef={drawingLayerRef}
