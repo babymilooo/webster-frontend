@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Konva from 'konva';
 import {
     AddCircle,
@@ -21,7 +21,7 @@ export const Project = () => {
     const drawingLayerRef = useRef<Konva.Layer | null>(null);
     const setStage = useProjectStore((state) => state.setStage);
     const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
-
+    const [zoomPercentage, setZoomPercentage] = useState(100);
     useEffect(() => {
         const initStage = () => {
             if (!canvasElementRef.current) return;
@@ -55,8 +55,29 @@ export const Project = () => {
         };
     }, []);
 
+    const handleZoom = (direction: 'in' | 'out') => {
+        const stage = stageRef.current;
+        if (!stage) return;
+
+        const scaleBy = 1.5;
+        const oldScale = stage.scaleX();
+        const newScale =
+            direction === 'in' ? oldScale * scaleBy : oldScale / scaleBy;
+
+        stage.scale({ x: newScale, y: newScale });
+        stage.batchDraw();
+
+        const percentage = Math.round(newScale * 100);
+        setZoomPercentage(percentage);
+    };
+
     return (
         <div>
+            <div>
+                <button onClick={() => handleZoom('in')}>Zoom In</button>
+                <span>Zoom: {zoomPercentage}%</span>
+                <button onClick={() => handleZoom('out')}>Zoom Out</button>
+            </div>
             <AddCircle stageRef={stageRef} />
             <AddRect />
             <StartDrawing
