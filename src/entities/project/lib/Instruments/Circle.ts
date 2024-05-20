@@ -62,7 +62,8 @@ export class CircleInstrument implements IInstuments {
         if (!pos) return;
 
         const radius = Math.sqrt(
-            Math.pow(pos.x - this.circle.x(), 2) + Math.pow(pos.y - this.circle.y(), 2),
+            Math.pow(pos.x - this.circle.x(), 2) +
+                Math.pow(pos.y - this.circle.y(), 2),
         );
         this.circle.radius(radius);
         layer.batchDraw();
@@ -70,5 +71,5 @@ export class CircleInstrument implements IInstuments {
     onPointerUp() {
         this.isDrawing = false;
         this.circle = null;
-    };
+    }
 }
