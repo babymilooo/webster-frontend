@@ -14,12 +14,10 @@ export class CircleInstrument implements IInstuments {
         if (stage) {
             setOffDragable();
             stage.off('pointerdown pointermove pointerup');
-            stage.on('pointerdown', this.onPointerDown);
-            stage.on('pointermove', this.onPointerMove);
-            stage.on('pointerup', this.onPointerUp);
+            stage.on('pointerdown', () => this.onPointerDown());
+            stage.on('pointermove', () => this.onPointerMove());
+            stage.on('pointerup', () => this.onPointerUp());
         }
-
-        useProjectStore.getState();
     }
     onPointerDown() {
         const layer = useProjectStore.getState().selectedLayer;
