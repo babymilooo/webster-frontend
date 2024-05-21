@@ -27,7 +27,7 @@ export const LayersStack: FC = () => {
         toggleLayersSwitch();
     };
     return (
-        <div className="flex h-full w-full flex-col overflow-auto">
+        <div className="flex h-full w-full flex-col overflow-auto ">
             <button type="button" onClick={addLayerHandle}>
                 Add Layer
             </button>

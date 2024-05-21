@@ -11,10 +11,13 @@ export interface IBaseBrush {
 
 export class Brushes {
     static applyBrushToStage(stage: Konva.Stage, brush: IBaseBrush) {
+        const setUpdatePreview = useProjectStore.getState().setUpdatePreview;
         stage.off('pointerdown pointermove pointerup');
         stage.on('pointerdown', (e) => brush.onPointerDown(e));
         stage.on('pointermove', (e) => brush.onPointerMove(e));
         stage.on('pointerup', (e) => brush.onPointerUp(e));
+        stage.on('pointerup', () => setUpdatePreview());
+
         useProjectStore
             .getState()
             .setBrushSettings({ selectedBrush: brush.type });

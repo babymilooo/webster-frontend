@@ -27,6 +27,8 @@ interface ProjectState {
     changedLayersSwitch: boolean;
     brushSettings: IBrushSettings;
     SelectedImage: string | null;
+    UpdatePreview: boolean;
+    setUpdatePreview: VoidFunction;
     setDrawState: (state: string) => void;
     setSelectredImage: (image: string | null) => void;
     setProject: (project: Project | null) => void;
@@ -53,6 +55,7 @@ export const useProjectStore = create<ProjectState>()(
                 color: '#000000',
                 selectedBrush: null,
             },
+            UpdatePreview: false,
             SelectedImage: null,
             setDrawState: (state) => set({ drawState: state }),
             setSelectredImage: (image) => set({ SelectedImage: image }),
@@ -75,6 +78,10 @@ export const useProjectStore = create<ProjectState>()(
             toggleLayersSwitch: () =>
                 set((state) => ({
                     changedLayersSwitch: !state.changedLayersSwitch,
+                })),
+            setUpdatePreview: () =>
+                set((state) => ({
+                    UpdatePreview: !state.UpdatePreview,
                 })),
             setBrushSettings: (settings) => {
                 set((state) => ({

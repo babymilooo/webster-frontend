@@ -21,6 +21,7 @@ export const Project = () => {
     const drawingLayerRef = useRef<Konva.Layer | null>(null);
     const setStage = useProjectStore((state) => state.setStage);
     const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
+    const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
     const [zoomPercentage, setZoomPercentage] = useState(100);
     const toggleLayersSwitch = useProjectStore(
         (state) => state.toggleLayersSwitch,
@@ -56,6 +57,10 @@ export const Project = () => {
                 if (e.target === stage) {
                     clearAllSelection(stage);
                 }
+            });
+
+            stage.on('dragend', () => {
+                setUpdatePreview();
             });
 
             stage.on('contextmenu', (e) => {
@@ -117,14 +122,6 @@ export const Project = () => {
         const stage = useProjectStore.getState().stage;
         if (!selectedLayer || !stageRef.current) return;
 
-        // const layers = useMemo(
-        //     () =>
-        //         stage
-        //             ?.getLayers()
-        //             .toSorted((a, b) => b.getZIndex() - a.getZIndex()),
-        //     [stage, layersSwitch],
-        // );
-
         const selectedLayerZindex = selectedLayer.getZIndex();
         const layers = stage
             ?.getLayers()
@@ -142,7 +139,7 @@ export const Project = () => {
             const transf = new Konva.Transformer();
             targetLayer.add(transf);
             stageRef.current.add(targetLayer);
-            toggleLayersSwitch(); // Ensure layer list is updated
+            toggleLayersSwitch();
         }
 
         const transformer = selectedLayer.findOne(

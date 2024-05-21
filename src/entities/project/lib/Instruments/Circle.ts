@@ -10,13 +10,14 @@ export class CircleInstrument implements IInstuments {
 
     applyCircleToStage() {
         const stage = useProjectStore.getState().stage;
-
+        const setUpdatePreview = useProjectStore.getState().setUpdatePreview;
         if (stage) {
             setOffDragable();
             stage.off('pointerdown pointermove pointerup');
             stage.on('pointerdown', () => this.onPointerDown());
             stage.on('pointermove', () => this.onPointerMove());
             stage.on('pointerup', () => this.onPointerUp());
+            stage.on('pointerup', () => setUpdatePreview());
         }
     }
     onPointerDown() {

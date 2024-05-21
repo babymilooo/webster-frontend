@@ -5,14 +5,15 @@ import { setOffDragable } from '../setDragable';
 export class TextInstrument {
     isDrawing: boolean = false;
     text: Konva.Text | null = null;
+    setUpdatePreview = useProjectStore.getState().setUpdatePreview;
 
     applyTextToStage() {
         const stage = useProjectStore.getState().stage;
-
         if (stage) {
             setOffDragable();
             stage.off('click');
             stage.on('click', () => this.onClick());
+            stage.on('click', () => this.setUpdatePreview());
         }
     }
 
@@ -60,7 +61,11 @@ export class TextInstrument {
         layer.add(transformer);
     };
 
-    editText = (textNode: Konva.Text, layer: Konva.Layer, transformer: Konva.Transformer) => {
+    editText = (
+        textNode: Konva.Text,
+        layer: Konva.Layer,
+        transformer: Konva.Transformer,
+    ) => {
         const stage = useProjectStore.getState().stage;
         if (!stage) return;
 
@@ -86,7 +91,9 @@ export class TextInstrument {
         textarea.style.top = `${areaPosition.y}px`;
         textarea.style.left = `${areaPosition.x}px`;
         textarea.style.width = `${textNode.width() - textNode.padding() * 2}px`;
-        textarea.style.height = `${textNode.height() - textNode.padding() * 2 + 5}px`;
+        textarea.style.height = `${
+            textNode.height() - textNode.padding() * 2 + 5
+        }px`;
         textarea.style.fontSize = `${textNode.fontSize()}px`;
         textarea.style.border = 'none';
         textarea.style.padding = '0px';
@@ -107,7 +114,8 @@ export class TextInstrument {
         }
 
         let px = 0;
-        const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+        const isFirefox =
+            navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
         if (isFirefox) {
             px += 2 + Math.round(textNode.fontSize() / 20);
         }
@@ -135,13 +143,17 @@ export class TextInstrument {
             if (!newWidth) {
                 newWidth = textNode.text().length * textNode.fontSize();
             }
-            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+            const isSafari = /^((?!chrome|android).)*safari/i.test(
+                navigator.userAgent,
+            );
+            const isFirefox =
+                navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
             if (isSafari || isFirefox) {
                 newWidth = Math.ceil(newWidth);
             }
 
-            const isEdge = document.DOCUMENT_NODE || /Edge/.test(navigator.userAgent);
+            const isEdge =
+                document.DOCUMENT_NODE || /Edge/.test(navigator.userAgent);
             if (isEdge) {
                 newWidth += 1;
             }
@@ -162,7 +174,9 @@ export class TextInstrument {
             const scale = textNode.getAbsoluteScale().x;
             setTextareaWidth(textNode.width() * scale);
             textarea.style.height = 'auto';
-            textarea.style.height = `${textarea.scrollHeight + textNode.fontSize()}px`;
+            textarea.style.height = `${
+                textarea.scrollHeight + textNode.fontSize()
+            }px`;
         });
 
         const handleOutsideClick = (e: MouseEvent) => {
@@ -170,6 +184,7 @@ export class TextInstrument {
                 textNode.text(textarea.value);
                 removeTextarea();
             }
+            this.setUpdatePreview();
         };
         setTimeout(() => {
             window.addEventListener('click', handleOutsideClick);

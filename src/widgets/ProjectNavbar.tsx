@@ -81,7 +81,7 @@ export const ProjectNavbar = () => {
         }
     };
     return (
-        <div className="fixed z-20 mt-[5px] h-[43px] w-full bg-background pr-[300px]">
+        <div className="fixed z-20 mt-[5px] h-[43px] w-full bg-background">
             <div className="flex h-full w-full border-t-[5px] border-dashed px-2">
                 <div className="flex h-full items-center justify-center">
                     <HomeIcon className="h-6 w-6 cursor-pointer text-foreground" />

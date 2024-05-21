@@ -14,7 +14,7 @@ export class DrawLineInstrument implements IInstuments {
 
     applyToStage() {
         const stage = useProjectStore.getState().stage;
-
+        const setUpdatePreview = useProjectStore.getState().setUpdatePreview;
         if (stage) {
             setOffDragable();
             stage.off('pointerdown pointermove pointerup contextmenu');
@@ -22,6 +22,7 @@ export class DrawLineInstrument implements IInstuments {
             stage.on('pointermove', (e) => this.onPointerMove(e));
             stage.on('pointerup', (e) => this.onPointerUp(e));
             stage.on('contextmenu', (e) => this.handleContextMenu(e));
+            stage.on('pointerup', () => setUpdatePreview());
         }
     }
 
