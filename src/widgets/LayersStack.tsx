@@ -3,6 +3,7 @@ import { FC, useMemo } from 'react';
 import { LayerButton } from './LayerButton';
 import Konva from 'konva';
 import { getLayerCreationIndex } from '@/entities/project/lib/layerCreationIndex';
+import LayerPreview from './LayerPreview';
 
 export const LayersStack: FC = () => {
     const stage = useProjectStore((state) => state.stage);
@@ -32,11 +33,17 @@ export const LayersStack: FC = () => {
                 Add Layer
             </button>
             {layers?.map((layer, index) => (
-                <LayerButton
-                    layer={layer}
-                    index={index}
-                    key={layer.getAttr('creationIndex')}
-                />
+                <>
+                    <LayerButton
+                        layer={layer}
+                        index={index}
+                        key={layer.getAttr('creationIndex')}
+                    />
+                    <LayerPreview
+                        layer={layer}
+                        key={layer.id()}
+                    />
+                </>
             ))}
         </div>
     );

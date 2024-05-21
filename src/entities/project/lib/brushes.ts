@@ -22,15 +22,6 @@ export class Brushes {
             .getState()
             .setBrushSettings({ selectedBrush: brush.type });
     }
-
-    // static applyBrushToLayer(layer: Konva.Layer, brush: IBaseBrush) {
-    //     // console.log(brush);
-
-    //     layer.off('pointerdown pointermove pointerup');
-    //     layer.on('pointerdown', brush.onPointerDown);
-    //     layer.on('pointermove', brush.onPointerMove);
-    //     layer.on('pointerup', brush.onPointerUp);
-    // }
 }
 
 export class PencilBrush implements IBaseBrush {
