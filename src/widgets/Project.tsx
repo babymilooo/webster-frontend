@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Konva from 'konva';
 import {
     AddCircle,
@@ -22,6 +22,16 @@ export const Project = () => {
     const setStage = useProjectStore((state) => state.setStage);
     const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
     const [zoomPercentage, setZoomPercentage] = useState(100);
+    const toggleLayersSwitch = useProjectStore(
+        (state) => state.toggleLayersSwitch,
+    );
+    const [contextMenuVisible, setContextMenuVisible] = useState(false);
+    const [contextMenuPosition, setContextMenuPosition] = useState({
+        x: 0,
+        y: 0,
+    });
+    const [currentShape, setCurrentShape] = useState<Konva.Shape | null>(null);
+
     useEffect(() => {
         const initStage = () => {
             if (!canvasElementRef.current) return;
@@ -47,11 +57,42 @@ export const Project = () => {
                     clearAllSelection(stage);
                 }
             });
+
+            stage.on('contextmenu', (e) => {
+                e.evt.preventDefault();
+                if (e.target === stage) {
+                    setContextMenuVisible(false);
+                    return;
+                }
+                if (e.target instanceof Konva.Shape) {
+                    const shape = e.target;
+                    setCurrentShape(shape);
+
+                    setContextMenuPosition({
+                        x: e.evt.clientX,
+                        y: e.evt.clientY,
+                    });
+                    setContextMenuVisible(true);
+                }
+            });
+        };
+
+        const handleClickOutside = (e: MouseEvent) => {
+            const contextMenuElement = document.querySelector('.context-menu');
+            if (
+                contextMenuElement &&
+                !contextMenuElement.contains(e.target as Node)
+            ) {
+                setContextMenuVisible(false);
+            }
         };
 
         initStage();
+        document.addEventListener('mousedown', handleClickOutside);
+
         return () => {
             stageRef.current?.destroy();
+            document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
 
@@ -69,6 +110,76 @@ export const Project = () => {
 
         const percentage = Math.round(newScale * 100);
         setZoomPercentage(percentage);
+    };
+
+    const handleMoveToLayer = () => {
+        const selectedLayer = useProjectStore.getState().selectedLayer;
+        const stage = useProjectStore.getState().stage;
+        if (!selectedLayer || !stageRef.current) return;
+
+        // const layers = useMemo(
+        //     () =>
+        //         stage
+        //             ?.getLayers()
+        //             .toSorted((a, b) => b.getZIndex() - a.getZIndex()),
+        //     [stage, layersSwitch],
+        // );
+
+        const selectedLayerZindex = selectedLayer.getZIndex();
+        const layers = stage
+            ?.getLayers()
+            .toSorted((a, b) => b.getZIndex() - a.getZIndex())
+            .filter(
+                (layer) => layer !== selectedLayer && !layer.getAttr('hidden'),
+            );
+        let targetLayer = layers?.find(
+            (layer) => layer.getZIndex() > selectedLayerZindex,
+        );
+
+        if (!targetLayer) {
+            targetLayer = new Konva.Layer();
+            targetLayer.setAttrs({ creationIndex: getLayerCreationIndex() });
+            const transf = new Konva.Transformer();
+            targetLayer.add(transf);
+            stageRef.current.add(targetLayer);
+            toggleLayersSwitch(); // Ensure layer list is updated
+        }
+
+        const transformer = selectedLayer.findOne(
+            'Transformer',
+        ) as Konva.Transformer;
+        const selectedShapes = transformer.nodes();
+
+        selectedShapes.forEach((shape) => {
+            shape.moveTo(targetLayer);
+        });
+
+        transformer.detach();
+        selectedLayer.batchDraw();
+        targetLayer.batchDraw();
+        setContextMenuVisible(false);
+    };
+
+    const handlePulse = () => {
+        if (currentShape) {
+            currentShape.to({
+                scaleX: 2,
+                scaleY: 2,
+                onFinish: () => {
+                    currentShape.to({ scaleX: 1, scaleY: 1 });
+                },
+            });
+            setContextMenuVisible(false);
+        }
+    };
+
+    const handleDelete = () => {
+        if (currentShape) {
+            currentShape.destroy();
+            setCurrentShape(null);
+            setContextMenuVisible(false);
+            stageRef.current?.batchDraw();
+        }
     };
 
     return (
@@ -97,6 +208,28 @@ export const Project = () => {
             <div className="m-auto border border-solid border-black">
                 <div id="canvas" ref={canvasElementRef} />
             </div>
+            {contextMenuVisible && (
+                <div
+                    className="context-menu"
+                    style={{
+                        position: 'absolute',
+                        top: `${contextMenuPosition.y}px`,
+                        left: `${contextMenuPosition.x}px`,
+                        backgroundColor: 'white',
+                        boxShadow: '0 0 5px rgba(0,0,0,0.5)',
+                        zIndex: 1000,
+                    }}
+                    onClick={(e) => e.stopPropagation()} // Prevent closing the menu when clicking inside it
+                >
+                    <div>
+                        <button onClick={() => handleMoveToLayer()}>
+                            Move to Drawing Layer
+                        </button>
+                        <button onClick={handlePulse}>Pulse</button>
+                        <button onClick={handleDelete}>Delete</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
