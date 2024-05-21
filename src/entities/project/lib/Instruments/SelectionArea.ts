@@ -7,6 +7,7 @@ export class SelectionAreaInstrument implements IInstuments {
     type: string = 'SelectionArea';
     startPose: { x: number; y: number } | null = null;
     isDrawing: boolean = false;
+    ignoreHandles = false;
     selectionRect: Konva.Rect | null = null;
     selectionTopLayer: Konva.Layer | null;
     constructor(selectionTopLayer: Konva.Layer) {
@@ -19,15 +20,13 @@ export class SelectionAreaInstrument implements IInstuments {
         if (stage) {
             setOffDragable();
             stage.off('pointerdown pointermove pointerup');
-            stage.on('pointerdown', this.onPointerDown);
-            stage.on('pointermove', this.onPointerMove);
-            stage.on('pointerup', this.onPointerUp);
+            stage.on('pointerdown', () => this.onPointerDown());
+            stage.on('pointermove', () => this.onPointerMove());
+            stage.on('pointerup', () => this.onPointerUp());
         }
-
-        useProjectStore.getState();
     }
     onPointerDown() {
-        const layer = useProjectStore.getState().selectedLayer;
+        if (this.ignoreHandles) return;
         const state = useProjectStore.getState().state;
         const stage = useProjectStore.getState().stage;
 
@@ -36,7 +35,7 @@ export class SelectionAreaInstrument implements IInstuments {
             this.selectionRect = null;
         }
 
-        if (!layer || !stage) return;
+        if (!this.selectionTopLayer || !stage) return;
         if (state !== 'SelectionArea') return;
 
         const pos = stage.getPointerPosition();
@@ -53,12 +52,21 @@ export class SelectionAreaInstrument implements IInstuments {
             draggable: false,
         });
 
-        layer.add(newRect);
+        this.selectionTopLayer.add(newRect);
         this.selectionRect = newRect;
         this.startPose = pos;
         this.isDrawing = true;
     }
     onPointerMove() {
+        if (this.ignoreHandles && this.isDrawing) {
+            this.isDrawing = false;
+            this.startPose = null;
+            if (this.selectionRect) {
+                this.selectionRect.destroy();
+                this.selectionRect = null;
+            }
+        }
+        if (this.ignoreHandles) return;
         const state = useProjectStore.getState().state;
         const stage = useProjectStore.getState().stage;
         if (
@@ -91,6 +99,7 @@ export class SelectionAreaInstrument implements IInstuments {
         }
     }
     onPointerUp() {
+        if (this.ignoreHandles) return;
         const state = useProjectStore.getState().state;
         const stage = useProjectStore.getState().stage;
         const selectedLayer = useProjectStore.getState().selectedLayer;
@@ -112,6 +121,8 @@ export class SelectionAreaInstrument implements IInstuments {
         ) as Konva.Transformer;
 
         const selectedShapes = shapes.filter((shape) => {
+            if (shape.getAttr('handdrawn') || shape.hasName('_anchor'))
+                return false;
             const shapeBox = shape.getClientRect();
             const selectionBox = this.selectionRect?.getClientRect();
 
@@ -120,6 +131,19 @@ export class SelectionAreaInstrument implements IInstuments {
         });
 
         transformer.nodes(selectedShapes);
+        transformer.off('transformstart stransformend');
+        transformer.on('transformstart', (ev) => {
+            this.ignoreHandles = true;
+            this.isDrawing = false;
+            this.startPose = null;
+            if (this.selectionRect) {
+                this.selectionRect.destroy();
+                this.selectionRect = null;
+            }
+        });
+        transformer.on('transformend', (ev) => {
+            this.ignoreHandles = false;
+        });
 
         if (this.selectionRect) {
             this.selectionRect.destroy();

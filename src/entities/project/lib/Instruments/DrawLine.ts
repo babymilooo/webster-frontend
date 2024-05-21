@@ -8,7 +8,7 @@ import { clearAllSelection } from '../clearAllSelection';
 export class DrawLineInstrument implements IInstuments {
     type = 'DrawLine';
     isDrawing = false;
-    points = [];
+    points: number[] = [];
     line: Konva.Line | null = null;
     tempLine: Konva.Line | null = null;
 
@@ -18,15 +18,15 @@ export class DrawLineInstrument implements IInstuments {
         if (stage) {
             setOffDragable();
             stage.off('pointerdown pointermove pointerup contextmenu');
-            stage.on('pointerdown', this.onPointerDown);
-            stage.on('pointermove', this.onPointerMove);
-            stage.on('pointerup', this.onPointerUp);
-            stage.on('contextmenu', this.handleContextMenu);
+            stage.on('pointerdown', (e) => this.onPointerDown(e));
+            stage.on('pointermove', (e) => this.onPointerMove(e));
+            stage.on('pointerup', (e) => this.onPointerUp(e));
+            stage.on('contextmenu', (e) => this.handleContextMenu(e));
         }
     }
 
     onPointerDown(e: KonvaEventObject<PointerEvent>) {
-        if (!this.points) this.points = [];
+        if (!this.points) this.points = [] as number[];
         if (e.evt.button !== 0) return;
         const stage = useProjectStore.getState().stage;
         const layer = useProjectStore.getState().selectedLayer;

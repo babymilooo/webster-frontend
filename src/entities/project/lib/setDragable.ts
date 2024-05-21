@@ -1,12 +1,11 @@
 import { useProjectStore } from '../model/projectStore';
 
-
 export const setOffDragable = () => {
     const stage = useProjectStore.getState().stage;
     if (!stage) return;
 
     stage.find('Circle, Rect, Ellipse, Line').forEach((node) => {
-        node.draggable(false);
+        if (!node.getAttr('handdrawn')) node.draggable(false);
     });
 };
 
@@ -15,6 +14,6 @@ export const setOnDragable = () => {
     if (!layer) return;
 
     layer.find('Circle, Rect, Ellipse, Line').forEach((node) => {
-        node.draggable(true);
+        if (!node.getAttr('handdrawn')) node.draggable(true);
     });
 };

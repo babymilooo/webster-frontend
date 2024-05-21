@@ -12,9 +12,9 @@ export interface IBaseBrush {
 export class Brushes {
     static applyBrushToStage(stage: Konva.Stage, brush: IBaseBrush) {
         stage.off('pointerdown pointermove pointerup');
-        stage.on('pointerdown', brush.onPointerDown);
-        stage.on('pointermove', brush.onPointerMove);
-        stage.on('pointerup', brush.onPointerUp);
+        stage.on('pointerdown', (e) => brush.onPointerDown(e));
+        stage.on('pointermove', (e) => brush.onPointerMove(e));
+        stage.on('pointerup', (e) => brush.onPointerUp(e));
         useProjectStore
             .getState()
             .setBrushSettings({ selectedBrush: brush.type });

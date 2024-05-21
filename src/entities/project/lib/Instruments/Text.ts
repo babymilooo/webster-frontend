@@ -12,7 +12,7 @@ export class TextInstrument {
         if (stage) {
             setOffDragable();
             stage.off('click');
-            stage.on('click', this.onClick);
+            stage.on('click', () => this.onClick());
         }
     }
 
