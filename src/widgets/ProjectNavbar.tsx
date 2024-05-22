@@ -1,5 +1,10 @@
 import { useProjectStore } from '@/entities/project';
-import { CircleIcon, HomeIcon, SlashIcon, TextIcon } from '@radix-ui/react-icons';
+import {
+    CircleIcon,
+    HomeIcon,
+    SlashIcon,
+    TextIcon,
+} from '@radix-ui/react-icons';
 import {
     BoxIcon,
     CursorArrowIcon,
@@ -9,6 +14,7 @@ import {
     Pencil1Icon,
 } from '@radix-ui/react-icons';
 import { useEffect } from 'react';
+import { Img } from 'react-image';
 export const ProjectNavbar = () => {
     const state = useProjectStore((state) => state.state);
     const drawState = useProjectStore((state) => state.drawState);
@@ -55,6 +61,15 @@ export const ProjectNavbar = () => {
                                         : ''
                                 }`}
                                 onClick={() => setDrawState('Line')}
+                            />
+                            <Img
+                                src="../src/public/curve.svg"
+                                className={`h-6 w-6 cursor-pointer rounded-md p-[2px] text-foreground ${
+                                    drawState === 'AnchorLine'
+                                        ? 'bg-muted-foreground'
+                                        : ''
+                                }`}
+                                onClick={() => setDrawState('AnchorLine')}
                             />
                         </div>
                     </>

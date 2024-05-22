@@ -14,6 +14,7 @@ import { getLayerCreationIndex } from '@/entities/project/lib/layerCreationIndex
 import DrawLine from '@/entities/project/ui/DrawLine';
 import { AddText } from '@/entities/project/ui/AddText';
 import KonvaSnappingDemo from '@/entities/project/lib/SnapPositions';
+import DrawAnchorLine from '@/entities/project/ui/AddAnchorLine';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -56,10 +57,12 @@ export const Project = () => {
             stage.on('mousedown', (e) => {
                 if (e.target === stage) {
                     clearAllSelection(stage);
+                    setUpdatePreview();
                 }
             });
 
-            stage.on('dragend', () => {
+            stage.on('dragend transformend', () => {
+                console.log('dragend transformend');
                 setUpdatePreview();
             });
 
@@ -201,6 +204,8 @@ export const Project = () => {
 
             <DrawLine stageRef={stageRef} />
 
+            <DrawAnchorLine stageRef={stageRef} />
+            
             <AddText />
             <div className="m-auto border border-solid border-black">
                 <div id="canvas" ref={canvasElementRef} />

@@ -28,6 +28,8 @@ interface ProjectState {
     brushSettings: IBrushSettings;
     SelectedImage: string | null;
     UpdatePreview: boolean;
+    SelectedShape: Konva.Node | null;
+    setSelectredShape: (shape: Konva.Node | null) => void;
     setUpdatePreview: VoidFunction;
     setDrawState: (state: string) => void;
     setSelectredImage: (image: string | null) => void;
@@ -57,6 +59,8 @@ export const useProjectStore = create<ProjectState>()(
             },
             UpdatePreview: false,
             SelectedImage: null,
+            SelectedShape: null,
+            setSelectredShape: (shape) => set({ SelectedShape: shape }),
             setDrawState: (state) => set({ drawState: state }),
             setSelectredImage: (image) => set({ SelectedImage: image }),
             setProject: (project) => set({ project }),
