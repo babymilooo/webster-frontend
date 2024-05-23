@@ -4,3 +4,7 @@ export function getLayerCreationIndex() {
     index++;
     return index;
 }
+
+export function resetLayerCreationIndex() {
+    index = 0;
+}

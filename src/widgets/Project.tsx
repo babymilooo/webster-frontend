@@ -10,11 +10,18 @@ import {
 } from '@/entities/project';
 import { StartDrawing } from '@/entities/project';
 import { AddRect } from '@/entities/project';
-import { getLayerCreationIndex } from '@/entities/project/lib/layerCreationIndex';
+import {
+    getLayerCreationIndex,
+    resetLayerCreationIndex,
+} from '@/entities/project/lib/layerCreationIndex';
 import DrawLine from '@/entities/project/ui/DrawLine';
 import { AddText } from '@/entities/project/ui/AddText';
 import KonvaSnappingDemo from '@/entities/project/lib/SnapPositions';
 import DrawAnchorLine from '@/entities/project/ui/AddAnchorLine';
+import {
+    setOffDragable,
+    setOnDragable,
+} from '@/entities/project/lib/setDragable';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -37,6 +44,7 @@ export const Project = () => {
     useEffect(() => {
         const initStage = () => {
             if (!canvasElementRef.current) return;
+            resetLayerCreationIndex();
             const stage = new Konva.Stage({
                 container: canvasElementRef.current,
                 width: 640,
@@ -63,7 +71,6 @@ export const Project = () => {
             stage.on('mouseup', () => {
                 setUpdatePreview();
             });
-
 
             stage.on('dragend transformend', () => {
                 console.log('dragend transformend');
@@ -96,6 +103,7 @@ export const Project = () => {
                 !contextMenuElement.contains(e.target as Node)
             ) {
                 setContextMenuVisible(false);
+                setCurrentShape(null);
             }
         };
 
@@ -154,14 +162,21 @@ export const Project = () => {
         ) as Konva.Transformer;
         const selectedShapes = transformer.nodes();
 
-        selectedShapes.forEach((shape) => {
-            shape.moveTo(targetLayer);
-        });
+        if (selectedShapes.length === 0) {
+            currentShape?.moveTo(targetLayer);
+        } else {
+            selectedShapes.forEach((shape) => {
+                shape.moveTo(targetLayer);
+            });
+        }
 
         transformer.detach();
         selectedLayer.batchDraw();
         targetLayer.batchDraw();
         setContextMenuVisible(false);
+        setUpdatePreview();
+        setOffDragable();
+        setOnDragable();
     };
 
     const handlePulse = () => {
@@ -209,7 +224,7 @@ export const Project = () => {
             <DrawLine stageRef={stageRef} />
 
             <DrawAnchorLine stageRef={stageRef} />
-            
+
             <AddText />
             <div className="m-auto border border-solid border-black">
                 <div id="canvas" ref={canvasElementRef} />
