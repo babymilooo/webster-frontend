@@ -86,7 +86,7 @@ export const Project = () => {
                 if (e.target instanceof Konva.Shape) {
                     const shape = e.target;
                     setCurrentShape(shape);
-
+                    
                     setContextMenuPosition({
                         x: e.evt.clientX,
                         y: e.evt.clientY,
@@ -168,6 +168,9 @@ export const Project = () => {
             selectedShapes.forEach((shape) => {
                 shape.moveTo(targetLayer);
             });
+        }
+        if (stage) {
+            new KonvaSnappingDemo(stage, targetLayer);
         }
 
         transformer.detach();

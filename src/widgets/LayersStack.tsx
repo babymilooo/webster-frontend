@@ -5,6 +5,7 @@ import Konva from 'konva';
 import { getLayerCreationIndex } from '@/entities/project/lib/layerCreationIndex';
 import LayerPreview from './LayerPreview';
 import { ScrollArea } from '@/shared/ui/scroll-area';
+import KonvaSnappingDemo from '@/entities/project/lib/SnapPositions';
 
 export const LayersStack: FC = () => {
     const stage = useProjectStore((state) => state.stage);
@@ -24,6 +25,9 @@ export const LayersStack: FC = () => {
         const layer = new Konva.Layer();
         layer.setAttrs({ creationIndex: getLayerCreationIndex() });
         const transf = new Konva.Transformer();
+        if (stage) {
+            new KonvaSnappingDemo(stage, layer);
+        }
         layer.add(transf);
         stage?.add(layer);
         toggleLayersSwitch();
@@ -37,10 +41,12 @@ export const LayersStack: FC = () => {
     };
 
     return (
-        <div className="flex h-full w-full flex-col overflow-auto border-t-4 border-dashed mt-4">
+        <div className="mt-4 flex h-full w-full flex-col overflow-auto border-t-4 border-dashed">
             <div className="grid grid-cols-4">
-                <div className='col-span-3 flex items-center pl-2 font-bold text-xl'>layers</div>
-                <div className='flex w-full gap-4 text-3xl'>
+                <div className="col-span-3 flex items-center pl-2 text-xl font-bold">
+                    layers
+                </div>
+                <div className="flex w-full gap-4 text-3xl">
                     <button type="button" onClick={addLayerHandle}>
                         +
                     </button>
@@ -57,7 +63,10 @@ export const LayersStack: FC = () => {
                             index={index}
                             key={layer.getAttr('creationIndex')}
                         />
-                        <LayerPreview layer={layer} key={layer.id()} />
+                        <LayerPreview
+                            layer={layer}
+                            key={1 / (layer.getAttr('creationIndex') * 100)}
+                        />
                     </>
                 ))}
             </ScrollArea>

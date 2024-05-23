@@ -36,7 +36,7 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
         <div className="bg-red-100">
             {shapes?.map((shape, index) => (
                 <div
-                    key={shape.id()}
+                    key={index}
                     className={`${
                         shape == SelectedShape ? 'bg-secondary' : 'bg-background'
                     }`}
@@ -50,7 +50,7 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
                     <img
                         src={shape.toDataURL()}
                         alt="preview"
-                        key={shape.id()}
+                        key={index}
                         className="h-16 w-16 p-2"
                     />
                 </div>
