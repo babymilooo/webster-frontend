@@ -32,7 +32,7 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
             {shapes?.map((shape, index) => (
                 <div
                     className={`${
-                        shape == SelectedShape ? 'bg-muted-foreground' : 'bg-background'
+                        shape == SelectedShape ? 'bg-secondary' : 'bg-background'
                     }`}
                     onClick={() => {
                         transformer.nodes([shape]);
