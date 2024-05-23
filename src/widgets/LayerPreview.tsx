@@ -18,7 +18,7 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
         const shapes = layer.find('Circle, Rect, Ellipse, Line, Text');
         if (!shapes || !shapes.length) return;
         const selectedShapes = shapes.filter((shape) => {
-            if (shape.getAttr('handdrawn') || shape.hasName('_anchor'))
+            if (shape.getAttr('handdrawn') || shape.hasName('_anchor') || shape.hasName('guid-line'))
                 return false;
             return true;
         });
@@ -33,7 +33,7 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
                 <div
                     key={shape.id()}
                     className={`${
-                        shape == SelectedShape ? 'bg-green-400' : ''
+                        shape == SelectedShape ? 'bg-muted-foreground' : 'bg-background'
                     }`}
                     onClick={() => {
                         transformer.nodes([shape]);
