@@ -95,9 +95,11 @@ export class DrawCurveInstrument implements IInstuments {
                 strokeWidth: 2,
                 dash: [4, 4], // Optional: makes the temporary line dashed
             });
+            newTempLine.setAttrs({ handdrawn: true });
             layer.add(newTempLine);
             this.tempLine = newTempLine;
         }
+        if (this.line) this.line.points(tempPoints);
         layer.batchDraw();
     }
 
@@ -108,6 +110,7 @@ export class DrawCurveInstrument implements IInstuments {
     handleContextMenu(e: any) {
         if (!this.isDrawing) return;
         e.evt.preventDefault();
+        this.line?.points(this.points);
         this.isDrawing = false;
         this.line = null;
         this.points = [];

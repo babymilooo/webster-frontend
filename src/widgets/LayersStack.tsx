@@ -27,6 +27,7 @@ export const LayersStack: FC = () => {
         stage?.add(layer);
         toggleLayersSwitch();
     };
+
     return (
         <div className="flex h-full w-full flex-col overflow-auto ">
             <button type="button" onClick={addLayerHandle}>
@@ -37,11 +38,11 @@ export const LayersStack: FC = () => {
                     <LayerButton
                         layer={layer}
                         index={index}
-                        key={layer.getAttr('creationIndex')}
+                        key={1 / (layer.getAttr('creationIndex') * 10) + ''}
                     />
                     <LayerPreview
                         layer={layer}
-                        key={layer.id()}
+                        key={layer.getAttr('creationIndex') + ''}
                     />
                 </>
             ))}

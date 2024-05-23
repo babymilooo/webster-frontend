@@ -94,6 +94,7 @@ export class DrawLineInstrument implements IInstuments {
                 strokeWidth: 2,
                 dash: [4, 4], // Optional: makes the temporary line dashed
             });
+            newTempLine.setAttrs({ handdrawn: true });
             layer.add(newTempLine);
             this.tempLine = newTempLine;
         }
