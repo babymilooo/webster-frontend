@@ -1,8 +1,9 @@
-import { useProjectStore } from '@/entities/project';
+import { clearAllSelection, useProjectStore } from '@/entities/project';
 import Konva from 'konva';
 import { FC, useEffect, useState } from 'react';
 
 const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
+    const stage = useProjectStore((state) => state.stage);
     const [shapes, setShapes] = useState<Konva.Node[] | null>(null);
     const UpdatePreview = useProjectStore((state) => state.UpdatePreview);
     // const [selectedShape, setSelectedShape] = useState<Konva.Node | null>(null);
@@ -18,7 +19,11 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
         const shapes = layer.find('Circle, Rect, Ellipse, Line, Text');
         if (!shapes || !shapes.length) return;
         const selectedShapes = shapes.filter((shape) => {
-            if (shape.getAttr('handdrawn') || shape.hasName('_anchor') || shape.hasName('guid-line'))
+            if (
+                shape.getAttr('handdrawn') ||
+                shape.hasName('_anchor') ||
+                shape.hasName('guid-line')
+            )
                 return false;
             return true;
         });
@@ -33,9 +38,12 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
                 <div
                     key={shape.id()}
                     className={`${
-                        shape == SelectedShape ? 'bg-muted-foreground' : 'bg-background'
+                        shape == SelectedShape
+                            ? 'bg-muted-foreground'
+                            : 'bg-background'
                     }`}
                     onClick={() => {
+                        clearAllSelection(stage);
                         transformer.nodes([shape]);
                         setSelectedShape(shape);
                         setSelectedLayer(layer);

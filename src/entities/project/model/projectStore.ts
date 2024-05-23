@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { createProject } from '../index';
+import { setOffDragable, setOnDraggableLayer } from '../lib/setDragable';
 
 interface Project {
     _id: number;
@@ -78,7 +79,17 @@ export const useProjectStore = create<ProjectState>()(
             },
             setState: (state) => set({ state }),
             setStage: (stage) => set({ stage }),
-            setSelectedLayer: (layer) => set({ selectedLayer: layer }),
+            setSelectedLayer: (layer) => {
+                setOffDragable();
+                setOnDraggableLayer(layer);
+
+                set((state) => {
+                    return {
+                        selectedLayer: layer,
+                        changedLayersSwitch: !state.changedLayersSwitch,
+                    };
+                });
+            },
             toggleLayersSwitch: () =>
                 set((state) => ({
                     changedLayersSwitch: !state.changedLayersSwitch,
