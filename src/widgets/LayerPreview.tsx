@@ -36,10 +36,10 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
         <div className="bg-red-100">
             {shapes?.map((shape, index) => (
                 <div
-                    key={shape.id()}
+                    key={index}
                     className={`${
                         shape == SelectedShape
-                            ? 'bg-muted-foreground'
+                            ? 'bg-secondary'
                             : 'bg-background'
                     }`}
                     onClick={() => {
