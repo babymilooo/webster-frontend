@@ -1,4 +1,6 @@
 import { useProjectStore } from '@/entities/project';
+import { Label } from '@/shared/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/shared/ui/radio-group';
 import Konva from 'konva';
 import { useEffect, useState } from 'react';
 
@@ -7,6 +9,45 @@ const Preview = () => {
     const UpdatePreview = useProjectStore((state) => state.UpdatePreview);
     const [src, setSrc] = useState<any>(null);
     const SelectedShape = useProjectStore((state) => state.SelectedShape);
+    const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
+
+    const [fill, setFill] = useState<string>(
+        (SelectedShape as Konva.Shape)?.fill() || '',
+    );
+    const [stroke, setStroke] = useState<string>(
+        (SelectedShape as Konva.Shape)?.stroke() || '',
+    );
+
+    useEffect(() => {
+        setFill((SelectedShape as Konva.Shape)?.fill() || '');
+        setStroke((SelectedShape as Konva.Shape)?.stroke() || '');
+    }, [SelectedShape]);
+
+    const handleFillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.checked ? '#000000' : '';
+        setFill(value);
+        (SelectedShape as Konva.Shape).fill(value);
+    };
+
+    const handleStrokeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.checked ? '#000000' : '';
+        setStroke(value);
+        (SelectedShape as Konva.Shape).stroke(value);
+        setUpdatePreview();
+    };
+
+    const handleFillColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFill(e.target.value);
+        (SelectedShape as Konva.Shape).fill(e.target.value);
+        setUpdatePreview();
+    };
+
+    const handleStrokeColorChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        setStroke(e.target.value);
+        (SelectedShape as Konva.Shape).stroke(e.target.value);
+    };
 
     useEffect(() => {
         if (!selectedLayer) return;
@@ -65,30 +106,24 @@ const Preview = () => {
                             className="h-16 w-16"
                         />
                     </div>
-                    <div className="grid grid-cols-2">
-                        <div className="col-span-1 flex w-full">
-                            <p>x: </p>
+                    <div className="grid grid-cols-2 gap-1 text-sm">
+                        <div className="col-span-1 flex w-full justify-center gap-2">
+                            <p className="font-bold text-muted-foreground">x</p>
                             <input
+                                key={`x-${SelectedShape?.x()}`}
                                 defaultValue={formatNumber(SelectedShape.x())}
                                 onChange={(e) =>
                                     handleEditX(SelectedShape as Konva.Shape, e)
                                 }
-                                className="w-full"
+                                className="w-12"
                             />
                         </div>
-                        <div className="col-span-1 flex w-full">
-                            <p>y:</p>
+                        <div className="col-span-1 flex w-full justify-center gap-2">
+                            <p className="font-bold text-muted-foreground">
+                                scaleX
+                            </p>
                             <input
-                                defaultValue={formatNumber(SelectedShape.y())}
-                                onChange={(e) =>
-                                    handleEditY(SelectedShape as Konva.Shape, e)
-                                }
-                                className="w-full"
-                            />
-                        </div>
-                        <div className="col-span-1 flex w-full">
-                            <p>scaleX</p>
-                            <input
+                                key={`scaleX-${SelectedShape?.scaleX()}`}
                                 defaultValue={formatNumber(
                                     SelectedShape.scaleX(),
                                 )}
@@ -98,12 +133,26 @@ const Preview = () => {
                                         e,
                                     )
                                 }
-                                className="w-full"
+                                className="w-12"
                             />
                         </div>
-                        <div className="col-span-1 flex w-full">
-                            <p>scaleY:</p>
+                        <div className="col-span-1 flex w-full justify-center gap-2">
+                            <p className="font-bold text-muted-foreground">y</p>
                             <input
+                                key={`y-${SelectedShape?.y()}`}
+                                defaultValue={formatNumber(SelectedShape.y())}
+                                onChange={(e) =>
+                                    handleEditY(SelectedShape as Konva.Shape, e)
+                                }
+                                className="w-12"
+                            />
+                        </div>
+                        <div className="col-span-1 flex w-full justify-center gap-2">
+                            <p className="font-bold text-muted-foreground">
+                                scaleY
+                            </p>
+                            <input
+                                key={`scaleY-${SelectedShape?.scaleY()}`}
                                 defaultValue={formatNumber(
                                     SelectedShape.scaleY(),
                                 )}
@@ -113,37 +162,41 @@ const Preview = () => {
                                         e,
                                     )
                                 }
-                                className="w-full"
+                                className="w-12"
                             />
                         </div>
-                        <div className="col-span-1 flex w-full">
-                            <p>fill:</p>
+                        <div className="col-span-1 flex w-full items-center justify-center p-2">
                             <input
-                                defaultValue={(
-                                    SelectedShape as Konva.Shape
-                                ).fill()} // Cast SelectedShape to Konva.Shape
-                                onChange={
-                                    (e) =>
-                                        (SelectedShape as Konva.Shape).fill(
-                                            e.target.value,
-                                        ) // Cast SelectedShape to Konva.Shape
-                                }
-                                className="w-full"
+                                type="checkbox"
+                                checked={fill !== ''}
+                                onChange={handleFillChange}
+                            />
+                            <Label className="pl-1">Fill</Label>
+                        </div>
+                        <div className="col-span-1 flex w-full items-center justify-center p-2">
+                            <input
+                                type="checkbox"
+                                checked={stroke !== ''}
+                                onChange={handleStrokeChange}
+                            />
+                            <Label className="pl-1">Stroke</Label>
+                        </div>
+                        <div className="col-span-1 flex w-full justify-center gap-2">
+                            <input
+                                type="color"
+                                value={fill !== '' ? fill : '#000000'}
+                                onChange={handleFillColorChange}
+                                disabled={fill === ''}
+                                className="w-16"
                             />
                         </div>
-                        <div className="col-span-1 flex w-full">
-                            <p>stroke:</p>
+                        <div className="col-span-1 flex w-full justify-center gap-2">
                             <input
-                                defaultValue={(
-                                    SelectedShape as Konva.Shape
-                                ).stroke()} // Cast SelectedShape to Konva.Shape
-                                onChange={
-                                    (e) =>
-                                        (SelectedShape as Konva.Shape).stroke(
-                                            e.target.value,
-                                        ) // Cast SelectedShape to Konva.Shape
-                                }
-                                className="w-full"
+                                type="color"
+                                value={stroke !== '' ? stroke : '#000000'}
+                                onChange={handleStrokeColorChange}
+                                disabled={stroke === ''}
+                                className="w-16"
                             />
                         </div>
                     </div>

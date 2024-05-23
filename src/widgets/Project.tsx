@@ -57,9 +57,13 @@ export const Project = () => {
             stage.on('mousedown', (e) => {
                 if (e.target === stage) {
                     clearAllSelection(stage);
-                    setUpdatePreview();
                 }
             });
+
+            stage.on('mouseup', () => {
+                setUpdatePreview();
+            });
+
 
             stage.on('dragend transformend', () => {
                 console.log('dragend transformend');
