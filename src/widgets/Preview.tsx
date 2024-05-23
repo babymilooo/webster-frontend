@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 
 const Preview = () => {
     const selectedLayer = useProjectStore((state) => state.selectedLayer);
-    const UpdatePreview = useProjectStore((state) => state.UpdatePreview);
+    const UpdatePreview = useProjectStore((state) => state.updatePreview);
     const [src, setSrc] = useState<any>(null);
-    const SelectedShape = useProjectStore((state) => state.SelectedShape);
+    const SelectedShape = useProjectStore((state) => state.selectedShape);
     const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
 
     const [fill, setFill] = useState<string>(

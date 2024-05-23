@@ -34,17 +34,14 @@ export const LayersStack: FC = () => {
                 Add Layer
             </button>
             {layers?.map((layer, index) => (
-                <>
+                <div key={layer.getAttr('creationIndex') + ''}>
                     <LayerButton
                         layer={layer}
                         index={index}
-                        key={1 / (layer.getAttr('creationIndex') * 10) + ''}
+                        // key={1 / (layer.getAttr('creationIndex') * 10) + ''}
                     />
-                    <LayerPreview
-                        layer={layer}
-                        key={layer.getAttr('creationIndex') + ''}
-                    />
-                </>
+                    <LayerPreview layer={layer} />
+                </div>
             ))}
         </div>
     );

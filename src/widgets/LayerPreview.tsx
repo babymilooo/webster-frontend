@@ -5,9 +5,9 @@ import { FC, useEffect, useState } from 'react';
 const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
     const stage = useProjectStore((state) => state.stage);
     const [shapes, setShapes] = useState<Konva.Node[] | null>(null);
-    const UpdatePreview = useProjectStore((state) => state.UpdatePreview);
+    const UpdatePreview = useProjectStore((state) => state.updatePreview);
     // const [selectedShape, setSelectedShape] = useState<Konva.Node | null>(null);
-    const SelectedShape = useProjectStore((state) => state.SelectedShape);
+    const SelectedShape = useProjectStore((state) => state.selectedShape);
     const setSelectedShape = useProjectStore(
         (state) => state.setSelectredShape,
     );
@@ -52,7 +52,6 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
                     <img
                         src={shape.toDataURL()}
                         alt="preview"
-                        key={shape.id()}
                         className="h-16 w-16 p-2"
                     />
                 </div>

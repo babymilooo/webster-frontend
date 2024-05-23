@@ -10,7 +10,7 @@ type AddImage = {
 export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
     const state = useProjectStore((state) => state.state);
     const selectedLayer = useProjectStore((state) => state.selectedLayer);
-    const selectedImage = useProjectStore((state) => state.SelectedImage);
+    const selectedImage = useProjectStore((state) => state.selectedImage);
 
     useEffect(() => {
         if (!stageRef.current || state !== 'SelectImage' || !selectedImage)

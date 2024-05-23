@@ -21,25 +21,33 @@ interface IBrushSettings {
 interface ProjectState {
     project: Project | null;
     isLoaded: boolean;
+
     state: string;
     drawState: string;
+
     stage: Konva.Stage | null;
     selectedLayer: Konva.Layer | null;
     changedLayersSwitch: boolean;
+    updatePreview: boolean;
+    selectedShape: Konva.Node | null;
+
     brushSettings: IBrushSettings;
-    SelectedImage: string | null;
-    UpdatePreview: boolean;
-    SelectedShape: Konva.Node | null;
-    setSelectredShape: (shape: Konva.Node | null) => void;
-    setUpdatePreview: VoidFunction;
-    setDrawState: (state: string) => void;
-    setSelectredImage: (image: string | null) => void;
+    selectedImage: string | null;
+
     setProject: (project: Project | null) => void;
     createProject: (title: string, width: number, height: number) => void;
     setState: (state: string) => void;
+    setDrawState: (state: string) => void;
+
     setStage: (stage: Konva.Stage) => void;
+
+    setSelectredShape: (shape: Konva.Node | null) => void;
+    setUpdatePreview: VoidFunction;
+    setSelectredImage: (image: string | null) => void;
+
     setSelectedLayer: (layer: Konva.Layer) => void;
     toggleLayersSwitch: VoidFunction;
+
     setBrushSettings: (settings: Partial<IBrushSettings>) => void;
 }
 
@@ -48,22 +56,24 @@ export const useProjectStore = create<ProjectState>()(
         immer((set) => ({
             project: null,
             isLoaded: false,
+
             state: '',
             drawState: '',
+
             stage: null,
             selectedLayer: null,
             changedLayersSwitch: false,
+
+            selectedImage: null,
+            selectedShape: null,
+            updatePreview: false,
+
             brushSettings: {
                 width: 10,
                 color: '#000000',
                 selectedBrush: null,
             },
-            UpdatePreview: false,
-            SelectedImage: null,
-            SelectedShape: null,
-            setSelectredShape: (shape) => set({ SelectedShape: shape }),
-            setDrawState: (state) => set({ drawState: state }),
-            setSelectredImage: (image) => set({ SelectedImage: image }),
+
             setProject: (project) => set({ project }),
             createProject: async (title, width, height) => {
                 try {
@@ -77,7 +87,10 @@ export const useProjectStore = create<ProjectState>()(
                 }
                 set({ isLoaded: true });
             },
+
             setState: (state) => set({ state }),
+            setDrawState: (state) => set({ drawState: state }),
+
             setStage: (stage) => set({ stage }),
             setSelectedLayer: (layer) => {
                 setOffDragable();
@@ -94,10 +107,14 @@ export const useProjectStore = create<ProjectState>()(
                 set((state) => ({
                     changedLayersSwitch: !state.changedLayersSwitch,
                 })),
+
+            setSelectredShape: (shape) => set({ selectedShape: shape }),
+            setSelectredImage: (image) => set({ selectedImage: image }),
             setUpdatePreview: () =>
                 set((state) => ({
-                    UpdatePreview: !state.UpdatePreview,
+                    updatePreview: !state.updatePreview,
                 })),
+
             setBrushSettings: (settings) => {
                 set((state) => ({
                     brushSettings: { ...state.brushSettings, ...settings },
