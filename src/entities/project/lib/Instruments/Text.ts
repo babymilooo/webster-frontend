@@ -20,6 +20,7 @@ export class TextInstrument {
     onClick = () => {
         const layer = useProjectStore.getState().selectedLayer;
         const stage = useProjectStore.getState().stage;
+        const textSettings = useProjectStore.getState().textSettings;
         if (!layer || !stage) return;
 
         const transformer = layer.findOne('Transformer') as Konva.Transformer;
@@ -31,7 +32,14 @@ export class TextInstrument {
             x: pos.x,
             y: pos.y,
             text: 'Editable text',
-            fontSize: 20,
+            fontSize: textSettings.fontSize,
+            fontFamily: textSettings.fontFamily,
+            fontStyle: textSettings.fontStyle,
+            fill: textSettings.fill,
+            stroke: textSettings.stroke,
+            padding: textSettings.padding,
+            align: textSettings.align,
+            textDecoration: textSettings.textDecoration,
             draggable: true,
             width: 200,
             name: 'object',

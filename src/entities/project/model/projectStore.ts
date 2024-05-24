@@ -24,6 +24,17 @@ interface IShapeSettings {
     strokeWidth: number;
 }
 
+interface ITextSettings {
+    fontSize: number;
+    fontFamily: string;
+    fill: string;
+    stroke?: string;
+    padding: number;
+    align: string;
+    fontStyle?: string;
+    textDecoration?: string;
+}
+
 interface ProjectState {
     project: Project | null;
     isLoaded: boolean;
@@ -38,13 +49,10 @@ interface ProjectState {
     selectedShape: Konva.Node | null;
 
     brushSettings: IBrushSettings;
+    shapeSettings: IShapeSettings;
+    textSettings: ITextSettings;
     selectedImage: string | null;
     selectedBackgroundImage: string | null;
-
-    shapeSettings: IShapeSettings;
-
-    // setSelectedFill: (fill: string) => void;
-    // setSelectedStroke: (stroke: string) => void;
 
     setProject: (project: Project | null) => void;
     createProject: (title: string, width: number, height: number) => void;
@@ -63,6 +71,7 @@ interface ProjectState {
 
     setBrushSettings: (settings: Partial<IBrushSettings>) => void;
     setShapeSettings: (settings: Partial<IShapeSettings>) => void;
+    setTextSettings: (settings: Partial<ITextSettings>) => void;
 }
 
 export const useProjectStore = create<ProjectState>()(
@@ -94,9 +103,16 @@ export const useProjectStore = create<ProjectState>()(
                 stroke: '#000000',
                 strokeWidth: 4,
             },
-
-            // selectedFill: '#000000',
-            // selectedStroke: '',
+            textSettings: {
+                fontSize: 20,
+                fontFamily: 'Arial',
+                fill: '#000000',
+                stroke: '#ff0000',
+                padding: 10,
+                align: 'left',
+                fontStyle: 'normal',
+                textDecoration: 'none',
+            },
 
             setProject: (project) => set({ project }),
             createProject: async (title, width, height) => {
@@ -141,16 +157,17 @@ export const useProjectStore = create<ProjectState>()(
                     updatePreview: !state.updatePreview,
                 })),
 
-            setBrushSettings: (settings) => {
+            setBrushSettings: (settings) =>
                 set((state) => ({
                     brushSettings: { ...state.brushSettings, ...settings },
-                }));
-            },
-            // setSelectedFill: (fill) => set({ selectedFill: fill }),
-            // setSelectedStroke: (stroke) => set({ selectedStroke: stroke }),
+                })),
             setShapeSettings: (settings) =>
                 set((state) => ({
                     shapeSettings: { ...state.shapeSettings, ...settings },
+                })),
+            setTextSettings: (settings) =>
+                set((state) => ({
+                    textSettings: { ...state.textSettings, ...settings },
                 })),
         })),
     ),
