@@ -4,6 +4,11 @@ import Konva from 'konva';
 
 let backgroundLayer: Konva.Layer | null = null;
 
+export function setBackgroundLayer(layer: Konva.Layer) {
+    backgroundLayer = layer;
+    return backgroundLayer;
+}
+
 export const SelectBackground: FC = () => {
     const state = useProjectStore((state) => state.state);
     const selectedBackground = useProjectStore(
@@ -21,6 +26,7 @@ export const SelectBackground: FC = () => {
                 hidden: true,
                 backgroundLayer: true,
                 listening: false,
+                id: 'backgroundLayer',
             });
             stage.add(backgroundLayer);
         }

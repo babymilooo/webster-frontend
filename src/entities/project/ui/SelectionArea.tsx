@@ -9,6 +9,11 @@ type SelectionAreaProps = {
 
 let selectionTopLayer: Konva.Layer | null = null;
 
+export function setSelectionTopLayer(layer: Konva.Layer) {
+    selectionTopLayer = layer;
+    return selectionTopLayer;
+}
+
 export const SelectionArea: React.FC<SelectionAreaProps> = () => {
     // const isDrawingRef = useRef(false);
     // const selectionRectRef = useRef<Konva.Rect | null>(null);
@@ -34,6 +39,7 @@ export const SelectionArea: React.FC<SelectionAreaProps> = () => {
                 creationIndex: -1,
                 hidden: true,
                 selectionTopLayer: true,
+                id: 'selectionTopLayer',
             });
             stage.add(selectionTopLayer);
             selectionTopLayer.moveToTop();

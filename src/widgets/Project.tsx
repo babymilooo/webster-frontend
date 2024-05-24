@@ -22,28 +22,46 @@ import {
     setOffDragable,
     setOnDragable,
 } from '@/entities/project/lib/setDragable';
-import { SelectBackground } from '@/entities/project/ui/SelectBackground';
-
-let isDraggingStage = false;
+import {
+    SelectBackground,
+    setBackgroundLayer,
+} from '@/entities/project/ui/SelectBackground';
+import { useInitProjectStore } from '@/entities/project/model/initProjectStore';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
     const stageRef = useRef<Konva.Stage | null>(null);
     const drawingLayerRef = useRef<Konva.Layer | null>(null);
+
     const setStage = useProjectStore((state) => state.setStage);
     const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
     const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
+
     const [zoomPercentage, setZoomPercentage] = useState(100);
     const toggleLayersSwitch = useProjectStore(
         (state) => state.toggleLayersSwitch,
     );
+
     const [contextMenuVisible, setContextMenuVisible] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState({
         x: 0,
         y: 0,
     });
     const [currentShape, setCurrentShape] = useState<Konva.Shape | null>(null);
-    const instrumentState = useProjectStore((state) => state.state);
+
+    const [
+        startWidth,
+        startHeight,
+        startJSON,
+        startImage,
+        startBackgroundImage,
+    ] = useInitProjectStore((state) => [
+        state.width,
+        state.height,
+        state.serializedJSON,
+        state.startingImage,
+        state.startingBackgroundImage,
+    ]);
 
     useEffect(() => {
         const initStage = () => {
@@ -51,8 +69,8 @@ export const Project = () => {
             resetLayerCreationIndex();
             const stage = new Konva.Stage({
                 container: canvasElementRef.current,
-                width: 640,
-                height: 480,
+                width: startWidth,
+                height: startHeight,
             });
             stageRef.current = stage;
 
@@ -61,6 +79,56 @@ export const Project = () => {
             startLayer.add(transformer);
             startLayer.setAttrs({ creationIndex: getLayerCreationIndex() });
             stage.add(startLayer);
+
+            if (startImage) {
+                const imgElement = new window.Image();
+                // if (!imgElement) return;
+                imgElement.src = startImage;
+                // console.log(selectedBackground);
+                imgElement.onload = () => {
+                    const image = new Konva.Image({
+                        image: imgElement,
+                        draggable: true,
+                        width: stage.width(),
+                        height: stage.height(),
+                        x: 0,
+                        y: 0,
+                    });
+                    startLayer.add(image);
+                };
+            }
+            if (startBackgroundImage) {
+                const backgroundLayer = new Konva.Layer();
+                backgroundLayer.setAttrs({
+                    creationIndex: -2,
+                    hidden: true,
+                    backgroundLayer: true,
+                    listening: false,
+                    id: 'backgroundLayer',
+                });
+                stage.add(backgroundLayer);
+                backgroundLayer.moveToBottom();
+                setBackgroundLayer(backgroundLayer);
+
+                const imgElement = new window.Image();
+                // if (!imgElement) return;
+                imgElement.src = startBackgroundImage;
+                // console.log(selectedBackground);
+                imgElement.onload = () => {
+                    const image = new Konva.Image({
+                        image: imgElement,
+                        draggable: false,
+                        width: stage.width(),
+                        height: stage.height(),
+                        x: 0,
+                        y: 0,
+                    });
+                    image.setAttrs({ handdrawn: true });
+                    backgroundLayer?.add(image);
+                    backgroundLayer?.batchDraw();
+                };
+            }
+
             setStage(stage);
             setSelectedLayer(startLayer);
 
@@ -77,7 +145,7 @@ export const Project = () => {
             });
 
             stage.on('dragend transformend', () => {
-                console.log('dragend transformend');
+                // console.log('dragend transformend');
                 setUpdatePreview();
             });
 
@@ -119,27 +187,6 @@ export const Project = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
-
-    useEffect(() => {
-        if (instrumentState !== 'Drag') return;
-        stageRef.current?.off('pointerdown pointermove pointerup');
-        stageRef.current?.on('pointerdown', (ev) => {
-            if (ev.target !== stageRef.current) return;
-            isDraggingStage = true;
-        });
-        stageRef.current?.on('pointermove', (ev) => {
-            if (!isDraggingStage) return;
-            const pos = stageRef.current?.position();
-            if (!pos) return;
-            pos.x = pos.x + ev.evt.movementX;
-            pos.y = pos.y + ev.evt.movementY;
-            stageRef.current?.position(pos);
-        });
-        stageRef.current?.on('pointerup', () => {
-            isDraggingStage = false;
-            setUpdatePreview();
-        });
-    }, [instrumentState]);
 
     const handleZoom = (direction: 'in' | 'out') => {
         const stage = stageRef.current;
