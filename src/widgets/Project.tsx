@@ -27,6 +27,7 @@ import {
     setBackgroundLayer,
 } from '@/entities/project/ui/SelectBackground';
 import { useInitProjectStore } from '@/entities/project/model/initProjectStore';
+import { Drag } from '@/entities/project/ui/Drag';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -118,6 +119,7 @@ export const Project = () => {
                     const image = new Konva.Image({
                         image: imgElement,
                         draggable: false,
+                        listening: false,
                         width: stage.width(),
                         height: stage.height(),
                         x: 0,
@@ -133,6 +135,8 @@ export const Project = () => {
             setSelectedLayer(startLayer);
 
             new KonvaSnappingDemo(stage, startLayer);
+            toggleLayersSwitch();
+            setUpdatePreview();
 
             stage.on('mousedown', (e) => {
                 if (e.target === stage) {
@@ -293,6 +297,7 @@ export const Project = () => {
                     Reset
                 </button>
             </div>
+            <Drag />
             <AddCircle stageRef={stageRef} />
             <AddRect />
             <StartDrawing
