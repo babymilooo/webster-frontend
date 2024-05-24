@@ -28,7 +28,7 @@ export class CircleInstrument implements IInstuments {
         if (!stage || !layer) return;
         const transformer = layer.findOne('Transformer') as Konva.Transformer;
 
-        const pos = stage.getPointerPosition();
+        const pos = stage.getRelativePointerPosition();
         if (!pos) return;
 
         const newCircle = new Konva.Circle({
@@ -60,7 +60,7 @@ export class CircleInstrument implements IInstuments {
 
         if (!stage || !layer) return;
 
-        const pos = stage.getPointerPosition();
+        const pos = stage.getRelativePointerPosition();
         if (!pos) return;
 
         const radius = Math.sqrt(

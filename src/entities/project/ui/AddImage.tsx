@@ -9,7 +9,6 @@ type AddImage = {
 
 export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
     const state = useProjectStore((state) => state.state);
-    const selectedLayer = useProjectStore((state) => state.selectedLayer);
     const selectedImage = useProjectStore((state) => state.selectedImage);
 
     useEffect(() => {
@@ -34,7 +33,7 @@ export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
                 draggable: true,
             });
 
-            selectedLayer?.add(image);
+            layer?.add(image);
 
             // Set the transformer to the image
             image.on('click tap', () => {
@@ -42,8 +41,8 @@ export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
                 transformer.nodes([image]);
             });
 
-            selectedLayer?.add(transformer);
-            selectedLayer?.batchDraw(); // Use batchDraw to redraw the layer
+            layer?.add(transformer);
+            layer?.batchDraw(); // Use batchDraw to redraw the layer
         };
     }, [selectedImage, state]);
 

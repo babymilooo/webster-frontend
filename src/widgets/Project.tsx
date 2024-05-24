@@ -22,6 +22,9 @@ import {
     setOffDragable,
     setOnDragable,
 } from '@/entities/project/lib/setDragable';
+import { SelectBackground } from '@/entities/project/ui/SelectBackground';
+
+let isDraggingStage = false;
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -40,6 +43,7 @@ export const Project = () => {
         y: 0,
     });
     const [currentShape, setCurrentShape] = useState<Konva.Shape | null>(null);
+    const instrumentState = useProjectStore((state) => state.state);
 
     useEffect(() => {
         const initStage = () => {
@@ -86,7 +90,7 @@ export const Project = () => {
                 if (e.target instanceof Konva.Shape) {
                     const shape = e.target;
                     setCurrentShape(shape);
-                    
+
                     setContextMenuPosition({
                         x: e.evt.clientX,
                         y: e.evt.clientY,
@@ -115,6 +119,27 @@ export const Project = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    useEffect(() => {
+        if (instrumentState !== 'Drag') return;
+        stageRef.current?.off('pointerdown pointermove pointerup');
+        stageRef.current?.on('pointerdown', (ev) => {
+            if (ev.target !== stageRef.current) return;
+            isDraggingStage = true;
+        });
+        stageRef.current?.on('pointermove', (ev) => {
+            if (!isDraggingStage) return;
+            const pos = stageRef.current?.position();
+            if (!pos) return;
+            pos.x = pos.x + ev.evt.movementX;
+            pos.y = pos.y + ev.evt.movementY;
+            stageRef.current?.position(pos);
+        });
+        stageRef.current?.on('pointerup', () => {
+            isDraggingStage = false;
+            setUpdatePreview();
+        });
+    }, [instrumentState]);
 
     const handleZoom = (direction: 'in' | 'out') => {
         const stage = stageRef.current;
@@ -210,6 +235,16 @@ export const Project = () => {
                 <button onClick={() => handleZoom('in')}>Zoom In</button>
                 <span>Zoom: {zoomPercentage}%</span>
                 <button onClick={() => handleZoom('out')}>Zoom Out</button>
+                <button
+                    type="button"
+                    onClick={() => {
+                        stageRef.current?.scale({ x: 1, y: 1 });
+                        stageRef.current?.position({ x: 0, y: 0 });
+                        setZoomPercentage(100);
+                    }}
+                >
+                    Reset
+                </button>
             </div>
             <AddCircle stageRef={stageRef} />
             <AddRect />
@@ -221,6 +256,7 @@ export const Project = () => {
             <Erasing stageRef={stageRef} drawingLayerRef={drawingLayerRef} />
 
             <AddImage stageRef={stageRef} />
+            <SelectBackground />
 
             <SelectionArea stageRef={stageRef} />
 

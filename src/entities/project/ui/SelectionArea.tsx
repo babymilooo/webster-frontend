@@ -30,7 +30,11 @@ export const SelectionArea: React.FC<SelectionAreaProps> = () => {
 
         if (!selectionTopLayer) {
             selectionTopLayer = new Konva.Layer();
-            selectionTopLayer.setAttrs({ creationIndex: -1, hidden: true });
+            selectionTopLayer.setAttrs({
+                creationIndex: -1,
+                hidden: true,
+                selectionTopLayer: true,
+            });
             stage.add(selectionTopLayer);
             selectionTopLayer.moveToTop();
         }

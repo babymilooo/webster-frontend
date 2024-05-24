@@ -16,7 +16,7 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
     useEffect(() => {
         // const handleUpdate = () => {
         // };
-        const shapes = layer.find('Circle, Rect, Ellipse, Line, Text');
+        const shapes = layer.find('Circle, Rect, Ellipse, Line, Text, Image');
         if (!shapes || !shapes.length) return;
         const selectedShapes = shapes.filter((shape) => {
             if (
