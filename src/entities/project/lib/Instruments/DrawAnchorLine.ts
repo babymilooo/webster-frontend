@@ -31,6 +31,7 @@ export class DrawCurveInstrument implements IInstuments {
         if (e.evt.button !== 0) return;
         const stage = useProjectStore.getState().stage;
         const layer = useProjectStore.getState().selectedLayer;
+        const selectedStroke = useProjectStore.getState().selectedStroke;
         if (!stage || !layer) return;
         const transformer = layer.findOne('Transformer') as Konva.Transformer;
 
@@ -47,7 +48,7 @@ export class DrawCurveInstrument implements IInstuments {
         } else {
             const newLine = new Konva.Line({
                 points: newPoints,
-                stroke: 'red',
+                stroke: selectedStroke,
                 strokeWidth: 4,
                 lineCap: 'round',
                 lineJoin: 'round',

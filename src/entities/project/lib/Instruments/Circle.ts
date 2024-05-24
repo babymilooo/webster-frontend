@@ -23,6 +23,8 @@ export class CircleInstrument implements IInstuments {
     onPointerDown() {
         const layer = useProjectStore.getState().selectedLayer;
         const stage = useProjectStore.getState().stage;
+        const selectedFill = useProjectStore.getState().selectedFill;
+        const selectedStroke = useProjectStore.getState().selectedStroke;
         if (!stage || !layer) return;
         const transformer = layer.findOne('Transformer') as Konva.Transformer;
 
@@ -33,8 +35,8 @@ export class CircleInstrument implements IInstuments {
             x: pos.x,
             y: pos.y,
             radius: 0,
-            fill: 'red',
-            stroke: 'black',
+            fill: selectedFill,
+            stroke: selectedStroke,
             strokeWidth: 4,
             draggable: false,
             name: 'object',
