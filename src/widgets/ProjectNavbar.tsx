@@ -2,6 +2,7 @@ import { useProjectStore } from '@/entities/project';
 import { Label } from '@/shared/ui/label';
 import {
     CircleIcon,
+    FontBoldIcon,
     HomeIcon,
     SlashIcon,
     TextIcon,
@@ -14,22 +15,39 @@ import {
     ImageIcon,
     Pencil1Icon,
 } from '@radix-ui/react-icons';
-import { useEffect } from 'react';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/shared/ui/select';
+
+import WebFont from 'webfontloader';
+
+import { useEffect, useState } from 'react';
 import { Img } from 'react-image';
 export const ProjectNavbar = () => {
     const state = useProjectStore((state) => state.state);
     const drawState = useProjectStore((state) => state.drawState);
     const setDrawState = useProjectStore((state) => state.setDrawState);
-    // const selectedFill = useProjectStore((state) => state.selectedFill);
-    // const selectedStroke = useProjectStore((state) => state.selectedStroke);
     const brushSettings = useProjectStore((state) => state.brushSettings);
     const setBrushSettings = useProjectStore((state) => state.setBrushSettings);
-    // const setSelectedFill = useProjectStore((state) => state.setSelectedFill);
     const shapeSettings = useProjectStore((state) => state.shapeSettings);
     const setShapeSettings = useProjectStore((state) => state.setShapeSettings);
-    // const setSelectedStroke = useProjectStore(
-    //     (state) => state.setSelectedStroke,
-    // );
+    const textSettings = useProjectStore((state) => state.textSettings);
+    const setTextSettings = useProjectStore((state) => state.setTextSettings);
+    const [bold, setBold] = useState(false);
+    const [italic, setItalic] = useState(false);
+    const [underline, setUnderline] = useState(false);
+    const [loadedFonts, setLoadedFonts] = useState<string[]>([]);
+
+    const setFontFamily = (value: string) => {
+        setTextSettings({ fontFamily: value });
+    };
+    const setTextAlign = (value: string) => {
+        setTextSettings({ align: value });
+    };
 
     const handleFillChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.checked ? '#000000' : '';
@@ -40,6 +58,43 @@ export const ProjectNavbar = () => {
         const value = e.target.checked ? '#000000' : '';
         setShapeSettings({ stroke: value });
     };
+
+    const handleFillChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.checked ? '#000000' : '';
+        setTextSettings({ fill: value });
+    };
+
+    const handleStrokeChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.checked ? '#000000' : '';
+        setTextSettings({ stroke: value });
+    };
+
+    const fonts = ['Roboto', 'Open Sans', 'Arial', 'Lobster', 'Montserrat'];
+    const [load, setLoad] = useState(false);
+
+    useEffect(() => {
+        WebFont.load({
+            google: {
+                families: fonts,
+            },
+            active: () => {
+                setLoadedFonts(fonts);
+                setLoad(true);
+            },
+        });
+    }, []);
+
+    useEffect(() => {
+        setTextSettings({
+            fontStyle: `${bold ? 'bold' : ''} ${italic ? 'italic' : ''}`,
+        });
+    }, [bold, italic]);
+
+    useEffect(() => {
+        setTextSettings({
+            textDecoration: underline ? 'underline' : 'none',
+        });
+    }, [underline]);
 
     useEffect(() => {
         if (drawState === 'Line' || drawState === 'AnchorLine') {
@@ -208,7 +263,26 @@ export const ProjectNavbar = () => {
                 );
             case 'Erasing':
                 return (
-                    <EraserIcon className="h-6 w-6 cursor-pointer text-foreground" />
+                    <>
+                        <EraserIcon className="h-6 w-6 cursor-pointer text-foreground" />
+                        <div className="ml-5 flex">
+                            <div className="col-span-1 flex items-center justify-center">
+                                <Label className="pl-1">Stroke width</Label>
+                            </div>
+                            <div className="col-span-1 flex justify-center gap-2">
+                                <input
+                                    type="number"
+                                    value={brushSettings.width}
+                                    onChange={(e) => {
+                                        setBrushSettings({
+                                            width: parseInt(e.target.value),
+                                        });
+                                    }}
+                                    className="w-16 bg-background p-1"
+                                />
+                            </div>
+                        </div>
+                    </>
                 );
             case 'Image':
                 return (
@@ -216,7 +290,137 @@ export const ProjectNavbar = () => {
                 );
             case 'Text':
                 return (
-                    <TextIcon className="h-6 w-6 cursor-pointer text-foreground" />
+                    <>
+                        <TextIcon className="h-6 w-6 cursor-pointer text-foreground" />
+                        <div className="ml-10 flex w-full items-center">
+                            <div className="flex items-center">
+                                <Label>Font size</Label>
+                                <input
+                                    type="number"
+                                    value={textSettings.fontSize}
+                                    onChange={(e) => {
+                                        setTextSettings({
+                                            fontSize: parseInt(e.target.value),
+                                        });
+                                    }}
+                                    className="w-16 bg-background p-1"
+                                />
+                            </div>
+                            {load ? (
+                                <Select onValueChange={setFontFamily}>
+                                    <SelectTrigger className="w-[200px]">
+                                        <SelectValue placeholder="Font Family" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {loadedFonts.map((font) => (
+                                            <SelectItem key={font} value={font}>
+                                                {font}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            ) : (
+                                'Loading fonts...'
+                            )}
+                            <div className="col-span-1 flex items-center justify-center p-2">
+                                <input
+                                    type="checkbox"
+                                    checked={textSettings.fill !== ''}
+                                    onChange={handleFillChangeText}
+                                />
+                                <Label className="pl-1">Fill</Label>
+                            </div>
+                            <div className="col-span-1 flex justify-center gap-2">
+                                <input
+                                    type="color"
+                                    value={textSettings.fill}
+                                    onChange={(e) => {
+                                        setTextSettings({
+                                            fill: e.target.value,
+                                        });
+                                    }}
+                                    disabled={textSettings.fill === ''}
+                                    className="w-10 bg-background p-1"
+                                />
+                            </div>
+                            <div className="col-span-1 flex items-center justify-center p-2">
+                                <input
+                                    type="checkbox"
+                                    checked={textSettings.stroke !== ''}
+                                    onChange={handleStrokeChangeText}
+                                />
+                                <Label className="pl-1">Stroke</Label>
+                            </div>
+                            <div className="col-span-1 flex justify-center gap-2">
+                                <input
+                                    type="color"
+                                    value={textSettings.stroke}
+                                    onChange={(e) => {
+                                        setTextSettings({
+                                            stroke: e.target.value,
+                                        });
+                                    }}
+                                    disabled={textSettings.stroke === ''}
+                                    className="w-10 bg-background p-1"
+                                />
+                            </div>
+                            <div className="flex items-center pl-5">
+                                <Label>padding</Label>
+                                <input
+                                    type="number"
+                                    value={textSettings.padding}
+                                    onChange={(e) => {
+                                        setTextSettings({
+                                            padding: parseInt(e.target.value),
+                                        });
+                                    }}
+                                    className="w-16 bg-background p-1"
+                                />
+                            </div>
+                            <div className="flex items-center pl-5">
+                                <Select onValueChange={setTextAlign}>
+                                    <SelectTrigger className="w-[100px]">
+                                        <SelectValue placeholder="Align" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="left">
+                                            Left
+                                        </SelectItem>
+                                        <SelectItem value="center">
+                                            Center
+                                        </SelectItem>
+                                        <SelectItem value="right">
+                                            Right
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div className="flex items-center pl-5">
+                                <FontBoldIcon
+                                    className="h-6 w-6 cursor-pointer text-foreground"
+                                    onClick={() => {
+                                        setBold(!bold);
+                                    }}
+                                />
+                            </div>
+                            <div className="flex items-center pl-5">
+                                <SlashIcon
+                                    className="h-6 w-6 cursor-pointer text-foreground"
+                                    onClick={() => {
+                                        setItalic(!italic);
+                                    }}
+                                />
+                            </div>
+                            <div className="flex items-center pl-5">
+                                <TextIcon
+                                    className="h-6 w-6 cursor-pointer text-foreground"
+                                    onClick={() => {
+                                        setUnderline(!underline);
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </>
                 );
 
             default:
@@ -226,10 +430,10 @@ export const ProjectNavbar = () => {
     return (
         <div className="fixed z-20 mt-[5px] h-[43px] w-full bg-background">
             <div className="flex h-full w-full border-t-[5px] border-dashed px-2">
-                <div className="flex h-full items-center justify-center">
+                <div className="flex h-full items-center">
                     <HomeIcon className="h-6 w-6 cursor-pointer text-foreground" />
                 </div>
-                <div className="ml-4 flex h-full items-center justify-center">
+                <div className="ml-4 flex h-full w-full items-center">
                     {renderIcon()}
                 </div>
             </div>
