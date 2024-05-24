@@ -33,6 +33,7 @@ interface ProjectState {
 
     brushSettings: IBrushSettings;
     selectedImage: string | null;
+    selectedBackgroundImage: string | null;
 
     setProject: (project: Project | null) => void;
     createProject: (title: string, width: number, height: number) => void;
@@ -44,6 +45,7 @@ interface ProjectState {
     setSelectredShape: (shape: Konva.Node | null) => void;
     setUpdatePreview: VoidFunction;
     setSelectredImage: (image: string | null) => void;
+    setSelectedBackgroundImage: (image: string | null) => void;
 
     setSelectedLayer: (layer: Konva.Layer) => void;
     toggleLayersSwitch: VoidFunction;
@@ -65,6 +67,7 @@ export const useProjectStore = create<ProjectState>()(
             changedLayersSwitch: false,
 
             selectedImage: null,
+            selectedBackgroundImage: null,
             selectedShape: null,
             updatePreview: false,
 
@@ -110,6 +113,8 @@ export const useProjectStore = create<ProjectState>()(
 
             setSelectredShape: (shape) => set({ selectedShape: shape }),
             setSelectredImage: (image) => set({ selectedImage: image }),
+            setSelectedBackgroundImage: (image) =>
+                set({ selectedBackgroundImage: image }),
             setUpdatePreview: () =>
                 set((state) => ({
                     updatePreview: !state.updatePreview,

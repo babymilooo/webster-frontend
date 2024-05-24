@@ -9,17 +9,25 @@ import {
     Pencil1Icon,
     TextIcon,
 } from '@radix-ui/react-icons';
-import { useRef } from 'react';
+import { ChangeEvent, useRef } from 'react';
 
 const ProjectLeftSidebar = () => {
     const setState = useProjectStore((state) => state.setState);
     const setImage = useProjectStore((state) => state.setSelectredImage);
+    const setBackground = useProjectStore(
+        (state) => state.setSelectedBackgroundImage,
+    );
 
     const inputRef = useRef<HTMLInputElement>(null);
+    const backgroundInputRef = useRef<HTMLInputElement>(null);
     const handleClick = () => {
         if (inputRef.current) {
             inputRef.current.click();
         }
+    };
+
+    const handleBackgroundClick = () => {
+        backgroundInputRef.current?.click();
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,6 +40,20 @@ const ProjectLeftSidebar = () => {
             if (typeof data !== 'string') return;
             setImage(data);
             setState('SelectImage');
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const handleBackgroundChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const data = e.target?.result;
+
+            if (typeof data !== 'string') return;
+            setBackground(data);
+            setState('SelectBackground');
         };
         reader.readAsDataURL(file);
     };
@@ -90,6 +112,19 @@ const ProjectLeftSidebar = () => {
                     <TextIcon
                         className="h-6 w-6 cursor-pointer text-foreground"
                         onClick={() => setState('Text')}
+                    />
+                </div>
+                <div className="flex h-10 w-full items-center justify-center">
+                    <ImageIcon
+                        className="h-6 w-6 cursor-pointer text-foreground"
+                        onClick={handleBackgroundClick}
+                    />
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleBackgroundChange}
+                        className="hidden"
+                        ref={backgroundInputRef}
                     />
                 </div>
             </div>

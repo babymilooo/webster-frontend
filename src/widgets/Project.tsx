@@ -22,6 +22,7 @@ import {
     setOffDragable,
     setOnDragable,
 } from '@/entities/project/lib/setDragable';
+import { SelectBackground } from '@/entities/project/ui/SelectBackground';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -86,7 +87,7 @@ export const Project = () => {
                 if (e.target instanceof Konva.Shape) {
                     const shape = e.target;
                     setCurrentShape(shape);
-                    
+
                     setContextMenuPosition({
                         x: e.evt.clientX,
                         y: e.evt.clientY,
@@ -221,6 +222,7 @@ export const Project = () => {
             <Erasing stageRef={stageRef} drawingLayerRef={drawingLayerRef} />
 
             <AddImage stageRef={stageRef} />
+            <SelectBackground />
 
             <SelectionArea stageRef={stageRef} />
 
