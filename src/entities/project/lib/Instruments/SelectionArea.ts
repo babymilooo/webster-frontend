@@ -38,7 +38,7 @@ export class SelectionAreaInstrument implements IInstuments {
         if (!this.selectionTopLayer || !stage) return;
         if (state !== 'SelectionArea') return;
 
-        const pos = stage.getPointerPosition();
+        const pos = stage.getRelativePointerPosition();
         if (!pos) return;
 
         const newRect = new Konva.Rect({
@@ -78,7 +78,7 @@ export class SelectionAreaInstrument implements IInstuments {
         )
             return;
 
-        const pos = stage.getPointerPosition();
+        const pos = stage.getRelativePointerPosition();
         if (!pos) return;
 
         const newX = Math.min(pos.x, this.startPose.x);

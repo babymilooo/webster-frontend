@@ -34,8 +34,8 @@ export class DrawLineInstrument implements IInstuments {
         const shapeSettings = useProjectStore.getState().shapeSettings;
         if (!stage || !layer) return;
         const transformer = layer.findOne('Transformer') as Konva.Transformer;
-        
-        const pos = stage.getPointerPosition();
+
+        const pos = stage.getRelativePointerPosition();
         if (!pos) return;
         // console.log(this.points);
 
@@ -81,7 +81,7 @@ export class DrawLineInstrument implements IInstuments {
         if (!stage || !layer) return;
         // const transformer = layer.findOne('Transformer') as Konva.Transformer;
 
-        const pos = stage.getPointerPosition();
+        const pos = stage.getRelativePointerPosition();
 
         if (!pos || this.points.length < 2) return;
 

@@ -36,7 +36,7 @@ export class PencilBrush implements IBaseBrush {
         if (!stage || !target) return;
 
         this.isPaint = true;
-        const pos = stage.getPointerPosition();
+        const pos = stage.getRelativePointerPosition();
         if (!pos) return;
         this.lastLine = new Konva.Line({
             stroke: brushSettings.color,
@@ -62,7 +62,7 @@ export class PencilBrush implements IBaseBrush {
         const brushSettings = useProjectStore.getState().brushSettings;
         if (!stage || !target) return;
 
-        const pos = stage.getPointerPosition();
+        const pos = stage.getRelativePointerPosition();
         if (!pos || !this.lastLine) return;
         // set end of old line to current point
         const newPoints = this.lastLine.points().concat([pos.x, pos.y]);
@@ -100,7 +100,7 @@ export class EraserBrush implements IBaseBrush {
         if (!stage || !target) return;
 
         this.isPaint = true;
-        const pos = stage.getPointerPosition();
+        const pos = stage.getRelativePointerPosition();
         if (!pos) return;
         this.lastLine = new Konva.Line({
             stroke: brushSettings.color,
@@ -127,7 +127,7 @@ export class EraserBrush implements IBaseBrush {
         const brushSettings = useProjectStore.getState().brushSettings;
         if (!stage || !target) return;
 
-        const pos = stage.getPointerPosition();
+        const pos = stage.getRelativePointerPosition();
         if (!pos || !this.lastLine) return;
         // set end of old line to current point
         const newPoints = this.lastLine.points().concat([pos.x, pos.y]);

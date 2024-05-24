@@ -24,7 +24,7 @@ export class TextInstrument {
 
         const transformer = layer.findOne('Transformer') as Konva.Transformer;
 
-        const pos = stage.getPointerPosition();
+        const pos = stage.getRelativePointerPosition();
         if (!pos) return;
 
         const newText = new Konva.Text({
@@ -94,7 +94,7 @@ export class TextInstrument {
         textarea.style.height = `${
             textNode.height() - textNode.padding() * 2 + 5
         }px`;
-        textarea.style.fontSize = `${textNode.fontSize()}px`;
+        textarea.style.fontSize = `${textNode.fontSize() * stage.scaleY()}px`;
         textarea.style.border = 'none';
         textarea.style.padding = '0px';
         textarea.style.margin = '0px';

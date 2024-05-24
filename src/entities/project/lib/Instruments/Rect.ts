@@ -31,7 +31,7 @@ export class RectInstrument implements IInstuments {
         if (!layer || !stage) return;
         const transformer = layer.findOne('Transformer') as Konva.Transformer;
 
-        const pos = stage.getPointerPosition();
+        const pos = stage.getRelativePointerPosition();
         if (!pos) return;
 
         const newRect = new Konva.Rect({
@@ -62,7 +62,7 @@ export class RectInstrument implements IInstuments {
         if (!layer || !stage) return;
         if (!this.isDrawing || !this.rect || !this.startPos) return;
 
-        const pos = stage.getPointerPosition();
+        const pos = stage.getRelativePointerPosition();
         if (!pos) return;
 
         const newX = Math.min(pos.x, this.startPos.x);
