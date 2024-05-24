@@ -13,6 +13,7 @@ export const LayerButton: FC<{ layer: Konva.Layer; index?: number }> = ({
     );
     const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
     const selectedLayer = useProjectStore((state) => state.selectedLayer);
+    const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
     const setSelectredShape = useProjectStore(
         (state) => state.setSelectredShape,
     );
@@ -23,6 +24,7 @@ export const LayerButton: FC<{ layer: Konva.Layer; index?: number }> = ({
         layer.getChildren().forEach((shape) => {
             shape.visible(!shape.visible());
         });
+        setUpdatePreview();
         toggleLayersSwitch();
         setToggle(!toggle);
     };
@@ -60,15 +62,15 @@ export const LayerButton: FC<{ layer: Konva.Layer; index?: number }> = ({
                 >
                     Down
                 </button>
-                <div>
+                <div className="flex items-center">
                     {toggle ? (
                         <EyeIcon
-                            className="h-10 w-10"
+                            className="h-7 w-7"
                             onClick={handleToggleVisibility}
                         />
                     ) : (
                         <EyeNoneIcon
-                            className="h-10 w-10"
+                            className="h-7 w-7"
                             onClick={handleToggleVisibility}
                         />
                     )}

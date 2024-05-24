@@ -27,6 +27,7 @@ import WebFont from 'webfontloader';
 
 import { useEffect, useState } from 'react';
 import { Img } from 'react-image';
+import { ItalicIcon } from 'lucide-react';
 export const ProjectNavbar = () => {
     const state = useProjectStore((state) => state.state);
     const drawState = useProjectStore((state) => state.drawState);
@@ -404,7 +405,7 @@ export const ProjectNavbar = () => {
                                 />
                             </div>
                             <div className="flex items-center pl-5">
-                                <SlashIcon
+                                <ItalicIcon
                                     className="h-6 w-6 cursor-pointer text-foreground"
                                     onClick={() => {
                                         setItalic(!italic);

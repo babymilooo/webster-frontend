@@ -6,7 +6,6 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
     const stage = useProjectStore((state) => state.stage);
     const [shapes, setShapes] = useState<Konva.Node[] | null>(null);
     const UpdatePreview = useProjectStore((state) => state.updatePreview);
-    // const [selectedShape, setSelectedShape] = useState<Konva.Node | null>(null);
     const SelectedShape = useProjectStore((state) => state.selectedShape);
     const setSelectedShape = useProjectStore(
         (state) => state.setSelectredShape,
@@ -14,8 +13,6 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
     const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
     const transformer = layer.findOne('Transformer') as Konva.Transformer;
     useEffect(() => {
-        // const handleUpdate = () => {
-        // };
         const shapes = layer.find('Circle, Rect, Ellipse, Line, Text, Image');
         if (!shapes || !shapes.length) return;
         const selectedShapes = shapes.filter((shape) => {
@@ -27,9 +24,7 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
                 return false;
             return true;
         });
-        setShapes(selectedShapes); // Pass the first shape in the array
-        // layer.on('change', handleUpdate);
-        // return () => layer.off('change', handleUpdate);
+        setShapes(selectedShapes);
     }, [layer, UpdatePreview]);
 
     return (
@@ -49,11 +44,13 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
                         setSelectedLayer(layer);
                     }}
                 >
-                    <img
-                        src={shape.toDataURL()}
-                        alt="preview"
-                        className="h-16 w-16 p-2"
-                    />
+                    {shape.visible() && (
+                        <img
+                            src={shape.toDataURL()}
+                            alt="preview"
+                            className="h-16 w-16 p-2"
+                        />
+                    )}
                 </div>
             ))}
         </div>
