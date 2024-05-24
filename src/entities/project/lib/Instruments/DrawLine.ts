@@ -31,7 +31,7 @@ export class DrawLineInstrument implements IInstuments {
         if (e.evt.button !== 0) return;
         const stage = useProjectStore.getState().stage;
         const layer = useProjectStore.getState().selectedLayer;
-        const selectedStroke = useProjectStore.getState().selectedStroke;
+        const shapeSettings = useProjectStore.getState().shapeSettings;
         if (!stage || !layer) return;
         const transformer = layer.findOne('Transformer') as Konva.Transformer;
         
@@ -48,8 +48,8 @@ export class DrawLineInstrument implements IInstuments {
         } else {
             const newLine = new Konva.Line({
                 points: newPoints,
-                stroke: selectedStroke,
-                strokeWidth: 4,
+                stroke: shapeSettings.stroke,
+                strokeWidth: shapeSettings.strokeWidth,
                 lineCap: 'round',
                 lineJoin: 'round',
                 draggable: false,

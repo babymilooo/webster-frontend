@@ -26,8 +26,7 @@ export class RectInstrument implements IInstuments {
     onPointerDown() {
         const layer = useProjectStore.getState().selectedLayer;
         const stage = useProjectStore.getState().stage;
-        const selectedFill = useProjectStore.getState().selectedFill;
-        const selectedStroke = useProjectStore.getState().selectedStroke;
+        const shapeSettings = useProjectStore.getState().shapeSettings;
 
         if (!layer || !stage) return;
         const transformer = layer.findOne('Transformer') as Konva.Transformer;
@@ -40,9 +39,9 @@ export class RectInstrument implements IInstuments {
             y: pos.y,
             width: 0,
             height: 0,
-            fill: selectedFill,
-            stroke: selectedStroke,
-            strokeWidth: 4,
+            fill: shapeSettings.fill,
+            stroke: shapeSettings.stroke,
+            strokeWidth: shapeSettings.strokeWidth,
             draggable: false,
             name: 'object',
         });

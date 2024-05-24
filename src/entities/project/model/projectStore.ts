@@ -18,6 +18,12 @@ interface IBrushSettings {
     selectedBrush?: string | null;
 }
 
+interface IShapeSettings {
+    fill: string;
+    stroke: string;
+    strokeWidth: number;
+}
+
 interface ProjectState {
     project: Project | null;
     isLoaded: boolean;
@@ -35,11 +41,10 @@ interface ProjectState {
     selectedImage: string | null;
     selectedBackgroundImage: string | null;
 
-    selectedFill: string;
-    selectedStroke: string;
+    shapeSettings: IShapeSettings;
 
-    setSelectedFill: (fill: string) => void;
-    setSelectedStroke: (stroke: string) => void;
+    // setSelectedFill: (fill: string) => void;
+    // setSelectedStroke: (stroke: string) => void;
 
     setProject: (project: Project | null) => void;
     createProject: (title: string, width: number, height: number) => void;
@@ -57,6 +62,7 @@ interface ProjectState {
     toggleLayersSwitch: VoidFunction;
 
     setBrushSettings: (settings: Partial<IBrushSettings>) => void;
+    setShapeSettings: (settings: Partial<IShapeSettings>) => void;
 }
 
 export const useProjectStore = create<ProjectState>()(
@@ -83,8 +89,14 @@ export const useProjectStore = create<ProjectState>()(
                 selectedBrush: null,
             },
 
-            selectedFill: '#000000',
-            selectedStroke: '',
+            shapeSettings: {
+                fill: '#000000',
+                stroke: '#000000',
+                strokeWidth: 4,
+            },
+
+            // selectedFill: '#000000',
+            // selectedStroke: '',
 
             setProject: (project) => set({ project }),
             createProject: async (title, width, height) => {
@@ -134,8 +146,12 @@ export const useProjectStore = create<ProjectState>()(
                     brushSettings: { ...state.brushSettings, ...settings },
                 }));
             },
-            setSelectedFill: (fill) => set({ selectedFill: fill }),
-            setSelectedStroke: (stroke) => set({ selectedStroke: stroke }),
+            // setSelectedFill: (fill) => set({ selectedFill: fill }),
+            // setSelectedStroke: (stroke) => set({ selectedStroke: stroke }),
+            setShapeSettings: (settings) =>
+                set((state) => ({
+                    shapeSettings: { ...state.shapeSettings, ...settings },
+                })),
         })),
     ),
 );
