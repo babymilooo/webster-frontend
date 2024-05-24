@@ -20,6 +20,7 @@ export const SelectBackground: FC = () => {
                 creationIndex: -2,
                 hidden: true,
                 backgroundLayer: true,
+                listening: false,
             });
             stage.add(backgroundLayer);
         }
@@ -45,6 +46,7 @@ export const SelectBackground: FC = () => {
                 x: 0,
                 y: 0,
             });
+            image.setAttrs({ handdrawn: true });
             backgroundLayer?.add(image);
             backgroundLayer?.batchDraw();
         };

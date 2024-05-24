@@ -16,8 +16,16 @@ class KonvaSnappingDemo {
         vertical: number[];
         horizontal: number[];
     } {
-        const vertical = [0, this.stage.width() / 2, this.stage.width()];
-        const horizontal = [0, this.stage.height() / 2, this.stage.height()];
+        const vertical = [
+            0,
+            (this.stage.width() * this.stage.scaleX()) / 2,
+            this.stage.width() * this.stage.scaleX(),
+        ];
+        const horizontal = [
+            0,
+            (this.stage.height() * this.stage.scaleY()) / 2,
+            this.stage.height() * this.stage.scaleY(),
+        ];
 
         this.stage.find('.object').forEach((guideItem) => {
             if (guideItem === skipShape) {
