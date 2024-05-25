@@ -2,6 +2,7 @@ import { useProjectStore } from '@/entities/project';
 import { Label } from '@/shared/ui/label';
 import {
     CircleIcon,
+    DownloadIcon,
     FontBoldIcon,
     HomeIcon,
     SlashIcon,
@@ -30,6 +31,7 @@ import { Img } from 'react-image';
 import { ItalicIcon } from 'lucide-react';
 export const ProjectNavbar = () => {
     const state = useProjectStore((state) => state.state);
+    const stage = useProjectStore((state) => state.stage);
     const drawState = useProjectStore((state) => state.drawState);
     const setDrawState = useProjectStore((state) => state.setDrawState);
     const brushSettings = useProjectStore((state) => state.brushSettings);
@@ -105,6 +107,35 @@ export const ProjectNavbar = () => {
             setBrushSettings({ color: '#000000' });
         }
     }, [drawState]);
+
+    const downloadURI = (uri: string, name: string) => {
+        const link = document.createElement('a');
+        link.download = name;
+        link.href = uri;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    const handleDownload = () => {
+        if (stage) {
+            const stagetemp = stage.clone();
+            stagetemp.to({
+                x: 0,
+                y: 0,
+                scaleX: 1,
+                scaleY: 1,
+                width: stage.width(),
+                height: stage.height(),
+                transformerEnabled: false,
+                onFinish: () => {
+                    const dataURL = stagetemp.toDataURL({ pixelRatio: 1 });
+                    downloadURI(dataURL, 'stage.png');
+                },
+            });
+            stagetemp.remove();
+        }
+    };
 
     const renderIcon = () => {
         switch (state) {
@@ -433,6 +464,10 @@ export const ProjectNavbar = () => {
             <div className="flex h-full w-full border-t-[5px] border-dashed px-2">
                 <div className="flex h-full items-center">
                     <HomeIcon className="h-6 w-6 cursor-pointer text-foreground" />
+                    <DownloadIcon
+                        className="ml-3 h-6 w-6 cursor-pointer text-foreground"
+                        onClick={handleDownload}
+                    />
                 </div>
                 <div className="ml-4 flex h-full w-full items-center">
                     {renderIcon()}
