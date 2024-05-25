@@ -38,7 +38,7 @@ interface ITextSettings {
 interface ProjectState {
     project: Project | null;
     isLoaded: boolean;
-
+    coolDown: boolean;
     state: string;
     drawState: string;
 
@@ -57,6 +57,7 @@ interface ProjectState {
     setProject: (project: Project | null) => void;
     createProject: (title: string, width: number, height: number) => void;
     setState: (state: string) => void;
+    setCoolDown: (state: boolean) => void;
     setDrawState: (state: string) => void;
 
     setStage: (stage: Konva.Stage) => void;
@@ -79,7 +80,7 @@ export const useProjectStore = create<ProjectState>()(
         immer((set) => ({
             project: null,
             isLoaded: false,
-
+            coolDown: false,
             state: '',
             drawState: '',
 
@@ -114,6 +115,7 @@ export const useProjectStore = create<ProjectState>()(
                 textDecoration: 'none',
             },
 
+            setCoolDown: (state) => set({ coolDown: state }),
             setProject: (project) => set({ project }),
             createProject: async (title, width, height) => {
                 try {
@@ -152,10 +154,41 @@ export const useProjectStore = create<ProjectState>()(
             setSelectredImage: (image) => set({ selectedImage: image }),
             setSelectedBackgroundImage: (image) =>
                 set({ selectedBackgroundImage: image }),
-            setUpdatePreview: () =>
+            setUpdatePreview: () => {
                 set((state) => ({
                     updatePreview: !state.updatePreview,
-                })),
+                }));
+
+                const stage = useProjectStore.getState().stage;
+                const sendData = () => {
+                    if (stage) {
+                        const dataURL = stage.toDataURL({ pixelRatio: 3 });
+                        console.log(dataURL);
+                        // Отправка данных на сервер
+                        // fetch('/api/upload', {
+                        //     method: 'POST',
+                        //     headers: {
+                        //         'Content-Type': 'application/json',
+                        //     },
+                        //     body: JSON.stringify({ image: dataURL }),
+                        // })
+                        //     .then((response) => response.json())
+                        //     .then((data) => console.log('Success:', data))
+                        //     .catch((error) => console.error('Error:', error));
+                    }
+                };
+
+                let isCooldown = useProjectStore.getState().coolDown;
+                const setCoolDown = useProjectStore.getState().setCoolDown;
+                if (!isCooldown) {
+                    sendData();
+                    setCoolDown(true);
+
+                    setTimeout(() => {
+                        setCoolDown(false);
+                    }, 15000);
+                }
+            },
 
             setBrushSettings: (settings) =>
                 set((state) => ({
