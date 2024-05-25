@@ -1,7 +1,15 @@
+import { useEffect } from 'react';
 import MainLayout from '../MainLayout';
 import HomeLayout from './HomeLayout';
+import { useUserStore } from '@/entities/user';
 
 const Projects = () => {
+    
+    const projects = useUserStore((state) => state.projects);
+    useEffect(() => {
+        console.log(projects);
+    }, []);
+
     return (
         <MainLayout>
             <HomeLayout>

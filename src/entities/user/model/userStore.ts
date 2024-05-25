@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { devtools } from 'zustand/middleware';
 import { getUser, loginUser, regUser, signUpGoogle } from '../index';
+import { getProjects } from '../api/getProjects';
 
 interface User {
     _id: number;
@@ -17,12 +18,15 @@ interface UserState {
     isLoaded: boolean;
     isLogin: boolean;
     checked: boolean;
+    projects: [] | null;
+    setProjects: (projects: [] | null) => void;
     setUser: (user: User | null) => void;
     loginUser: (email: string, password: string) => void;
     loginGoogle: () => void;
     registerUser: (email: string, password: string) => void;
     checkAuth: () => object | null;
     logoutUser: () => void;
+
 }
 
 export const useUserStore = create<UserState>()(
@@ -32,6 +36,8 @@ export const useUserStore = create<UserState>()(
             isLoaded: false,
             isLogin: false,
             checked: false,
+            projects: null,
+            setProjects: (projects) => set({ projects }),
             setUser: (user) => set({ user }),
             loginUser: async (email, password) => {
                 try {
@@ -62,6 +68,7 @@ export const useUserStore = create<UserState>()(
             checkAuth: async () => {
                 try {
                     const response = await getUser();
+                    const projects = await getProjects();
                     const user = response;
                     if (user) {
                         set({ user });
@@ -69,6 +76,7 @@ export const useUserStore = create<UserState>()(
                     }
                     set({ isLoaded: true });
                     set({ checked: true });
+                    set({ projects });
                     return user;
                 } catch (error) {
                     console.error(error);

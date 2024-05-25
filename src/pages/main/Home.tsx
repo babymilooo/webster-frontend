@@ -6,12 +6,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import MainLayout from '../MainLayout';
 import { PrivateLayout } from '../PrivateLayout';
 import HomeLayout from './HomeLayout';
+import { createProject } from '@/entities/project';
+import { useUserStore } from '@/entities/user';
 
 const Home = () => {
     const imageInputRef = useRef<HTMLInputElement | null>(null);
     const backgroundImageInputRef = useRef<HTMLInputElement | null>(null);
     const navigate = useNavigate();
-
+    const setProjects = useUserStore((state) => state.setProjects);
+    const projects = useUserStore((state) => state.projects);
     const [setStartImage, setStartBackgroundImage, setWidth, setHeight] =
         useInitProjectStore((state) => [
             state.setStartingImage,
@@ -66,6 +69,18 @@ const Home = () => {
         reader.readAsDataURL(file);
     };
 
+    const handleCreate = async () => {
+        const title = 'new';
+        setHeight(800);
+        setWidth(600);
+        const data = await createProject(title);
+        if (data) {
+            const formatedProjects = projects ? [...projects, data] : [data];
+            setProjects(formatedProjects as []);
+        }
+        navigate(`/projects/${data._id}`);
+    };
+    
     return (
         <MainLayout>
             <HomeLayout>
@@ -87,8 +102,9 @@ const Home = () => {
                             </Card>
                         </div>
                         <div className="h-full w-full rounded-t-lg bg-background">
-                            <button>
-                                <Link to="/projects/1">new</Link>
+                            <button onClick={handleCreate}>
+                                new
+                                {/* <Link to="/projects/1">new</Link> */}
                             </button>
                             <div
                                 className="flex h-10 w-fit items-center justify-center"
