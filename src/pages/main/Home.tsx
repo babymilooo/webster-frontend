@@ -12,9 +12,13 @@ const Home = () => {
     const backgroundImageInputRef = useRef<HTMLInputElement | null>(null);
     const navigate = useNavigate();
 
-    const [setStartImage, setStartBackgroundImage] = useInitProjectStore(
-        (state) => [state.setStartingImage, state.setStartingBackgroundImage],
-    );
+    const [setStartImage, setStartBackgroundImage, setWidth, setHeight] =
+        useInitProjectStore((state) => [
+            state.setStartingImage,
+            state.setStartingBackgroundImage,
+            state.setWidth,
+            state.setHeight,
+        ]);
 
     const handleSelectImageForProject = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -24,8 +28,16 @@ const Home = () => {
             const data = e.target?.result;
 
             if (typeof data !== 'string') return;
-            setStartImage(data);
-            navigate('/projects/1');
+            const img = new window.Image();
+            img.src = data;
+            img.onload = () => {
+                setHeight(img.height);
+                setWidth(img.width);
+                setStartImage(data);
+                setStartBackgroundImage(null);
+                navigate('/projects/1');
+                img.remove();
+            };
         };
         reader.readAsDataURL(file);
     };
@@ -40,8 +52,16 @@ const Home = () => {
             const data = e.target?.result;
 
             if (typeof data !== 'string') return;
-            setStartBackgroundImage(data);
-            navigate('/projects/1');
+            const img = new window.Image();
+            img.src = data;
+            img.onload = () => {
+                setHeight(img.height);
+                setWidth(img.width);
+                setStartImage(null);
+                setStartBackgroundImage(data);
+                navigate('/projects/1');
+                img.remove();
+            };
         };
         reader.readAsDataURL(file);
     };

@@ -67,11 +67,29 @@ export const Project = () => {
     useEffect(() => {
         const initStage = () => {
             if (!canvasElementRef.current) return;
+            //adjust canvas size if larger than screen
+            const workingSpace = document.getElementById(
+                'workingSpace',
+            ) as HTMLDivElement;
+            let correctedWidth = startWidth;
+            let correctedHeight = startHeight;
+            if (correctedHeight > workingSpace.clientHeight) {
+                const coef = correctedHeight / workingSpace.clientHeight;
+                correctedHeight = correctedHeight / coef;
+                correctedWidth = correctedWidth / coef;
+            }
+
+            if (correctedWidth > workingSpace.clientWidth) {
+                const coef = correctedWidth / workingSpace.clientWidth;
+                correctedHeight = correctedHeight / coef;
+                correctedWidth = correctedWidth / coef;
+            }
+
             resetLayerCreationIndex();
             const stage = new Konva.Stage({
                 container: canvasElementRef.current,
-                width: startWidth,
-                height: startHeight,
+                width: correctedWidth,
+                height: correctedHeight,
             });
             stageRef.current = stage;
 
@@ -96,6 +114,8 @@ export const Project = () => {
                         y: 0,
                     });
                     startLayer.add(image);
+                    toggleLayersSwitch();
+                    setUpdatePreview();
                 };
             }
             if (startBackgroundImage) {
@@ -128,6 +148,8 @@ export const Project = () => {
                     image.setAttrs({ handdrawn: true });
                     backgroundLayer?.add(image);
                     backgroundLayer?.batchDraw();
+                    toggleLayersSwitch();
+                    setUpdatePreview();
                 };
             }
 
@@ -273,10 +295,19 @@ export const Project = () => {
 
     const handleDelete = () => {
         if (currentShape) {
+            if (
+                currentShape.hasName('hidden') ||
+                currentShape.hasName('_anchor')
+            ) {
+                setContextMenuVisible(false);
+                return;
+            }
             currentShape.destroy();
             setCurrentShape(null);
             setContextMenuVisible(false);
             stageRef.current?.batchDraw();
+            toggleLayersSwitch();
+            setUpdatePreview();
         }
     };
 

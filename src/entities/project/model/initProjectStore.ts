@@ -12,6 +12,8 @@ interface IInitProjectStoreState {
 
 interface IInitProjectActions {
     resetStore: VoidFunction;
+    setWidth: (w: number) => void;
+    setHeight: (h: number) => void;
     setSerializedJSON: (json: string | null) => void;
     setStartingImage: (image: string | null) => void;
     setStartingBackgroundImage: (image: string | null) => void;
@@ -33,6 +35,12 @@ export const useInitProjectStore = create<
             ...initState,
             resetStore: () => {
                 set(initState);
+            },
+            setHeight(h) {
+                set({ height: h });
+            },
+            setWidth(w) {
+                set({ width: w });
             },
             setSerializedJSON: (json) => {
                 set({ serializedJSON: json });

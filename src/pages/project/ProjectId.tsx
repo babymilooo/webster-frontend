@@ -4,11 +4,14 @@ import { Project } from '@/widgets/Project';
 import ProjectLayout from './ProjectLayout';
 
 const ProjectId = () => {
-    let { id } = useParams();
+    const { id } = useParams();
     return (
         <MainLayout>
             <ProjectLayout>
-                <div className="h-full w-full flex flex-col items-center justify-center bg-neutral-200">
+                <div
+                    className="flex h-full w-full flex-col items-center justify-center bg-neutral-200"
+                    id="workingSpace"
+                >
                     <p>Project {id}</p>
                     <Project />
                 </div>
