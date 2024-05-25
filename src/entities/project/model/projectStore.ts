@@ -35,7 +35,7 @@ interface ITextSettings {
     textDecoration?: string;
 }
 
-interface ProjectState {
+interface IProjectStoreState {
     project: Project | null;
     isLoaded: boolean;
     coolDown: boolean;
@@ -53,7 +53,10 @@ interface ProjectState {
     textSettings: ITextSettings;
     selectedImage: string | null;
     selectedBackgroundImage: string | null;
+}
 
+interface IProjectStoreActions {
+    resetStore: VoidFunction;
     setProject: (project: Project | null) => void;
     createProject: (title: string, width: number, height: number) => void;
     setState: (state: string) => void;
@@ -75,46 +78,52 @@ interface ProjectState {
     setTextSettings: (settings: Partial<ITextSettings>) => void;
 }
 
-export const useProjectStore = create<ProjectState>()(
+const initState: IProjectStoreState = {
+    project: null,
+    isLoaded: false,
+    coolDown: false,
+    state: '',
+    drawState: '',
+
+    stage: null,
+    selectedLayer: null,
+    changedLayersSwitch: false,
+
+    selectedImage: null,
+    selectedBackgroundImage: null,
+    selectedShape: null,
+    updatePreview: false,
+
+    brushSettings: {
+        width: 10,
+        color: '#000000',
+        selectedBrush: null,
+    },
+
+    shapeSettings: {
+        fill: '#000000',
+        stroke: '#000000',
+        strokeWidth: 4,
+    },
+    textSettings: {
+        fontSize: 20,
+        fontFamily: 'Arial',
+        fill: '#000000',
+        stroke: '#ff0000',
+        padding: 10,
+        align: 'left',
+        fontStyle: 'normal',
+        textDecoration: 'none',
+    },
+};
+
+export const useProjectStore = create<
+    IProjectStoreState & IProjectStoreActions
+>()(
     devtools(
         immer((set) => ({
-            project: null,
-            isLoaded: false,
-            coolDown: false,
-            state: '',
-            drawState: '',
-
-            stage: null,
-            selectedLayer: null,
-            changedLayersSwitch: false,
-
-            selectedImage: null,
-            selectedBackgroundImage: null,
-            selectedShape: null,
-            updatePreview: false,
-
-            brushSettings: {
-                width: 10,
-                color: '#000000',
-                selectedBrush: null,
-            },
-
-            shapeSettings: {
-                fill: '#000000',
-                stroke: '#000000',
-                strokeWidth: 4,
-            },
-            textSettings: {
-                fontSize: 20,
-                fontFamily: 'Arial',
-                fill: '#000000',
-                stroke: '#ff0000',
-                padding: 10,
-                align: 'left',
-                fontStyle: 'normal',
-                textDecoration: 'none',
-            },
-
+            ...initState,
+            resetStore: () => set(initState),
             setCoolDown: (state) => set({ coolDown: state }),
             setProject: (project) => set({ project }),
             createProject: async (title, width, height) => {
@@ -178,7 +187,7 @@ export const useProjectStore = create<ProjectState>()(
                     }
                 };
 
-                let isCooldown = useProjectStore.getState().coolDown;
+                const isCooldown = useProjectStore.getState().coolDown;
                 const setCoolDown = useProjectStore.getState().setCoolDown;
                 if (!isCooldown) {
                     sendData();

@@ -27,9 +27,6 @@ export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
         imageElement.src = selectedImage;
 
         imageElement.onload = () => {
-            // const workingSpace = document.getElementById(
-            //     'workingSpace',
-            // ) as HTMLDivElement;
             if (!stage) return;
             let correctedWidth = imageElement.width;
             let correctedHeight = imageElement.height;
