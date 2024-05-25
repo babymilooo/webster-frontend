@@ -1,9 +1,11 @@
+import { useInitProjectStore } from '@/entities/project/model/initProjectStore';
+import { Card, CardContent } from '@/shared/ui/card';
+import Carousel from '@/widgets/Carousel';
+import { ChangeEvent, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import MainLayout from '../MainLayout';
-import HomeLayout from './HomeLayout';
 import { PrivateLayout } from '../PrivateLayout';
-import { ChangeEvent, useRef } from 'react';
-import { useInitProjectStore } from '@/entities/project/model/initProjectStore';
+import HomeLayout from './HomeLayout';
 
 const Home = () => {
     const imageInputRef = useRef<HTMLInputElement | null>(null);
@@ -48,7 +50,22 @@ const Home = () => {
         <MainLayout>
             <HomeLayout>
                 <PrivateLayout>
-                    <div className="flex h-full w-full pl-4 pr-2 pt-4">
+                    <div className="flex h-full w-full flex-col gap-4 p-4">
+                        <div className="phone:h-[250px] p-1 lg:h-[250px] xl:h-[350px]">
+                            <Card className="phone:h-[250px] lg:h-[250px] xl:h-[350px]">
+                                <CardContent
+                                    className="flex h-full select-none items-center rounded-md bg-cover bg-center p-6"
+                                    style={{
+                                        backgroundImage: `url('/background.png')`,
+                                    }}
+                                >
+                                    <p className="ipad:text-4xl phone:text-xl font-bold text-white lg:text-5xl xl:text-6xl">
+                                        Welcome to ElephArt <br /> create your
+                                        masterpieces with us!
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        </div>
                         <div className="h-full w-full rounded-t-lg bg-background">
                             <button>
                                 <Link to="/projects/1">new</Link>
@@ -83,6 +100,10 @@ const Home = () => {
                                     ref={backgroundImageInputRef}
                                 />
                             </div>
+                            <h2 className="mx-4 my-4 text-left text-xl font-bold">
+                                You might want to try...
+                            </h2>
+                            <Carousel />
                         </div>
                     </div>
                 </PrivateLayout>
