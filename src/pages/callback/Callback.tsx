@@ -15,7 +15,6 @@ const Callback = () => {
                     ? new URLSearchParams(window.location.search)
                     : null;
             const code = queryParams ? queryParams.get('code') : null;
-            console.log(code);
             if (code && !isProcessing) {
                 setIsProcessing(true);
                 try {

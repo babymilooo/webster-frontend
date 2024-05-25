@@ -7,7 +7,6 @@ const SignUpGoogle = () => {
 
     const handleSignUp = async () => {
         const data = await signUpGoogle();
-        console.log(data);
         if (data)
             setRedirectUrl(data);
     };

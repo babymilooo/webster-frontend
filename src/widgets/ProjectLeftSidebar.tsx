@@ -1,4 +1,4 @@
-import { useProjectStore } from '@/entities/project';
+import { updatePicture, useProjectStore } from '@/entities/project';
 import { setOnDragable } from '@/entities/project/lib/setDragable';
 import {
     BoxIcon,
@@ -30,15 +30,18 @@ const ProjectLeftSidebar = () => {
         backgroundInputRef.current?.click();
     };
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageChange = async (
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         const file = e.target.files?.[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = (e) => {
-            const data = e.target?.result;
+        reader.onloadend = async () => {
+            // const data = e.target?.result;
 
-            if (typeof data !== 'string') return;
-            setImage(data);
+            // if (typeof data !== 'string') return;
+            const src = await updatePicture(file);
+            setImage(src);
             setState('SelectImage');
         };
         reader.readAsDataURL(file);

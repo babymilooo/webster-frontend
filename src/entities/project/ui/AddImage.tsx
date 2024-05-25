@@ -1,6 +1,6 @@
 import React from 'react';
 import Konva from 'konva';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { clearAllSelection, useProjectStore } from '@/entities/project';
 
 type AddImage = {
@@ -20,11 +20,11 @@ export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
         if (!layer) return;
         const transformer = layer.findOne('Transformer') as Konva.Transformer;
 
-        // const stage = stageRef.current;
-
-        // Create an HTMLImageElement to load the selected image
         const imageElement = new window.Image();
-        imageElement.src = selectedImage;
+        imageElement.crossOrigin = 'anonymous';
+        imageElement.src = (
+            selectedImage as unknown as { image: string }
+        ).image;
 
         imageElement.onload = () => {
             if (!stage) return;
@@ -47,20 +47,19 @@ export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
                 y: 0,
                 width: correctedWidth,
                 height: correctedHeight,
-                image: imageElement, // Pass the loaded image element
+                image: imageElement,
                 draggable: true,
             });
 
             layer?.add(image);
 
-            // Set the transformer to the image
             image.on('click tap', () => {
                 clearAllSelection(stageRef.current);
                 transformer.nodes([image]);
             });
 
             layer?.add(transformer);
-            layer?.batchDraw(); // Use batchDraw to redraw the layer
+            layer?.batchDraw();
         };
     }, [selectedImage, state]);
 

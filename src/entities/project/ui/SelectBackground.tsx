@@ -33,16 +33,13 @@ export const SelectBackground: FC = () => {
         backgroundLayer.moveToBottom();
 
         const images = backgroundLayer.find('Image');
-        console.log(images);
 
         for (const image of images) {
             image.destroy();
         }
 
         const imgElement = new window.Image();
-        // if (!imgElement) return;
         imgElement.src = selectedBackground;
-        // console.log(selectedBackground);
         imgElement.onload = () => {
             const image = new Konva.Image({
                 image: imgElement,
