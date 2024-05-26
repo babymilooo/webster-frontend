@@ -31,6 +31,7 @@ import { useInitProjectStore } from '@/entities/project/model/initProjectStore';
 import { Drag } from '@/entities/project/ui/Drag';
 import { setSelectionTopLayer } from '@/entities/project/ui/SelectionArea';
 import { TextInstrument } from '@/entities/project/lib/Instruments/Text';
+import { MinusIcon, PlusIcon, SymbolIcon } from '@radix-ui/react-icons';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -471,21 +472,31 @@ export const Project = () => {
     };
 
     return (
-        <div>
-            <div>
-                <button onClick={() => handleZoom('in')}>Zoom In</button>
-                <span>Zoom: {zoomPercentage}%</span>
-                <button onClick={() => handleZoom('out')}>Zoom Out</button>
-                <button
-                    type="button"
-                    onClick={() => {
-                        stageRef.current?.scale({ x: 1, y: 1 });
-                        stageRef.current?.position({ x: 0, y: 0 });
-                        setZoomPercentage(100);
-                    }}
-                >
-                    Reset
-                </button>
+        <div className="h-full w-full">
+            <div className="fixed bottom-10 z-10 w-full select-none pr-[380px]">
+                <div className="flex w-full justify-center">
+                    <div className="flex items-center gap-8 rounded-lg border bg-background px-8 py-2 shadow-md">
+                        <PlusIcon
+                            onClick={() => handleZoom('in')}
+                            className=" cursor-pointer"
+                        />
+                        <MinusIcon
+                            onClick={() => handleZoom('out')}
+                            className=" cursor-pointer"
+                        />
+                        <span className="w-[100px] text-center text-lg">
+                            {zoomPercentage}%
+                        </span>
+                        <SymbolIcon
+                            onClick={() => {
+                                stageRef.current?.scale({ x: 1, y: 1 });
+                                stageRef.current?.position({ x: 0, y: 0 });
+                                setZoomPercentage(100);
+                            }}
+                            className=" cursor-pointer"
+                        />
+                    </div>
+                </div>
             </div>
             <Drag />
             <AddCircle stageRef={stageRef} />
@@ -507,8 +518,16 @@ export const Project = () => {
             <DrawAnchorLine stageRef={stageRef} />
 
             <AddText />
-            <div className="m-auto border border-solid border-black">
-                <div id="canvas" ref={canvasElementRef} />
+            <div className="flex h-full w-full items-center justify-center">
+                <div
+                    style={{
+                        width: `${startWidth}px`,
+                        height: `${startHeight}px`,
+                    }}
+                    className="border border-solid border-black"
+                >
+                    <div id="canvas" ref={canvasElementRef} />
+                </div>
             </div>
             {contextMenuVisible && (
                 <div

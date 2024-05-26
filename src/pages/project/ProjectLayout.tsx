@@ -9,7 +9,7 @@ const ProjectLayout = ({ children }: { children: ReactNode }) => {
             <ProjectNavbar />
             <ProjectLeftSidebar />
             <ProjectRightSidebar />
-            <div className="h-full w-full pl-[80px] pr-[300px]">{children}</div>
+            <div className="h-full w-full pl-[80px] pr-[300px] pt-[50px]">{children}</div>
         </div>
     );
 };
