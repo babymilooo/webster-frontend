@@ -45,6 +45,8 @@ export class TextInstrument {
             name: 'object',
         });
 
+        newText.addName('selectableText');
+
         newText.on('transform', () => {
             newText.setAttrs({
                 width: newText.width() * newText.scaleX(),
@@ -55,7 +57,7 @@ export class TextInstrument {
         });
 
         newText.on('dblclick', () => {
-            this.editText(newText, layer, transformer);
+            TextInstrument.editText(newText, layer, transformer);
             transformer.nodes([newText]);
             transformer.show();
             layer.batchDraw();
@@ -69,7 +71,7 @@ export class TextInstrument {
         layer.add(transformer);
     };
 
-    editText = (
+    static editText = (
         textNode: Konva.Text,
         layer: Konva.Layer,
         transformer: Konva.Transformer,
@@ -192,7 +194,7 @@ export class TextInstrument {
                 textNode.text(textarea.value);
                 removeTextarea();
             }
-            this.setUpdatePreview();
+            useProjectStore.getState().setUpdatePreview();
         };
         setTimeout(() => {
             window.addEventListener('click', handleOutsideClick);

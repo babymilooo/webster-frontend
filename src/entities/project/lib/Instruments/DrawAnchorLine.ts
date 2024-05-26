@@ -56,6 +56,8 @@ export class DrawCurveInstrument implements IInstuments {
                 tension: 1,
             });
 
+            newLine.addName('selectable');
+
             // newLine.on('click tap', () => {
             //     clearAllSelection(stage);
             //     transformer.nodes([newLine]);

@@ -41,6 +41,7 @@ export class CircleInstrument implements IInstuments {
             draggable: false,
             name: 'object',
         });
+        newCircle.addName('selectable');
 
         newCircle.on('dblclick', () => {
             clearAllSelection(stage);

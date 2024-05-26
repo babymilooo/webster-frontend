@@ -45,8 +45,9 @@ export class RectInstrument implements IInstuments {
             draggable: false,
             name: 'object',
         });
+        newRect.addName('selectable');
 
-        newRect.on('click tap', () => {
+        newRect.on('dblclick', () => {
             clearAllSelection(stage);
             transformer.nodes([newRect]);
         });
