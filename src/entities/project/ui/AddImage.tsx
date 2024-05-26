@@ -51,6 +51,8 @@ export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
                 draggable: true,
             });
 
+            image.setAttrs({ src: imageElement.src });
+            
             layer?.add(image);
 
             image.on('click tap', () => {

@@ -2,11 +2,11 @@ import { useInitProjectStore } from '@/entities/project/model/initProjectStore';
 import { Card, CardContent } from '@/shared/ui/card';
 import Carousel from '@/widgets/Carousel';
 import { ChangeEvent, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import MainLayout from '../MainLayout';
 import { PrivateLayout } from '../PrivateLayout';
 import HomeLayout from './HomeLayout';
-import { createProject } from '@/entities/project';
+import { createProject, useProjectStore } from '@/entities/project';
 import { useUserStore } from '@/entities/user';
 
 const Home = () => {
@@ -14,6 +14,7 @@ const Home = () => {
     const backgroundImageInputRef = useRef<HTMLInputElement | null>(null);
     const navigate = useNavigate();
     const setProjects = useUserStore((state) => state.setProjects);
+    const setProject = useProjectStore((state) => state.setProject);
     const projects = useUserStore((state) => state.projects);
     const [setStartImage, setStartBackgroundImage, setWidth, setHeight] =
         useInitProjectStore((state) => [
@@ -77,10 +78,12 @@ const Home = () => {
         if (data) {
             const formatedProjects = projects ? [...projects, data] : [data];
             setProjects(formatedProjects as []);
+            setProject(data);
         }
+
         navigate(`/projects/${data._id}`);
     };
-    
+
     return (
         <MainLayout>
             <HomeLayout>

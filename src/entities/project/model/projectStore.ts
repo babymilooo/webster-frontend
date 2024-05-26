@@ -4,6 +4,7 @@ import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { createProject } from '../index';
 import { setOffDragable, setOnDraggableLayer } from '../lib/setDragable';
+import { saveProject } from '../api/saveProject';
 
 interface Project {
     _id: number;
@@ -162,19 +163,8 @@ export const useProjectStore = create<ProjectState>()(
                 const stage = useProjectStore.getState().stage;
                 const sendData = () => {
                     if (stage) {
-                        const dataURL = stage.toDataURL({ pixelRatio: 3 });
-                        console.log(dataURL);
-                        // Отправка данных на сервер
-                        // fetch('/api/upload', {
-                        //     method: 'POST',
-                        //     headers: {
-                        //         'Content-Type': 'application/json',
-                        //     },
-                        //     body: JSON.stringify({ image: dataURL }),
-                        // })
-                        //     .then((response) => response.json())
-                        //     .then((data) => console.log('Success:', data))
-                        //     .catch((error) => console.error('Error:', error));
+                        const dataJSON = stage.toJSON();
+                        saveProject(dataJSON);
                     }
                 };
 

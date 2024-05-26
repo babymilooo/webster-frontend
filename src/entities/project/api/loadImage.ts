@@ -1,12 +1,13 @@
 import axios from 'axios';
-import { API_URL } from '@/entities/project';
+import { API_URL, useProjectStore } from '@/entities/project';
 
 export async function updatePicture(picture: any) {
+    const id = useProjectStore.getState().project?._id;
     const formData = new FormData();
     formData.append('image', picture);
     try {
         const response = await axios.post(
-            `${API_URL}/project/image-project`,
+            `${API_URL}/project/${id}/upload-image`,
             formData,
             {
                 headers: {
