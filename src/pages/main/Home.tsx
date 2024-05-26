@@ -16,13 +16,19 @@ const Home = () => {
     const setProjects = useUserStore((state) => state.setProjects);
     const setProject = useProjectStore((state) => state.setProject);
     const projects = useUserStore((state) => state.projects);
-    const [setStartImage, setStartBackgroundImage, setWidth, setHeight] =
-        useInitProjectStore((state) => [
-            state.setStartingImage,
-            state.setStartingBackgroundImage,
-            state.setWidth,
-            state.setHeight,
-        ]);
+    const [
+        setStartImage,
+        setStartBackgroundImage,
+        setStartJSON,
+        setWidth,
+        setHeight,
+    ] = useInitProjectStore((state) => [
+        state.setStartingImage,
+        state.setStartingBackgroundImage,
+        state.setSerializedJSON,
+        state.setWidth,
+        state.setHeight,
+    ]);
 
     const handleSelectImageForProject = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -138,6 +144,20 @@ const Home = () => {
                                     className="hidden"
                                     ref={backgroundImageInputRef}
                                 />
+                            </div>
+                            <div>
+                                {projects?.map((pr) => (
+                                    <div
+                                        key={pr._id}
+                                        onClick={() => {
+                                            setStartJSON(pr.projectJSON);
+                                            setProject(pr);
+                                            navigate(`/projects/${pr._id}`);
+                                        }}
+                                    >
+                                        Project {pr.title}
+                                    </div>
+                                ))}
                             </div>
                             <h2 className="mx-4 my-4 text-left text-xl font-bold">
                                 You might want to try...

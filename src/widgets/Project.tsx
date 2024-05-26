@@ -69,10 +69,13 @@ export const Project = () => {
     ]);
 
     const instrumentState = useProjectStore((state) => state.state);
+    const resetProjectStore = useProjectStore((state) => state.resetStore);
 
     useEffect(() => {
         const initStage = () => {
             if (!canvasElementRef.current) return;
+            resetProjectStore();
+
             //adjust canvas size if larger than screen
             const workingSpace = document.getElementById(
                 'workingSpace',
@@ -97,6 +100,7 @@ export const Project = () => {
                     startJSON,
                     canvasElementRef.current,
                 ) as Konva.Stage;
+                // console.log(stage);
 
                 const lastIndex = stage.getAttr('lastLayerIndex');
                 if (lastIndex) setLayerCreationIndex(lastIndex);
@@ -137,6 +141,7 @@ export const Project = () => {
                     const src = image.getAttr('src');
                     const imageElement = new window.Image();
                     imageElement.src = src;
+                    imageElement.crossOrigin = 'anonymous';
                     imageElement.onload = () => {
                         image.image(imageElement);
                         setUpdatePreview();
@@ -519,13 +524,7 @@ export const Project = () => {
 
             <AddText />
             <div className="flex h-full w-full items-center justify-center">
-                <div
-                    style={{
-                        width: `${startWidth}px`,
-                        height: `${startHeight}px`,
-                    }}
-                    className="border border-solid border-black"
-                >
+                <div className="h-fit w-fit border border-solid border-black">
                     <div id="canvas" ref={canvasElementRef} />
                 </div>
             </div>
