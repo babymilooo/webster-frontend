@@ -13,6 +13,7 @@ import { AddRect } from '@/entities/project';
 import {
     getLayerCreationIndex,
     resetLayerCreationIndex,
+    setLayerCreationIndex,
 } from '@/entities/project/lib/layerCreationIndex';
 import DrawLine from '@/entities/project/ui/DrawLine';
 import { AddText } from '@/entities/project/ui/AddText';
@@ -28,6 +29,8 @@ import {
 } from '@/entities/project/ui/SelectBackground';
 import { useInitProjectStore } from '@/entities/project/model/initProjectStore';
 import { Drag } from '@/entities/project/ui/Drag';
+import { setSelectionTopLayer } from '@/entities/project/ui/SelectionArea';
+import { TextInstrument } from '@/entities/project/lib/Instruments/Text';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -64,6 +67,8 @@ export const Project = () => {
         state.startingBackgroundImage,
     ]);
 
+    const instrumentState = useProjectStore((state) => state.state);
+
     useEffect(() => {
         const initStage = () => {
             if (!canvasElementRef.current) return;
@@ -86,112 +91,242 @@ export const Project = () => {
             }
 
             resetLayerCreationIndex();
-            const stage = new Konva.Stage({
-                container: canvasElementRef.current,
-                width: correctedWidth,
-                height: correctedHeight,
-            });
-            stageRef.current = stage;
+            if (startJSON) {
+                const stage = Konva.Stage.create(
+                    startJSON,
+                    canvasElementRef.current,
+                ) as Konva.Stage;
 
-            const startLayer = new Konva.Layer();
-            const transformer = new Konva.Transformer();
-            startLayer.add(transformer);
-            startLayer.setAttrs({ creationIndex: getLayerCreationIndex() });
-            stage.add(startLayer);
+                const lastIndex = stage.getAttr('lastLayerIndex');
+                if (lastIndex) setLayerCreationIndex(lastIndex);
 
-            if (startImage) {
-                const imgElement = new window.Image();
-                // if (!imgElement) return;
-                imgElement.src = startImage;
-                // console.log(selectedBackground);
-                imgElement.onload = () => {
-                    const image = new Konva.Image({
-                        image: imgElement,
-                        draggable: true,
-                        width: stage.width(),
-                        height: stage.height(),
-                        x: 0,
-                        y: 0,
-                    });
-                    startLayer.add(image);
-                    toggleLayersSwitch();
-                    setUpdatePreview();
-                };
-            }
-            if (startBackgroundImage) {
-                const backgroundLayer = new Konva.Layer();
-                backgroundLayer.setAttrs({
-                    creationIndex: -2,
-                    hidden: true,
-                    backgroundLayer: true,
-                    listening: false,
-                    id: 'backgroundLayer',
+                stageRef.current = stage;
+                setStage(stage);
+
+                //find and aset backgroundLayer and selectionTopLayer
+                const backgroundLayer = stage.findOne('#backgroundLayer') as
+                    | Konva.Layer
+                    | undefined;
+                if (backgroundLayer) setBackgroundLayer(backgroundLayer);
+
+                const selectionTopLayer = stage.findOne(
+                    '#selectionTopLayer',
+                ) as Konva.Layer | undefined;
+                if (selectionTopLayer) setSelectionTopLayer(selectionTopLayer);
+
+                //add snapping lines to layers and select one as selected layer
+                const layers = stage.find('Layer') as Konva.Layer[];
+                let isSelectedStartLayer = false;
+                for (const l of layers) {
+                    if (
+                        l.id() == 'backgroundLayer' ||
+                        l.id() == 'selectionTopLayer'
+                    )
+                        continue;
+                    if (!isSelectedStartLayer) {
+                        isSelectedStartLayer = true;
+                        setSelectedLayer(l);
+                    }
+                    new KonvaSnappingDemo(stage, l);
+                }
+
+                //restore images
+                const images = stage.find('Image') as Konva.Image[];
+                for (const image of images) {
+                    const src = image.getAttr('src');
+                    const imageElement = new window.Image();
+                    imageElement.src = src;
+                    imageElement.onload = () => {
+                        image.image(imageElement);
+                        setUpdatePreview();
+                    };
+                }
+
+                //add event listeners to stuff
+                for (const layer of layers) {
+                    if (
+                        layer.id() == 'backgroundLayer' ||
+                        layer.id() == 'selectionTopLayer'
+                    )
+                        continue;
+                    const transformer = layer.findOne('Transformer') as
+                        | Konva.Transformer
+                        | undefined;
+                    if (!transformer) continue;
+                    //circles rects and lines
+                    const figures = layer.find('.selectable') as Konva.Shape[];
+                    for (const fig of figures) {
+                        fig.on('dblclick', () => {
+                            clearAllSelection(stage);
+                            transformer.nodes([fig]);
+                            transformer.show();
+                            layer.batchDraw();
+                        });
+                    }
+                    //add event listeners to texts
+                    const texts = layer.find('.selectableText') as Konva.Text[];
+                    for (const text of texts) {
+                        text.on('transform', () => {
+                            text.setAttrs({
+                                width: text.width() * text.scaleX(),
+                                height: text.height() * text.scaleY(),
+                                scaleX: 1,
+                                scaleY: 1,
+                            });
+                        });
+
+                        text.on('dblclick', () => {
+                            TextInstrument.editText(text, layer, transformer);
+                            transformer.nodes([text]);
+                            transformer.show();
+                            layer.batchDraw();
+                        });
+                    }
+                }
+
+                toggleLayersSwitch();
+                setUpdatePreview();
+
+                stage.on('mousedown', (e) => {
+                    if (e.target === stage) {
+                        clearAllSelection(stage);
+                    }
                 });
-                stage.add(backgroundLayer);
-                backgroundLayer.moveToBottom();
-                setBackgroundLayer(backgroundLayer);
 
-                const imgElement = new window.Image();
-                // if (!imgElement) return;
-                imgElement.src = startBackgroundImage;
-                // console.log(selectedBackground);
-                imgElement.onload = () => {
-                    const image = new Konva.Image({
-                        image: imgElement,
-                        draggable: false,
-                        listening: false,
-                        width: stage.width(),
-                        height: stage.height(),
-                        x: 0,
-                        y: 0,
-                    });
-                    image.setAttrs({ handdrawn: true });
-                    backgroundLayer?.add(image);
-                    backgroundLayer?.batchDraw();
-                    toggleLayersSwitch();
+                stage.on('mouseup', () => {
                     setUpdatePreview();
-                };
-            }
+                });
 
-            setStage(stage);
-            setSelectedLayer(startLayer);
+                stage.on('dragend transformend', () => {
+                    // console.log('dragend transformend');
+                    setUpdatePreview();
+                });
 
-            new KonvaSnappingDemo(stage, startLayer);
-            toggleLayersSwitch();
-            setUpdatePreview();
+                stage.on('contextmenu', (e) => {
+                    e.evt.preventDefault();
+                    if (e.target === stage) {
+                        setContextMenuVisible(false);
+                        return;
+                    }
+                    if (e.target instanceof Konva.Shape) {
+                        const shape = e.target;
+                        setCurrentShape(shape);
 
-            stage.on('mousedown', (e) => {
-                if (e.target === stage) {
-                    clearAllSelection(stage);
+                        setContextMenuPosition({
+                            x: e.evt.clientX,
+                            y: e.evt.clientY,
+                        });
+                        setContextMenuVisible(true);
+                    }
+                });
+            } else {
+                const stage = new Konva.Stage({
+                    container: canvasElementRef.current,
+                    width: correctedWidth,
+                    height: correctedHeight,
+                });
+                stageRef.current = stage;
+                setStage(stage);
+
+                const startLayer = new Konva.Layer();
+                const transformer = new Konva.Transformer();
+                startLayer.add(transformer);
+                startLayer.setAttrs({ creationIndex: getLayerCreationIndex() });
+                stage.add(startLayer);
+
+                if (startImage) {
+                    const imgElement = new window.Image();
+                    // if (!imgElement) return;
+                    imgElement.src = startImage;
+                    // console.log(selectedBackground);
+                    imgElement.onload = () => {
+                        const image = new Konva.Image({
+                            image: imgElement,
+                            draggable: true,
+                            width: stage.width(),
+                            height: stage.height(),
+                            x: 0,
+                            y: 0,
+                        });
+                        startLayer.add(image);
+                        toggleLayersSwitch();
+                        setUpdatePreview();
+                    };
                 }
-            });
-
-            stage.on('mouseup', () => {
-                setUpdatePreview();
-            });
-
-            stage.on('dragend transformend', () => {
-                // console.log('dragend transformend');
-                setUpdatePreview();
-            });
-
-            stage.on('contextmenu', (e) => {
-                e.evt.preventDefault();
-                if (e.target === stage) {
-                    setContextMenuVisible(false);
-                    return;
-                }
-                if (e.target instanceof Konva.Shape) {
-                    const shape = e.target;
-                    setCurrentShape(shape);
-
-                    setContextMenuPosition({
-                        x: e.evt.clientX,
-                        y: e.evt.clientY,
+                if (startBackgroundImage) {
+                    const backgroundLayer = new Konva.Layer();
+                    backgroundLayer.setAttrs({
+                        creationIndex: -2,
+                        hidden: true,
+                        backgroundLayer: true,
+                        listening: false,
+                        id: 'backgroundLayer',
                     });
-                    setContextMenuVisible(true);
+                    stage.add(backgroundLayer);
+                    backgroundLayer.moveToBottom();
+                    setBackgroundLayer(backgroundLayer);
+
+                    const imgElement = new window.Image();
+                    // if (!imgElement) return;
+                    imgElement.src = startBackgroundImage;
+                    // console.log(selectedBackground);
+                    imgElement.onload = () => {
+                        const image = new Konva.Image({
+                            image: imgElement,
+                            draggable: false,
+                            listening: false,
+                            width: stage.width(),
+                            height: stage.height(),
+                            x: 0,
+                            y: 0,
+                        });
+                        image.setAttrs({ handdrawn: true });
+                        backgroundLayer?.add(image);
+                        backgroundLayer?.batchDraw();
+                        toggleLayersSwitch();
+                        setUpdatePreview();
+                    };
                 }
-            });
+
+                setSelectedLayer(startLayer);
+
+                new KonvaSnappingDemo(stage, startLayer);
+                toggleLayersSwitch();
+                setUpdatePreview();
+
+                stage.on('mousedown', (e) => {
+                    if (e.target === stage) {
+                        clearAllSelection(stage);
+                    }
+                });
+
+                stage.on('mouseup', () => {
+                    setUpdatePreview();
+                });
+
+                stage.on('dragend transformend', () => {
+                    // console.log('dragend transformend');
+                    setUpdatePreview();
+                });
+
+                stage.on('contextmenu', (e) => {
+                    e.evt.preventDefault();
+                    if (e.target === stage) {
+                        setContextMenuVisible(false);
+                        return;
+                    }
+                    if (e.target instanceof Konva.Shape) {
+                        const shape = e.target;
+                        setCurrentShape(shape);
+
+                        setContextMenuPosition({
+                            x: e.evt.clientX,
+                            y: e.evt.clientY,
+                        });
+                        setContextMenuVisible(true);
+                    }
+                });
+            }
         };
 
         const handleClickOutside = (e: MouseEvent) => {
@@ -213,6 +348,30 @@ export const Project = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    useEffect(() => {
+        if (instrumentState != 'DrawLine' && instrumentState != 'DrawCurve') {
+            const stage = useProjectStore.getState().stage;
+            if (!stage) return;
+            stage.on('contextmenu', (e) => {
+                e.evt.preventDefault();
+                if (e.target === stage) {
+                    setContextMenuVisible(false);
+                    return;
+                }
+                if (e.target instanceof Konva.Shape) {
+                    const shape = e.target;
+                    setCurrentShape(shape);
+
+                    setContextMenuPosition({
+                        x: e.evt.clientX,
+                        y: e.evt.clientY,
+                    });
+                    setContextMenuVisible(true);
+                }
+            });
+        }
+    }, [instrumentState]);
 
     const handleZoom = (direction: 'in' | 'out') => {
         const stage = stageRef.current;
