@@ -100,7 +100,7 @@ const Home = () => {
                                 <CardContent
                                     className="flex h-full select-none items-center rounded-md bg-cover bg-center p-6"
                                     style={{
-                                        backgroundImage: `url('/background.png')`,
+                                        backgroundImage: `url('../src/public/background.png')`,
                                     }}
                                 >
                                     <p className="ipad:text-4xl phone:text-xl font-bold text-white lg:text-5xl xl:text-6xl">
