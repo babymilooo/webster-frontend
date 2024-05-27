@@ -1,4 +1,5 @@
 import { useProjectStore } from '@/entities/project';
+import { ColorCorrection } from '@/entities/project/ui/ColorCorrection';
 import { Label } from '@/shared/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/shared/ui/radio-group';
 import Konva from 'konva';
@@ -165,40 +166,50 @@ const Preview = () => {
                                 className="w-12"
                             />
                         </div>
-                        <div className="col-span-1 flex w-full items-center justify-center p-2">
-                            <input
-                                type="checkbox"
-                                checked={fill !== ''}
-                                onChange={handleFillChange}
-                            />
-                            <Label className="pl-1">Fill</Label>
-                        </div>
-                        <div className="col-span-1 flex w-full items-center justify-center p-2">
-                            <input
-                                type="checkbox"
-                                checked={stroke !== ''}
-                                onChange={handleStrokeChange}
-                            />
-                            <Label className="pl-1">Stroke</Label>
-                        </div>
-                        <div className="col-span-1 flex w-full justify-center gap-2">
-                            <input
-                                type="color"
-                                value={fill !== '' ? fill : '#000000'}
-                                onChange={handleFillColorChange}
-                                disabled={fill === ''}
-                                className="w-16"
-                            />
-                        </div>
-                        <div className="col-span-1 flex w-full justify-center gap-2">
-                            <input
-                                type="color"
-                                value={stroke !== '' ? stroke : '#000000'}
-                                onChange={handleStrokeColorChange}
-                                disabled={stroke === ''}
-                                className="w-16"
-                            />
-                        </div>
+                        {SelectedShape.getAttr('src') ? (
+                            <div className='col-span-2 w-full flex justify-center'>
+                                <ColorCorrection SelectedShape={SelectedShape}/>
+                            </div>
+                        ) : (
+                            <>
+                                <div className="col-span-1 flex w-full items-center justify-center p-2">
+                                    <input
+                                        type="checkbox"
+                                        checked={fill !== ''}
+                                        onChange={handleFillChange}
+                                    />
+                                    <Label className="pl-1">Fill</Label>
+                                </div>
+                                <div className="col-span-1 flex w-full items-center justify-center p-2">
+                                    <input
+                                        type="checkbox"
+                                        checked={stroke !== ''}
+                                        onChange={handleStrokeChange}
+                                    />
+                                    <Label className="pl-1">Stroke</Label>
+                                </div>
+                                <div className="col-span-1 flex w-full justify-center gap-2">
+                                    <input
+                                        type="color"
+                                        value={fill !== '' ? fill : '#000000'}
+                                        onChange={handleFillColorChange}
+                                        disabled={fill === ''}
+                                        className="w-16"
+                                    />
+                                </div>
+                                <div className="col-span-1 flex w-full justify-center gap-2">
+                                    <input
+                                        type="color"
+                                        value={
+                                            stroke !== '' ? stroke : '#000000'
+                                        }
+                                        onChange={handleStrokeColorChange}
+                                        disabled={stroke === ''}
+                                        className="w-16"
+                                    />
+                                </div>
+                            </>
+                        )}
                     </div>
                 </>
             ) : (
