@@ -472,7 +472,7 @@ export const Project = () => {
     };
 
     return (
-        <div className="h-full w-full">
+        <div className="h-full w-full bg-canva">
             <div className="fixed bottom-10 z-10 w-full select-none pr-[380px]">
                 <div className="flex w-full justify-center">
                     <div className="flex items-center gap-8 rounded-lg border bg-background px-8 py-2 shadow-md">
@@ -518,7 +518,7 @@ export const Project = () => {
             <DrawAnchorLine stageRef={stageRef} />
 
             <AddText />
-            <div className="flex h-full w-full items-center justify-center">
+            <div className="flex h-full w-full items-center justify-center bg-canva">
                 <div
                     style={{
                         width: `${startWidth}px`,
@@ -536,18 +536,16 @@ export const Project = () => {
                         position: 'absolute',
                         top: `${contextMenuPosition.y}px`,
                         left: `${contextMenuPosition.x}px`,
-                        backgroundColor: 'white',
-                        boxShadow: '0 0 5px rgba(0,0,0,0.5)',
                         zIndex: 1000,
                     }}
                     onClick={(e) => e.stopPropagation()} // Prevent closing the menu when clicking inside it
                 >
-                    <div>
-                        <button onClick={() => handleMoveToLayer()}>
-                            Move to Drawing Layer
+                    <div className='bg-background flex flex-col items-start text-sm rounded-lg border shadow-md'>
+                        <button onClick={() => handleMoveToLayer()} className='hover:bg-secondary p-1 rounded-t-lg'>
+                            Move to next layer
                         </button>
-                        <button onClick={handlePulse}>Pulse</button>
-                        <button onClick={handleDelete}>Delete</button>
+                        <button className='hover:bg-secondary p-1 w-full text-start' onClick={handlePulse}>Pulse</button>
+                        <button className='hover:bg-secondary p-1 w-full text-start rounded-b-lg' onClick={handleDelete}>Delete</button>
                     </div>
                 </div>
             )}

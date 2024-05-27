@@ -18,9 +18,9 @@ const TooltipIcon = ({
     const [isHovered, setIsHovered] = useState(false);
 
     return (
-        <div className="relative flex h-10 w-full items-center justify-center">
+        <div className="relative flex h-10 w-full items-center justify-center bg-background">
             <div
-                className="cursor-pointer p-2"
+                className="cursor-pointer p-2 bg-background"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 onClick={onClick}
@@ -28,7 +28,7 @@ const TooltipIcon = ({
                 <Icon className="h-6 w-6 text-foreground" />
             </div>
             {isHovered && (
-                <div className="absolute left-full top-1/2 z-10 ml-2 w-64 -translate-y-1/2 transform rounded-lg border border-gray-300 bg-white shadow-lg animate-jump-in animate-once animate-duration-300 animate-delay-300 animate-ease-out">
+                <div className="absolute left-full top-1/2 z-10 ml-2 w-64 -translate-y-1/2 bg-background transform rounded-lg shadow-lg animate-jump-in animate-once animate-duration-300 animate-delay-300 animate-ease-out">
                     <img
                         src={imgSrc}
                         alt="Description"
