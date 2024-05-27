@@ -505,7 +505,7 @@ export const Project = () => {
                         position: 'absolute',
                         top: `${contextMenuPosition.y}px`,
                         left: `${contextMenuPosition.x}px`,
-                        zIndex: 1000,
+                        zIndex: 20,
                     }}
                     onClick={(e) => e.stopPropagation()} // Prevent closing the menu when clicking inside it
                 >
