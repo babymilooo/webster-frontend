@@ -541,16 +541,29 @@ export const Project = () => {
                         position: 'absolute',
                         top: `${contextMenuPosition.y}px`,
                         left: `${contextMenuPosition.x}px`,
-                        zIndex: 1000,
+                        zIndex: 20,
                     }}
                     onClick={(e) => e.stopPropagation()} // Prevent closing the menu when clicking inside it
                 >
-                    <div className='bg-background flex flex-col items-start text-sm rounded-lg border shadow-md'>
-                        <button onClick={() => handleMoveToLayer()} className='hover:bg-secondary p-1 rounded-t-lg'>
+                    <div className="flex flex-col items-start rounded-lg border bg-background text-sm shadow-md">
+                        <button
+                            onClick={() => handleMoveToLayer()}
+                            className="rounded-t-lg p-1 hover:bg-secondary"
+                        >
                             Move to next layer
                         </button>
-                        <button className='hover:bg-secondary p-1 w-full text-start' onClick={handlePulse}>Pulse</button>
-                        <button className='hover:bg-secondary p-1 w-full text-start rounded-b-lg' onClick={handleDelete}>Delete</button>
+                        <button
+                            className="w-full p-1 text-start hover:bg-secondary"
+                            onClick={handlePulse}
+                        >
+                            Pulse
+                        </button>
+                        <button
+                            className="w-full rounded-b-lg p-1 text-start hover:bg-secondary"
+                            onClick={handleDelete}
+                        >
+                            Delete
+                        </button>
                     </div>
                 </div>
             )}
