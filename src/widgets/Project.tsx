@@ -246,6 +246,7 @@ export const Project = () => {
                 if (startImage) {
                     const imgElement = new window.Image();
                     imgElement.src = startImage;
+                    imgElement.crossOrigin = 'anonymous';
                     imgElement.onload = () => {
                         const image = new Konva.Image({
                             image: imgElement,
@@ -274,9 +275,8 @@ export const Project = () => {
                     setBackgroundLayer(backgroundLayer);
 
                     const imgElement = new window.Image();
-                    // if (!imgElement) return;
                     imgElement.src = startBackgroundImage;
-                    // console.log(selectedBackground);
+                    imgElement.crossOrigin = 'anonymous';
                     imgElement.onload = () => {
                         const image = new Konva.Image({
                             image: imgElement,

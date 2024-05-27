@@ -6,7 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import MainLayout from '../MainLayout';
 import { PrivateLayout } from '../PrivateLayout';
 import HomeLayout from './HomeLayout';
-import { createProject, useProjectStore } from '@/entities/project';
+import {
+    createProject,
+    updatePicture,
+    useProjectStore,
+} from '@/entities/project';
 import { useUserStore } from '@/entities/user';
 import $api from '@/app/http/axios';
 
@@ -31,14 +35,21 @@ const Home = () => {
         state.setHeight,
     ]);
 
+    const isLogin = useUserStore((state) => state.isLogin);
+
     const handleSelectImageForProject = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = (e) => {
-            const data = e.target?.result;
+        reader.onload = async (e) => {
+            let data: any = null;
+            if (isLogin) {
+                data = await updatePicture(file);
+            } else {
+                data = e.target?.result;
+                if (typeof data !== 'string') return;
+            }
 
-            if (typeof data !== 'string') return;
             const img = new window.Image();
             img.src = data;
             img.onload = () => {
@@ -59,10 +70,14 @@ const Home = () => {
         const file = e.target.files?.[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = (e) => {
-            const data = e.target?.result;
-
-            if (typeof data !== 'string') return;
+        reader.onload = async (e) => {
+            let data: any = null;
+            if (isLogin) {
+                data = await updatePicture(file);
+            } else {
+                data = e.target?.result;
+                if (typeof data !== 'string') return;
+            }
             const img = new window.Image();
             img.src = data;
             img.onload = () => {

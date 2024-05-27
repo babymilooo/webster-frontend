@@ -5,6 +5,7 @@ import { immer } from 'zustand/middleware/immer';
 import { createProject } from '../index';
 import { setOffDragable, setOnDraggableLayer } from '../lib/setDragable';
 import { saveProject } from '../api/saveProject';
+import { useUserStore } from '@/entities/user';
 
 interface Project {
     _id: number;
@@ -169,6 +170,8 @@ export const useProjectStore = create<
                 set((state) => ({
                     updatePreview: !state.updatePreview,
                 }));
+                const isLogin = useUserStore.getState().isLogin;
+                if (!isLogin) return;
 
                 const stage = useProjectStore.getState().stage;
                 const sendData = () => {
