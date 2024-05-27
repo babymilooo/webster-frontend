@@ -18,7 +18,7 @@ interface UserState {
     isLoaded: boolean;
     isLogin: boolean;
     checked: boolean;
-    projects: [] | null;
+    projects: any[] | null;
     setProjects: (projects: [] | null) => void;
     setUser: (user: User | null) => void;
     loginUser: (email: string, password: string) => void;
@@ -26,7 +26,6 @@ interface UserState {
     registerUser: (email: string, password: string) => void;
     checkAuth: () => object | null;
     logoutUser: () => void;
-
 }
 
 export const useUserStore = create<UserState>()(
@@ -98,7 +97,7 @@ export const useUserStore = create<UserState>()(
                 }
                 set({ isLoaded: true });
             },
-            
+
             logoutUser: () => set({ user: null }),
         })),
     ),
