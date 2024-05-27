@@ -83,7 +83,7 @@ const initState = {
     project: null,
     isLoaded: false,
     coolDown: false,
-    state: '',
+    state: 'Drag',
     drawState: '',
 
     stage: null,

@@ -113,7 +113,7 @@ export class SelectionAreaInstrument implements IInstuments {
         this.isDrawing = false;
         this.startPose = null;
 
-        const shapes = selectedLayer.find('Circle, Rect, Ellipse, Line');
+        const shapes = selectedLayer.find('Circle, Rect, Ellipse, Line, Image');
         if (!shapes || !shapes.length) return;
 
         const transformer = selectedLayer?.findOne(
