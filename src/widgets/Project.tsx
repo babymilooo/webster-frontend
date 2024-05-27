@@ -72,6 +72,40 @@ export const Project = () => {
     const resetProjectStore = useProjectStore((state) => state.resetStore);
 
     useEffect(() => {
+        const applyEventListenersToStage = (stage: Konva.Stage) => {
+            stage.on('mousedown', (e) => {
+                if (e.target === stage) {
+                    clearAllSelection(stage);
+                }
+            });
+
+            stage.on('mouseup', () => {
+                setUpdatePreview();
+            });
+
+            stage.on('dragend transformend', () => {
+                // console.log('dragend transformend');
+                setUpdatePreview();
+            });
+
+            stage.on('contextmenu', (e) => {
+                e.evt.preventDefault();
+                if (e.target === stage) {
+                    setContextMenuVisible(false);
+                    return;
+                }
+                if (e.target instanceof Konva.Shape) {
+                    const shape = e.target;
+                    setCurrentShape(shape);
+
+                    setContextMenuPosition({
+                        x: e.evt.clientX,
+                        y: e.evt.clientY,
+                    });
+                    setContextMenuVisible(true);
+                }
+            });
+        };
         const initStage = () => {
             if (!canvasElementRef.current) return;
             resetProjectStore();
@@ -193,38 +227,7 @@ export const Project = () => {
                 toggleLayersSwitch();
                 setUpdatePreview();
 
-                stage.on('mousedown', (e) => {
-                    if (e.target === stage) {
-                        clearAllSelection(stage);
-                    }
-                });
-
-                stage.on('mouseup', () => {
-                    setUpdatePreview();
-                });
-
-                stage.on('dragend transformend', () => {
-                    // console.log('dragend transformend');
-                    setUpdatePreview();
-                });
-
-                stage.on('contextmenu', (e) => {
-                    e.evt.preventDefault();
-                    if (e.target === stage) {
-                        setContextMenuVisible(false);
-                        return;
-                    }
-                    if (e.target instanceof Konva.Shape) {
-                        const shape = e.target;
-                        setCurrentShape(shape);
-
-                        setContextMenuPosition({
-                            x: e.evt.clientX,
-                            y: e.evt.clientY,
-                        });
-                        setContextMenuVisible(true);
-                    }
-                });
+                applyEventListenersToStage(stage);
             } else {
                 const stage = new Konva.Stage({
                     container: canvasElementRef.current,
@@ -242,9 +245,7 @@ export const Project = () => {
 
                 if (startImage) {
                     const imgElement = new window.Image();
-                    // if (!imgElement) return;
                     imgElement.src = startImage;
-                    // console.log(selectedBackground);
                     imgElement.onload = () => {
                         const image = new Konva.Image({
                             image: imgElement,
@@ -300,38 +301,7 @@ export const Project = () => {
                 toggleLayersSwitch();
                 setUpdatePreview();
 
-                stage.on('mousedown', (e) => {
-                    if (e.target === stage) {
-                        clearAllSelection(stage);
-                    }
-                });
-
-                stage.on('mouseup', () => {
-                    setUpdatePreview();
-                });
-
-                stage.on('dragend transformend', () => {
-                    // console.log('dragend transformend');
-                    setUpdatePreview();
-                });
-
-                stage.on('contextmenu', (e) => {
-                    e.evt.preventDefault();
-                    if (e.target === stage) {
-                        setContextMenuVisible(false);
-                        return;
-                    }
-                    if (e.target instanceof Konva.Shape) {
-                        const shape = e.target;
-                        setCurrentShape(shape);
-
-                        setContextMenuPosition({
-                            x: e.evt.clientX,
-                            y: e.evt.clientY,
-                        });
-                        setContextMenuVisible(true);
-                    }
-                });
+                applyEventListenersToStage(stage);
             }
         };
 
@@ -524,13 +494,7 @@ export const Project = () => {
 
             <AddText />
             <div className="flex h-full w-full items-center justify-center bg-canva">
-                <div
-                    style={{
-                        width: `${startWidth}px`,
-                        height: `${startHeight}px`,
-                    }}
-                    className="border border-solid border-black"
-                >
+                <div className="h-fit w-fit border border-solid border-black">
                     <div id="canvas" ref={canvasElementRef} />
                 </div>
             </div>

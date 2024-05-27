@@ -8,6 +8,7 @@ import { PrivateLayout } from '../PrivateLayout';
 import HomeLayout from './HomeLayout';
 import { createProject, useProjectStore } from '@/entities/project';
 import { useUserStore } from '@/entities/user';
+import $api from '@/app/http/axios';
 
 const Home = () => {
     const imageInputRef = useRef<HTMLInputElement | null>(null);
@@ -150,12 +151,10 @@ const Home = () => {
                                     <div
                                         key={pr._id}
                                         onClick={() => {
-                                            setStartJSON(pr.projectJSON);
-                                            setProject(pr);
                                             navigate(`/projects/${pr._id}`);
                                         }}
                                     >
-                                        Project {pr.title}
+                                        Project {pr.title} {pr._id}
                                     </div>
                                 ))}
                             </div>
