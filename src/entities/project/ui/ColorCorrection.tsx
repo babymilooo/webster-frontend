@@ -9,6 +9,7 @@ import {
 import Konva from 'konva';
 import { useState, useEffect } from 'react';
 import { Button } from '@/shared/ui/button';
+import { useProjectStore } from '../model/projectStore';
 
 export const ColorCorrection = ({ SelectedShape }: { SelectedShape: any }) => {
     const [blurRadius, setBlurRadius] = useState(0);
@@ -17,14 +18,29 @@ export const ColorCorrection = ({ SelectedShape }: { SelectedShape: any }) => {
     const [saturation, setSaturation] = useState(0);
     const [hue, setHue] = useState(0);
     const [luminance, setLuminance] = useState(0);
-    const [pixelSize, setPixelSize] = useState(0);
+    const [pixelSize, setPixelSize] = useState(1);
     const [imageDataUrl, setImageDataUrl] = useState('');
     const [tempShape, setTempShape] = useState(null);
-
+    const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
     useEffect(() => {
         if (SelectedShape) {
             const copy = SelectedShape.clone();
             setTempShape(copy);
+            copy.filters([
+                Konva.Filters.Brighten,
+                Konva.Filters.Blur,
+                Konva.Filters.Contrast,
+                Konva.Filters.HSL,
+                Konva.Filters.Pixelate,
+            ]);
+            copy.cache();
+            setBlurRadius(copy.blurRadius());
+            setBrightness(copy.brightness());
+            setContrast(copy.contrast());
+            setSaturation(copy.saturation());
+            setHue(copy.hue());
+            setLuminance(copy.luminance());
+            setPixelSize(copy.pixelSize());
             setImageDataUrl(copy.toDataURL());
         }
     }, [SelectedShape]);
@@ -87,7 +103,6 @@ export const ColorCorrection = ({ SelectedShape }: { SelectedShape: any }) => {
 
         if (tempShape) {
             const shape = tempShape as Konva.Shape;
-            console.log(shape.toDataURL());
             shape.cache();
             updateFilter(shape, Konva.Filters.HSL);
             shape.saturation(newSaturation);
@@ -151,7 +166,7 @@ export const ColorCorrection = ({ SelectedShape }: { SelectedShape: any }) => {
             SelectedShape.hue(hue);
             SelectedShape.luminance(luminance);
             SelectedShape.pixelSize(pixelSize);
-            SelectedShape.getLayer().batchDraw();
+            setUpdatePreview();
         }
     };
 
@@ -233,7 +248,7 @@ export const ColorCorrection = ({ SelectedShape }: { SelectedShape: any }) => {
                         <input
                             id="slider"
                             type="range"
-                            min="0"
+                            min="1"
                             max="100"
                             step="1"
                             value={pixelSize}

@@ -177,6 +177,7 @@ export const useProjectStore = create<
                 const sendData = () => {
                     if (stage) {
                         const dataJSON = stage.toJSON();
+                        console.log(dataJSON);
                         saveProject(dataJSON);
                     }
                 };

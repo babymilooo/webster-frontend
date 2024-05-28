@@ -168,17 +168,49 @@ export const Project = () => {
                     }
                     new KonvaSnappingDemo(stage, l);
                 }
+                const applyFiltersToImage = (
+                    image: Konva.Image,
+                    attrs: any,
+                ) => {
+                    image.filters([
+                        Konva.Filters.Brighten,
+                        Konva.Filters.Blur,
+                        Konva.Filters.Contrast,
+                        Konva.Filters.HSL,
+                        Konva.Filters.Pixelate,
+                    ]);
+                    if (attrs.brightness !== undefined)
+                        image.brightness(attrs.brightness);
+                    if (attrs.blurRadius !== undefined)
+                        image.blurRadius(attrs.blurRadius);
+                    if (attrs.contrast !== undefined)
+                        image.contrast(attrs.contrast);
+                    if (attrs.hue !== undefined) image.hue(attrs.hue);
+                    if (attrs.saturation !== undefined)
+                        image.saturation(attrs.saturation);
+                    if (attrs.luminance !== undefined)
+                        image.luminance(attrs.luminance);
+                    if (attrs.pixelSize !== undefined)
+                        image.pixelSize(attrs.pixelSize);
+
+                    // Применяем фильтры и обновляем слой
+                    image.cache();
+                    const layer = image.getLayer();
+                    if (layer) layer.batchDraw();
+                };
 
                 //restore images
                 const images = stage.find('Image') as Konva.Image[];
                 for (const image of images) {
                     const src = image.getAttr('src');
+                    const attrs = image.getAttr('attrs');
+                    console.log(attrs);
                     const imageElement = new window.Image();
                     imageElement.src = src;
                     imageElement.crossOrigin = 'anonymous';
                     imageElement.onload = () => {
                         image.image(imageElement);
-                        setUpdatePreview();
+                        applyFiltersToImage(image, attrs);
                     };
                 }
 
