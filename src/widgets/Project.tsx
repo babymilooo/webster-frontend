@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Konva from 'konva';
 import {
     AddCircle,
@@ -19,10 +19,7 @@ import DrawLine from '@/entities/project/ui/DrawLine';
 import { AddText } from '@/entities/project/ui/AddText';
 import KonvaSnappingDemo from '@/entities/project/lib/SnapPositions';
 import DrawAnchorLine from '@/entities/project/ui/AddAnchorLine';
-import {
-    setOffDragable,
-    setOnDragable,
-} from '@/entities/project/lib/setDragable';
+
 import {
     SelectBackground,
     setBackgroundLayer,
@@ -31,7 +28,8 @@ import { useInitProjectStore } from '@/entities/project/model/initProjectStore';
 import { Drag } from '@/entities/project/ui/Drag';
 import { setSelectionTopLayer } from '@/entities/project/ui/SelectionArea';
 import { TextInstrument } from '@/entities/project/lib/Instruments/Text';
-import { MinusIcon, PlusIcon, SymbolIcon } from '@radix-ui/react-icons';
+import { ContextMenu } from './project/contextMenu';
+import { ScaleBar } from './project/scaleBar';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -42,7 +40,6 @@ export const Project = () => {
     const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
     const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
 
-    const [zoomPercentage, setZoomPercentage] = useState(100);
     const toggleLayersSwitch = useProjectStore(
         (state) => state.toggleLayersSwitch,
     );
@@ -381,130 +378,10 @@ export const Project = () => {
         }
     }, [instrumentState]);
 
-    const handleZoom = (direction: 'in' | 'out') => {
-        const stage = stageRef.current;
-        if (!stage) return;
 
-        const scaleBy = 1.5;
-        const oldScale = stage.scaleX();
-        const newScale =
-            direction === 'in' ? oldScale * scaleBy : oldScale / scaleBy;
-
-        stage.scale({ x: newScale, y: newScale });
-        stage.batchDraw();
-
-        const percentage = Math.round(newScale * 100);
-        setZoomPercentage(percentage);
-    };
-
-    const handleMoveToLayer = () => {
-        const selectedLayer = useProjectStore.getState().selectedLayer;
-        const stage = useProjectStore.getState().stage;
-        if (!selectedLayer || !stageRef.current) return;
-
-        const selectedLayerZindex = selectedLayer.getZIndex();
-        const layers = stage
-            ?.getLayers()
-            .toSorted((a, b) => b.getZIndex() - a.getZIndex())
-            .filter(
-                (layer) => layer !== selectedLayer && !layer.getAttr('hidden'),
-            );
-        let targetLayer = layers?.find(
-            (layer) => layer.getZIndex() > selectedLayerZindex,
-        );
-
-        if (!targetLayer) {
-            targetLayer = new Konva.Layer();
-            targetLayer.setAttrs({ creationIndex: getLayerCreationIndex() });
-            const transf = new Konva.Transformer();
-            targetLayer.add(transf);
-            stageRef.current.add(targetLayer);
-            toggleLayersSwitch();
-        }
-
-        const transformer = selectedLayer.findOne(
-            'Transformer',
-        ) as Konva.Transformer;
-        const selectedShapes = transformer.nodes();
-
-        if (selectedShapes.length === 0) {
-            currentShape?.moveTo(targetLayer);
-        } else {
-            selectedShapes.forEach((shape) => {
-                shape.moveTo(targetLayer);
-            });
-        }
-        if (stage) {
-            new KonvaSnappingDemo(stage, targetLayer);
-        }
-
-        transformer.detach();
-        selectedLayer.batchDraw();
-        targetLayer.batchDraw();
-        setContextMenuVisible(false);
-        setUpdatePreview();
-        setOffDragable();
-        setOnDragable();
-    };
-
-    const handlePulse = () => {
-        if (currentShape) {
-            currentShape.to({
-                scaleX: 2,
-                scaleY: 2,
-                onFinish: () => {
-                    currentShape.to({ scaleX: 1, scaleY: 1 });
-                },
-            });
-            setContextMenuVisible(false);
-        }
-    };
-
-    const handleDelete = () => {
-        if (currentShape) {
-            if (
-                currentShape.hasName('hidden') ||
-                currentShape.hasName('_anchor')
-            ) {
-                setContextMenuVisible(false);
-                return;
-            }
-            currentShape.destroy();
-            setCurrentShape(null);
-            setContextMenuVisible(false);
-            stageRef.current?.batchDraw();
-            toggleLayersSwitch();
-            setUpdatePreview();
-        }
-    };
 
     return (
         <div className="h-full w-full bg-canva">
-            <div className="fixed bottom-10 z-10 w-full select-none pr-[380px]">
-                <div className="flex w-full justify-center">
-                    <div className="flex items-center gap-8 rounded-lg border bg-background px-8 py-2 shadow-md">
-                        <PlusIcon
-                            onClick={() => handleZoom('in')}
-                            className=" cursor-pointer"
-                        />
-                        <MinusIcon
-                            onClick={() => handleZoom('out')}
-                            className=" cursor-pointer"
-                        />
-                        <span className="w-[100px] text-center text-lg">
-                            {zoomPercentage}%
-                        </span>
-                        <SymbolIcon
-                            onClick={() => {
-                                stageRef.current?.scale({ x: 1, y: 1 });
-                                stageRef.current?.position({ x: 0, y: 0 });
-                                setZoomPercentage(100);
-                            }}
-                            className=" cursor-pointer"
-                        />
-                    </div>
-                </div>
-            </div>
             <Drag />
             <AddCircle stageRef={stageRef} />
             <AddRect />
@@ -530,39 +407,15 @@ export const Project = () => {
                     <div id="canvas" ref={canvasElementRef} />
                 </div>
             </div>
-            {contextMenuVisible && (
-                <div
-                    className="context-menu"
-                    style={{
-                        position: 'absolute',
-                        top: `${contextMenuPosition.y}px`,
-                        left: `${contextMenuPosition.x}px`,
-                        zIndex: 20,
-                    }}
-                    onClick={(e) => e.stopPropagation()} // Prevent closing the menu when clicking inside it
-                >
-                    <div className="flex flex-col items-start rounded-lg border bg-background text-sm shadow-md">
-                        <button
-                            onClick={() => handleMoveToLayer()}
-                            className="rounded-t-lg p-1 hover:bg-secondary"
-                        >
-                            Move to next layer
-                        </button>
-                        <button
-                            className="w-full p-1 text-start hover:bg-secondary"
-                            onClick={handlePulse}
-                        >
-                            Pulse
-                        </button>
-                        <button
-                            className="w-full rounded-b-lg p-1 text-start hover:bg-secondary"
-                            onClick={handleDelete}
-                        >
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            )}
+            <ContextMenu
+                contextMenuVisible={contextMenuVisible}
+                setContextMenuVisible={setContextMenuVisible}
+                contextMenuPosition={contextMenuPosition}
+                currentShape={currentShape}
+                setCurrentShape={setCurrentShape}
+                stageRef={stageRef}
+            />
+            <ScaleBar stageRef={stageRef} />
         </div>
     );
 };

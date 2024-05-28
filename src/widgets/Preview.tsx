@@ -1,7 +1,6 @@
 import { useProjectStore } from '@/entities/project';
 import { ColorCorrection } from '@/entities/project/ui/ColorCorrection';
 import { Label } from '@/shared/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/shared/ui/radio-group';
 import Konva from 'konva';
 import { useEffect, useState } from 'react';
 
