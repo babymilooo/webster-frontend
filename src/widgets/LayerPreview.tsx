@@ -28,7 +28,7 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
     }, [layer, UpdatePreview]);
 
     return (
-        <div className="bg-red-100">
+        <div className="">
             {shapes?.map((shape, index) => (
                 <div
                     key={index}
