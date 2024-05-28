@@ -14,6 +14,7 @@ export const SelectBackground: FC = () => {
     const selectedBackground = useProjectStore(
         (state) => state.selectedBackgroundImage,
     );
+    const setUpdatePreview = useProjectStore(state => state.setUpdatePreview);
 
     useEffect(() => {
         const stage = useProjectStore.getState().stage;
@@ -39,7 +40,13 @@ export const SelectBackground: FC = () => {
         }
 
         const imgElement = new window.Image();
-        imgElement.src = selectedBackground;
+        if (typeof selectedBackground === 'string') {
+            imgElement.src = selectedBackground;
+        } else {
+            imgElement.src = (selectedBackground as unknown as any).image;
+        }
+
+        imgElement.crossOrigin = 'anonymous';
         imgElement.onload = () => {
             const image = new Konva.Image({
                 image: imgElement,
@@ -49,9 +56,10 @@ export const SelectBackground: FC = () => {
                 x: 0,
                 y: 0,
             });
-            image.setAttrs({ handdrawn: true });
+            image.setAttrs({ handdrawn: true, src: imgElement.src });
             backgroundLayer?.add(image);
             backgroundLayer?.batchDraw();
+            setUpdatePreview();
         };
     }, [state, selectedBackground]);
 

@@ -11,6 +11,7 @@ export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
     const state = useProjectStore((state) => state.state);
     const selectedImage = useProjectStore((state) => state.selectedImage);
     const stage = useProjectStore((state) => state.stage);
+    const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
 
     useEffect(() => {
         if (!stageRef.current || state !== 'SelectImage' || !selectedImage)
@@ -22,9 +23,14 @@ export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
 
         const imageElement = new window.Image();
         imageElement.crossOrigin = 'anonymous';
-        imageElement.src = (
-            selectedImage as unknown as { image: string }
-        ).image;
+        if (typeof selectedImage === 'string') {
+            imageElement.src = selectedImage;
+        } else {
+            imageElement.src = (selectedImage as unknown as any).image;
+        }
+        // imageElement.src = (
+        //     selectedImage as unknown as { image: string }
+        // ).image;
 
         imageElement.onload = () => {
             if (!stage) return;
@@ -63,6 +69,7 @@ export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
 
             layer?.add(transformer);
             layer?.batchDraw();
+            setUpdatePreview();
         };
     }, [selectedImage, state]);
 

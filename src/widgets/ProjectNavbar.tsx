@@ -1,4 +1,4 @@
-import { useProjectStore } from '@/entities/project';
+import { updatePicture, useProjectStore } from '@/entities/project';
 import { Label } from '@/shared/ui/label';
 import {
     CircleIcon,
@@ -26,9 +26,11 @@ import {
 
 import WebFont from 'webfontloader';
 
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Img } from 'react-image';
 import { ItalicIcon } from 'lucide-react';
+import Konva from 'konva';
+import { useUserStore } from '@/entities/user';
 export const ProjectNavbar = () => {
     const state = useProjectStore((state) => state.state);
     const stage = useProjectStore((state) => state.stage);
@@ -44,6 +46,53 @@ export const ProjectNavbar = () => {
     const [italic, setItalic] = useState(false);
     const [underline, setUnderline] = useState(false);
     const [loadedFonts, setLoadedFonts] = useState<string[]>([]);
+
+    const backgroundInputRef = useRef<HTMLInputElement | null>(null);
+    const [bgColor, setBgColor] = useState('');
+    const setBackground = useProjectStore(
+        (state) => state.setSelectedBackgroundImage,
+    );
+    const isLogin = useUserStore((state) => state.isLogin);
+
+    const handleBackgroundClick = () => {
+        backgroundInputRef.current?.click();
+    };
+
+    const handleBackgroundChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = async (ev) => {
+            if (isLogin) {
+                const src = await updatePicture(file);
+                setBackground(src);
+            } else {
+                const data = ev.target?.result;
+                if (typeof data !== 'string') return;
+                setBackground(data);
+            }
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const handleColorBackgroundChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const color = e.target.value;
+        if (!stage) return;
+        const rect = new Konva.Rect({
+            fill: color,
+            height: stage?.height(),
+            width: stage?.width(),
+        });
+        rect.toDataURL({
+            x: 0,
+            y: 0,
+            callback: (str) => {
+                setBackground(str);
+                // setUpdatePreview();
+                rect.destroy();
+            },
+        });
+    };
 
     const setFontFamily = (value: string) => {
         setTextSettings({ fontFamily: value });
@@ -454,7 +503,40 @@ export const ProjectNavbar = () => {
                         </div>
                     </>
                 );
-
+            case 'SelectBackground':
+                return (
+                    <>
+                        <div className="ml-5 flex">
+                            <div
+                                className="flex h-10 w-full items-center justify-center"
+                                onClick={handleBackgroundClick}
+                            >
+                                Upload Image
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleBackgroundChange}
+                                    className="hidden"
+                                    ref={backgroundInputRef}
+                                />
+                            </div>
+                            <div className="col-span-1 flex w-full items-center justify-center p-2">
+                                <Label className="pl-1">Color Background</Label>
+                            </div>
+                            <div className="col-span-1 flex w-full justify-center gap-2">
+                                <input
+                                    type="color"
+                                    value={bgColor}
+                                    onChange={(e) => {
+                                        setBgColor(e.target.value);
+                                        handleColorBackgroundChange(e);
+                                    }}
+                                    className="w-10 bg-background p-1"
+                                />
+                            </div>
+                        </div>
+                    </>
+                );
             default:
                 return null;
         }
