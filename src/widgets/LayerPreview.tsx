@@ -45,11 +45,18 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
                     }}
                 >
                     {shape.visible() && (
-                        <img
-                            src={shape.toDataURL()}
-                            alt="preview"
-                            className="h-16 w-16 p-2"
-                        />
+                        <div className="h-20 w-20 p-2">
+                            <img
+                                src={shape.toDataURL()}
+                                alt="preview"
+                                className="h-full w-full object-contain"
+                                style={{
+                                    aspectRatio: `${
+                                        shape.width() / shape.height()
+                                    }`,
+                                }}
+                            />
+                        </div>
                     )}
                 </div>
             ))}

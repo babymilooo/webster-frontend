@@ -104,7 +104,12 @@ const Preview = () => {
                         <img
                             src={SelectedShape.toDataURL({})}
                             alt="preview"
-                            className="h-16 w-16"
+                            className="h-full w-full object-contain"
+                            style={{
+                                aspectRatio: `${
+                                    SelectedShape.width() / SelectedShape.height()
+                                }`,
+                            }}
                         />
                     </div>
                     <div className="grid grid-cols-2 gap-1 text-sm">
@@ -167,8 +172,10 @@ const Preview = () => {
                             />
                         </div>
                         {SelectedShape.getAttr('src') ? (
-                            <div className='col-span-2 w-full flex justify-center'>
-                                <ColorCorrection SelectedShape={SelectedShape}/>
+                            <div className="col-span-2 flex w-full justify-center">
+                                <ColorCorrection
+                                    SelectedShape={SelectedShape}
+                                />
                             </div>
                         ) : (
                             <>
