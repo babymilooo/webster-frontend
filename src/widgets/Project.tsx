@@ -176,6 +176,8 @@ export const Project = () => {
                         Konva.Filters.HSL,
                         Konva.Filters.Pixelate,
                     ]);
+                    // console.log(image.pixelSize());
+
                     if (attrs.brightness !== undefined)
                         image.brightness(attrs.brightness);
                     if (attrs.blurRadius !== undefined)
@@ -189,6 +191,7 @@ export const Project = () => {
                         image.luminance(attrs.luminance);
                     if (attrs.pixelSize !== undefined)
                         image.pixelSize(attrs.pixelSize);
+                    else image.pixelSize(1);
 
                     // Применяем фильтры и обновляем слой
                     image.cache();
@@ -377,8 +380,6 @@ export const Project = () => {
             });
         }
     }, [instrumentState]);
-
-
 
     return (
         <div className="h-full w-full bg-canva">

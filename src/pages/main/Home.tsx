@@ -27,12 +27,14 @@ const Home = () => {
         setStartJSON,
         setWidth,
         setHeight,
+        resetStore,
     ] = useInitProjectStore((state) => [
         state.setStartingImage,
         state.setStartingBackgroundImage,
         state.setSerializedJSON,
         state.setWidth,
         state.setHeight,
+        state.resetStore,
     ]);
 
     const isLogin = useUserStore((state) => state.isLogin);
@@ -53,6 +55,7 @@ const Home = () => {
             const img = new window.Image();
             img.src = data;
             img.onload = () => {
+                resetStore();
                 setHeight(img.height);
                 setWidth(img.width);
                 setStartImage(data);
@@ -81,6 +84,7 @@ const Home = () => {
             const img = new window.Image();
             img.src = data;
             img.onload = () => {
+                resetStore();
                 setHeight(img.height);
                 setWidth(img.width);
                 setStartImage(null);
@@ -93,6 +97,7 @@ const Home = () => {
     };
 
     const handleCreate = async () => {
+        resetStore();
         const title = 'new';
         setHeight(800);
         setWidth(600);
