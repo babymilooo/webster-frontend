@@ -2,7 +2,7 @@ import Konva from 'konva';
 import { PencilBrush, useProjectStore } from '@/entities/project';
 import { Brushes } from '@/entities/project';
 import { useEffect } from 'react';
-import { getLayerCreationIndex } from '../lib/layerCreationIndex';
+
 type StartDrawing = {
     stageRef?: React.RefObject<Konva.Stage>;
     drawingLayerRef: React.MutableRefObject<Konva.Layer | null>;

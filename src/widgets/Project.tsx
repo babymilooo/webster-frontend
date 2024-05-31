@@ -30,6 +30,7 @@ import { setSelectionTopLayer } from '@/entities/project/ui/SelectionArea';
 import { TextInstrument } from '@/entities/project/lib/Instruments/Text';
 import { ContextMenu } from './project/contextMenu';
 import { ScaleBar } from './project/scaleBar';
+import { DrawMarker } from '@/entities/project/ui/DrawMarker';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -390,6 +391,7 @@ export const Project = () => {
                 stageRef={stageRef}
                 drawingLayerRef={drawingLayerRef}
             />
+            <DrawMarker />
 
             <Erasing stageRef={stageRef} drawingLayerRef={drawingLayerRef} />
 
