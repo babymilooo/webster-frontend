@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { devtools } from 'zustand/middleware';
-import { getUser, loginUser, regUser, signUpGoogle } from '../index';
+import { getUser, loginUser, regUser, signUpGoogle, logout } from '../index';
 
 interface User {
     _id: number;
@@ -9,6 +9,7 @@ interface User {
     email: string;
     profilePicture: string;
     emailVerified: boolean;
+    isRegisteredViaGoogle: boolean;
     role: string;
 }
 
@@ -91,7 +92,14 @@ export const useUserStore = create<UserState>()(
                 set({ isLoaded: true });
             },
             
-            logoutUser: () => set({ user: null }),
+            logoutUser: async () => {
+                try {
+                    await logout();
+                    set({ user: null, isLogin: false });
+                } catch (error) {
+                    console.error(error);
+                }
+            },
         })),
     ),
 );

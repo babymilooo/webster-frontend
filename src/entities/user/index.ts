@@ -8,3 +8,7 @@ export { UserCard } from '../user/ui/UserCard.tsx';
 export { useUserStore } from '../user/model/userStore.ts';
 export { checkAuth } from '../user/api/checkAuth.ts';
 export { signUpGoogle } from '../user/api/signUpGoogle.ts';
+export { logout } from '../user/api/logout.ts';
+export { updateInfo } from '../user/api/updateUserInfo.ts';
+export { changePassword } from '../user/api/updateUserInfo.ts';
+export { updateProfilePicture } from '../user/api/updateUserInfo.ts';

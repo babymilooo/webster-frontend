@@ -12,6 +12,7 @@ import Templates from './pages/main/Templates';
 import Settings from './pages/main/Settings';
 import ProjectId from './pages/project/ProjectId';
 import Callback from './pages/callback/Callback';
+import Logout from './pages/main/Logout';
 const rootElement = document.getElementById('root') as HTMLElement;
 const root = ReactDOM.createRoot(rootElement);
 
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
     {
         path: '/Callback',
         element: <Callback />,
+    },
+    {
+        path: '/logout',
+        element: <Logout/>,
     }
 ]);
 
