@@ -17,12 +17,23 @@ const ProjectId = () => {
 
     useEffect(() => {
         const fetchProject = async () => {
+            if (id == 'tmp') {
+                setProject({
+                    _id: 'tmp',
+                    title: 'Temporary project',
+                    width: 0,
+                    height: 0,
+                });
+                setLoaded(true);
+                return;
+            }
             const resp = await $api.get(`/project/${id}`);
             const data = resp.data;
             if (data.projectJSON) setStartJSON(data.projectJSON);
             setProject(data);
             setLoaded(true);
         };
+
         fetchProject();
     }, [id, setProject, setStartJSON]);
 

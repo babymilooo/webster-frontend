@@ -8,7 +8,7 @@ import { saveProject } from '../api/saveProject';
 import { useUserStore } from '@/entities/user';
 
 interface Project {
-    _id: number;
+    _id: string;
     title: string;
     width: number;
     height: number;

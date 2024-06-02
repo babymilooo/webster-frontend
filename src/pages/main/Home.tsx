@@ -54,14 +54,28 @@ const Home = () => {
 
             const img = new window.Image();
             img.src = data;
-            img.onload = () => {
+            img.onload = async () => {
                 resetStore();
                 setHeight(img.height);
                 setWidth(img.width);
                 setStartImage(data);
                 setStartBackgroundImage(null);
-                navigate('/projects/1');
                 img.remove();
+                if (!isLogin) {
+                    navigate('/projects/tmp');
+                    return;
+                }
+                const title = 'new';
+                const projData = await createProject(title);
+                if (projData) {
+                    const formatedProjects = projects
+                        ? [...projects, projData]
+                        : [projData];
+                    setProjects(formatedProjects as []);
+                    setProject(projData);
+                }
+
+                navigate(`/projects/${projData._id}`);
             };
         };
         reader.readAsDataURL(file);
@@ -83,14 +97,28 @@ const Home = () => {
             }
             const img = new window.Image();
             img.src = data;
-            img.onload = () => {
+            img.onload = async () => {
                 resetStore();
                 setHeight(img.height);
                 setWidth(img.width);
                 setStartImage(null);
                 setStartBackgroundImage(data);
-                navigate('/projects/1');
                 img.remove();
+                if (!isLogin) {
+                    navigate('/projects/tmp');
+                    return;
+                }
+                const title = 'new';
+                const projData = await createProject(title);
+                if (projData) {
+                    const formatedProjects = projects
+                        ? [...projects, projData]
+                        : [projData];
+                    setProjects(formatedProjects as []);
+                    setProject(projData);
+                }
+
+                navigate(`/projects/${projData._id}`);
             };
         };
         reader.readAsDataURL(file);
@@ -101,6 +129,10 @@ const Home = () => {
         const title = 'new';
         setHeight(800);
         setWidth(600);
+        if (!isLogin) {
+            navigate('/projects/tmp');
+            return;
+        }
         const data = await createProject(title);
         if (data) {
             const formatedProjects = projects ? [...projects, data] : [data];
