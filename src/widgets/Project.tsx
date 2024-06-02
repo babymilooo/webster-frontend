@@ -31,6 +31,7 @@ import { TextInstrument } from '@/entities/project/lib/Instruments/Text';
 import { ContextMenu } from './project/contextMenu';
 import { ScaleBar } from './project/scaleBar';
 import { DrawMarker } from '@/entities/project/ui/DrawMarker';
+import { DrawInk } from '@/entities/project/ui/DrawInk';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -392,7 +393,7 @@ export const Project = () => {
                 drawingLayerRef={drawingLayerRef}
             />
             <DrawMarker />
-
+            <DrawInk />
             <Erasing stageRef={stageRef} drawingLayerRef={drawingLayerRef} />
 
             <AddImage stageRef={stageRef} />

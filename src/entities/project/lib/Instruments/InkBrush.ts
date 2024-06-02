@@ -33,7 +33,9 @@ function generateStartingPointsCoords(
     const resArr: [number, number][] = [];
     for (let i = 0; i < num; i++) {
         const angle = getRandomInRange(0, Math.PI * 2);
-        const dist = getRandomInRange(0, distribution);
+        //uniform density of points with this
+        //https://stackoverflow.com/questions/5837572/generate-a-random-point-within-a-circle-uniformly
+        const dist = distribution * Math.sqrt(Math.random());
         resArr.push([x + dist * Math.cos(angle), y + dist * Math.sin(angle)]);
     }
     return resArr;

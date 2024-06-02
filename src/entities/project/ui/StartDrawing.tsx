@@ -19,7 +19,7 @@ export const StartDrawing: React.FC<StartDrawing> = ({
         if (state !== 'Drawing') return;
         const stage = useProjectStore.getState().stage;
         if (!stage) return;
-        const brush = new InkBrush();
+        const brush = new PencilBrush();
         Brushes.applyBrushToStage(stage, brush);
         // layer.draw();
         return () => {
