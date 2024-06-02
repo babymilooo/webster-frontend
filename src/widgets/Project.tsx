@@ -42,6 +42,7 @@ export const Project = () => {
     const setStage = useProjectStore((state) => state.setStage);
     const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
     const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
+    const saveProject = useProjectStore((state) => state.saveProject);
 
     const toggleLayersSwitch = useProjectStore(
         (state) => state.toggleLayersSwitch,
@@ -70,6 +71,17 @@ export const Project = () => {
 
     const instrumentState = useProjectStore((state) => state.state);
     const resetProjectStore = useProjectStore((state) => state.resetStore);
+
+    //show dialog on tab close
+    useEffect(() => {
+        window.onbeforeunload = (e) => {
+            e.preventDefault();
+            saveProject();
+        };
+        return () => {
+            window.onbeforeunload = null;
+        };
+    }, [saveProject]);
 
     useEffect(() => {
         const applyEventListenersToStage = (stage: Konva.Stage) => {

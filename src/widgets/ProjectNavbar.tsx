@@ -42,6 +42,7 @@ export const ProjectNavbar = () => {
     const setShapeSettings = useProjectStore((state) => state.setShapeSettings);
     const textSettings = useProjectStore((state) => state.textSettings);
     const setTextSettings = useProjectStore((state) => state.setTextSettings);
+    const saveProject = useProjectStore((state) => state.saveProject);
     const [bold, setBold] = useState(false);
     const [italic, setItalic] = useState(false);
     const [underline, setUnderline] = useState(false);
@@ -553,6 +554,11 @@ export const ProjectNavbar = () => {
                         className="ml-3 h-6 w-6 cursor-pointer text-foreground"
                         onClick={handleDownload}
                     />
+                    {isLogin && (
+                        <button type="button" onClick={() => saveProject()}>
+                            Save project to server
+                        </button>
+                    )}
                 </div>
                 <div className="ml-4 flex h-full w-full items-center">
                     {renderIcon()}

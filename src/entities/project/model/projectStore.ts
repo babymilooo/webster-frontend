@@ -78,6 +78,8 @@ interface IProjectStoreActions {
     setBrushSettings: (settings: Partial<IBrushSettings>) => void;
     setShapeSettings: (settings: Partial<IShapeSettings>) => void;
     setTextSettings: (settings: Partial<ITextSettings>) => void;
+
+    saveProject: VoidFunction;
 }
 
 const initState = {
@@ -123,7 +125,7 @@ export const useProjectStore = create<
     IProjectStoreState & IProjectStoreActions
 >()(
     devtools(
-        immer((set) => ({
+        immer((set, getState) => ({
             ...initState,
             resetStore: () =>
                 set((state) => ({ ...initState, project: state.project })),
@@ -177,7 +179,7 @@ export const useProjectStore = create<
                 const sendData = () => {
                     if (stage) {
                         const dataJSON = stage.toJSON();
-                        console.log(dataJSON);
+                        // console.log(dataJSON);
                         saveProject(dataJSON);
                     }
                 };
@@ -206,6 +208,13 @@ export const useProjectStore = create<
                 set((state) => ({
                     textSettings: { ...state.textSettings, ...settings },
                 })),
+            saveProject: () => {
+                const stage = getState().stage;
+                if (!stage) return;
+                const isLogin = useUserStore.getState().isLogin;
+                if (!isLogin) return;
+                saveProject(stage.toJSON());
+            },
         })),
     ),
 );
