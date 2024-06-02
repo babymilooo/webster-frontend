@@ -78,8 +78,16 @@ export const Project = () => {
             e.preventDefault();
             saveProject();
         };
+        window.onpagehide = () => {
+            saveProject();
+        };
+        document.onvisibilitychange = () => {
+            if (document.hidden) saveProject();
+        };
         return () => {
             window.onbeforeunload = null;
+            window.onpagehide = null;
+            document.onvisibilitychange = null;
         };
     }, [saveProject]);
 
