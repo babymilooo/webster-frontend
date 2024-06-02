@@ -305,6 +305,7 @@ export const ProjectNavbar = () => {
                     </>
                 );
             case 'Drawing':
+            case 'DrawingMarker':
                 // setBrushSettings({ color: '#000000' });
                 return (
                     <>
