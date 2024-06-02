@@ -77,6 +77,9 @@ export class InkBrush implements IBaseBrush {
                 lineJoin: 'round',
                 // add point twice, so we have some drawings even on a simple click
                 points: [...point, ...point],
+                shadowForStrokeEnabled: false,
+                listening: false,
+                draggable: false,
             });
             newLine.setAttrs({ handdrawn: true });
             target.add(newLine);
@@ -121,6 +124,9 @@ export class InkBrush implements IBaseBrush {
                 lineJoin: 'round',
                 // add point twice, so we have some drawings even on a simple click
                 points: [...oldPoint, ...rotPoint],
+                shadowForStrokeEnabled: false,
+                listening: false,
+                draggable: false,
             });
             newLine.setAttrs({ handdrawn: true });
             target.add(newLine);

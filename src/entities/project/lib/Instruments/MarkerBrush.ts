@@ -75,6 +75,8 @@ export class MarkerBrush implements IBaseBrush {
             strokeWidth: 1,
             draggable: false,
             globalCompositeOperation: 'source-over',
+            shadowForStrokeEnabled: false,
+            listening: false,
         });
         newLinePolygon.setAttrs({
             handdrawn: true,

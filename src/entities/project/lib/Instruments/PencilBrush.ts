@@ -26,6 +26,8 @@ export class PencilBrush implements IBaseBrush {
             lineJoin: 'round',
             // add point twice, so we have some drawings even on a simple click
             points: [pos.x, pos.y, pos.x, pos.y],
+            shadowForStrokeEnabled: false,
+            listening: false,
         });
         this.lastLine.setAttrs({ handdrawn: true });
         target.add(this.lastLine);
@@ -57,6 +59,9 @@ export class PencilBrush implements IBaseBrush {
             lineJoin: 'round',
             // add point twice, so we have some drawings even on a simple click
             points: [pos.x, pos.y, pos.x, pos.y],
+            shadowForStrokeEnabled: false,
+            listening: false,
+            draggable: false,
         });
         this.lastLine.setAttrs({ handdrawn: true });
         target.add(this.lastLine);
