@@ -32,6 +32,7 @@ import { ContextMenu } from './project/contextMenu';
 import { ScaleBar } from './project/scaleBar';
 import { DrawMarker } from '@/entities/project/ui/DrawMarker';
 import { DrawInk } from '@/entities/project/ui/DrawInk';
+import { DrawSpray } from '@/entities/project/ui/DrawSpray';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -394,6 +395,8 @@ export const Project = () => {
             />
             <DrawMarker />
             <DrawInk />
+            <DrawSpray />
+
             <Erasing stageRef={stageRef} drawingLayerRef={drawingLayerRef} />
 
             <AddImage stageRef={stageRef} />

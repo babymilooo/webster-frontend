@@ -127,6 +127,18 @@ const ProjectLeftSidebar = () => {
                 </div>
                 <div className="flex h-10 w-full items-center justify-center">
                     <TooltipIcon
+                        icon={Pencil1Icon}
+                        tooltipText={{
+                            title: 'Drawing Spray mode',
+                            description: 'Draw on the canvas with Spray.',
+                            shortcut: 'LCM to start and end drawing',
+                        }}
+                        imgSrc="../src/public/tooltip-draw.jpg"
+                        onClick={() => setState('DrawingSpray')}
+                    />
+                </div>
+                <div className="flex h-10 w-full items-center justify-center">
+                    <TooltipIcon
                         icon={EraserIcon}
                         tooltipText={{
                             title: 'Erasing mode',

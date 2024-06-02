@@ -36,7 +36,7 @@ export class MarkerBrush implements IBaseBrush {
             pos.x,
             pos.y,
             adjustedAngle,
-            brushSettings.width * e.evt.pressure,
+            (brushSettings.width * e.evt.pressure) / 2,
         );
         this.lastPointTop = top;
         this.lastPointBottom = bottom;
@@ -55,7 +55,7 @@ export class MarkerBrush implements IBaseBrush {
             pos.x,
             pos.y,
             adjustedAngle,
-            brushSettings.width * e.evt.pressure,
+            (brushSettings.width * e.evt.pressure) / 2,
         );
         if (!this.lastPointBottom || !this.lastPointTop) {
             this.lastPointTop = top;
