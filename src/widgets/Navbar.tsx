@@ -2,12 +2,14 @@ import { Img } from 'react-image';
 import { Skeleton } from '../shared/ui/skeleton';
 import { useUserStore } from '@/entities/user/model/userStore';
 import { Button } from '@/shared/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserCard } from '@/entities/user';
 
 const Navbar = () => {
     const isLogin = useUserStore((state) => state.isLogin);
     const isLoaded = useUserStore((state) => state.isLoaded);
+    const logout = useUserStore((state) => state.logoutUser);
+    const navigate = useNavigate();
     return (
         <header className="fixed top-0 z-50 w-full bg-background">
             <div className="container flex h-14 max-w-screen-2xl items-center">
@@ -30,6 +32,14 @@ const Navbar = () => {
                 ) : isLogin ? (
                     <div className="flex flex-1 items-center justify-end space-x-2">
                         <UserCard />
+                        <button
+                            type="button"
+                            onClick={() => {
+                                logout().then(() => navigate('/'));
+                            }}
+                        >
+                            Logout
+                        </button>
                     </div>
                 ) : (
                     <div className="flex flex-1 items-center justify-end space-x-2">

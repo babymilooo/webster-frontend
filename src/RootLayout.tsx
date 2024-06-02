@@ -6,6 +6,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
     const checked = useUserStore((state) => state.checked);
     useEffect(() => {
         const handleCheckAuth = async () => {
+            if (checked) return;
             try {
                 await checkAuth();
             } catch (error) {
@@ -15,7 +16,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
         };
 
         handleCheckAuth();
-    }, []);
+    }, [checked]);
     return (
         <div className="h-screen bg-muted">
             {checked ? (

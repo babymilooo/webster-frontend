@@ -34,7 +34,7 @@ export const useInitProjectStore = create<
         immer((set, get) => ({
             ...initState,
             resetStore: () => {
-                set(initState);
+                set({ ...initState });
             },
             setHeight(h) {
                 set({ height: h });

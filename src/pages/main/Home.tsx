@@ -114,77 +114,75 @@ const Home = () => {
     return (
         <MainLayout>
             <HomeLayout>
-                <PrivateLayout>
-                    <div className="flex h-full w-full flex-col gap-4 p-4">
-                        <div className="phone:h-[250px] p-1 lg:h-[250px] xl:h-[350px]">
-                            <Card className="phone:h-[250px] lg:h-[250px] xl:h-[350px]">
-                                <CardContent
-                                    className="flex h-full select-none items-center rounded-md bg-cover bg-center p-6"
-                                    style={{
-                                        backgroundImage: `url('../src/public/background.png')`,
+                {/* <PrivateLayout> */}
+                <div className="flex h-full w-full flex-col gap-4 p-4">
+                    <div className="phone:h-[250px] p-1 lg:h-[250px] xl:h-[350px]">
+                        <Card className="phone:h-[250px] lg:h-[250px] xl:h-[350px]">
+                            <CardContent
+                                className="flex h-full select-none items-center rounded-md bg-cover bg-center p-6"
+                                style={{
+                                    backgroundImage: `url('../src/public/background.png')`,
+                                }}
+                            >
+                                <p className="ipad:text-4xl phone:text-xl font-bold text-white lg:text-5xl xl:text-6xl">
+                                    Welcome to ElephArt <br /> create your
+                                    masterpieces with us!
+                                </p>
+                            </CardContent>
+                        </Card>
+                    </div>
+                    <div className="h-full w-full rounded-t-lg bg-background">
+                        <button onClick={handleCreate}>
+                            new
+                            {/* <Link to="/projects/1">new</Link> */}
+                        </button>
+                        <div
+                            className="flex h-10 w-fit items-center justify-center"
+                            onClick={() => imageInputRef.current?.click()}
+                        >
+                            Create Project with image
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleSelectImageForProject}
+                                className="hidden"
+                                ref={imageInputRef}
+                            />
+                        </div>
+                        <div
+                            className="flex h-10 w-fit items-center justify-center"
+                            onClick={() =>
+                                backgroundImageInputRef.current?.click()
+                            }
+                        >
+                            Create Project with background image
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleSelectbackgroundImageForProject}
+                                className="hidden"
+                                ref={backgroundImageInputRef}
+                            />
+                        </div>
+                        <div>
+                            {projects?.map((pr) => (
+                                <div
+                                    key={pr._id}
+                                    onClick={() => {
+                                        navigate(`/projects/${pr._id}`);
                                     }}
                                 >
-                                    <p className="ipad:text-4xl phone:text-xl font-bold text-white lg:text-5xl xl:text-6xl">
-                                        Welcome to ElephArt <br /> create your
-                                        masterpieces with us!
-                                    </p>
-                                </CardContent>
-                            </Card>
+                                    Project {pr.title} {pr._id}
+                                </div>
+                            ))}
                         </div>
-                        <div className="h-full w-full rounded-t-lg bg-background">
-                            <button onClick={handleCreate}>
-                                new
-                                {/* <Link to="/projects/1">new</Link> */}
-                            </button>
-                            <div
-                                className="flex h-10 w-fit items-center justify-center"
-                                onClick={() => imageInputRef.current?.click()}
-                            >
-                                Create Project with image
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleSelectImageForProject}
-                                    className="hidden"
-                                    ref={imageInputRef}
-                                />
-                            </div>
-                            <div
-                                className="flex h-10 w-fit items-center justify-center"
-                                onClick={() =>
-                                    backgroundImageInputRef.current?.click()
-                                }
-                            >
-                                Create Project with background image
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={
-                                        handleSelectbackgroundImageForProject
-                                    }
-                                    className="hidden"
-                                    ref={backgroundImageInputRef}
-                                />
-                            </div>
-                            <div>
-                                {projects?.map((pr) => (
-                                    <div
-                                        key={pr._id}
-                                        onClick={() => {
-                                            navigate(`/projects/${pr._id}`);
-                                        }}
-                                    >
-                                        Project {pr.title} {pr._id}
-                                    </div>
-                                ))}
-                            </div>
-                            <h2 className="mx-4 my-4 text-left text-xl font-bold">
-                                You might want to try...
-                            </h2>
-                            <Carousel />
-                        </div>
+                        <h2 className="mx-4 my-4 text-left text-xl font-bold">
+                            You might want to try...
+                        </h2>
+                        <Carousel />
                     </div>
-                </PrivateLayout>
+                </div>
+                {/* </PrivateLayout> */}
             </HomeLayout>
         </MainLayout>
     );

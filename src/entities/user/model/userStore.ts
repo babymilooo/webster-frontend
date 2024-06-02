@@ -3,6 +3,9 @@ import { immer } from 'zustand/middleware/immer';
 import { devtools } from 'zustand/middleware';
 import { getUser, loginUser, regUser, signUpGoogle } from '../index';
 import { getProjects } from '../api/getProjects';
+import { logoutUser } from '../api/logoutUser';
+import { useProjectStore } from '@/entities/project';
+import { useInitProjectStore } from '@/entities/project/model/initProjectStore';
 
 interface User {
     _id: number;
@@ -13,29 +16,40 @@ interface User {
     role: string;
 }
 
-interface UserState {
+interface IUserStoreData {
     user: User | null;
     isLoaded: boolean;
     isLogin: boolean;
     checked: boolean;
     projects: any[] | null;
+}
+
+interface IUserStoreActions {
+    resetStore: VoidFunction;
     setProjects: (projects: [] | null) => void;
     setUser: (user: User | null) => void;
     loginUser: (email: string, password: string) => void;
     loginGoogle: () => void;
     registerUser: (email: string, password: string) => void;
     checkAuth: () => object | null;
-    logoutUser: () => void;
+    logoutUser: () => Promise<void>;
 }
 
-export const useUserStore = create<UserState>()(
+const initState = {
+    user: null,
+    isLoaded: false,
+    isLogin: false,
+    checked: false,
+    projects: null,
+};
+
+export const useUserStore = create<IUserStoreData & IUserStoreActions>()(
     devtools(
         immer((set) => ({
-            user: null,
-            isLoaded: false,
-            isLogin: false,
-            checked: false,
-            projects: null,
+            ...initState,
+            resetStore: () => {
+                set({ ...initState });
+            },
             setProjects: (projects) => set({ projects }),
             setUser: (user) => set({ user }),
             loginUser: async (email, password) => {
@@ -50,6 +64,7 @@ export const useUserStore = create<UserState>()(
                     console.error(error);
                 }
                 set({ isLoaded: true });
+                useUserStore.getState().checkAuth();
             },
             registerUser: async (email, password) => {
                 try {
@@ -98,7 +113,17 @@ export const useUserStore = create<UserState>()(
                 set({ isLoaded: true });
             },
 
-            logoutUser: () => set({ user: null }),
+            logoutUser: async () => {
+                try {
+                    await logoutUser();
+                    set({ user: null });
+                    useUserStore.getState().resetStore();
+                    useProjectStore.getState().resetStore();
+                    useInitProjectStore.getState().resetStore();
+                } catch (error) {
+                    console.error(error);
+                }
+            },
         })),
     ),
 );
