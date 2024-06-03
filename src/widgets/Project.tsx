@@ -357,6 +357,7 @@ export const Project = () => {
                 setUpdatePreview();
 
                 applyEventListenersToStage(stage);
+                saveProject();
             }
         };
 
@@ -429,7 +430,7 @@ export const Project = () => {
             <DrawAnchorLine stageRef={stageRef} />
 
             <AddText />
-            <div className="flex h-full w-full items-center justify-center bg-canva">
+            <div className="flex h-full w-full items-center justify-center overflow-auto bg-canva">
                 <div className="h-fit w-fit border border-solid border-black">
                     <div id="canvas" ref={canvasElementRef} />
                 </div>
