@@ -16,23 +16,23 @@ export class DragInstrument implements IInstuments {
         }
     }
     onPointerDown(e: KonvaEventObject<PointerEvent>) {
-        const stage = useProjectStore.getState().stage;
-        if (!stage) return;
-        if (e.target !== stage) return;
-        this.isDraggingStage = true;
+        // const stage = useProjectStore.getState().stage;
+        // if (!stage) return;
+        // if (e.target !== stage) return;
+        // this.isDraggingStage = true;
     }
     onPointerMove(e: KonvaEventObject<PointerEvent>) {
-        if (!this.isDraggingStage) return;
-        const stage = useProjectStore.getState().stage;
-        if (!stage) return;
-        const pos = stage.position();
-        if (!pos) return;
-        pos.x = pos.x + e.evt.movementX;
-        pos.y = pos.y + e.evt.movementY;
-        stage.position(pos);
+        // if (!this.isDraggingStage) return;
+        // const stage = useProjectStore.getState().stage;
+        // if (!stage) return;
+        // const pos = stage.position();
+        // if (!pos) return;
+        // pos.x = pos.x + e.evt.movementX;
+        // pos.y = pos.y + e.evt.movementY;
+        // stage.position(pos);
     }
     onPointerUp(e: KonvaEventObject<PointerEvent>) {
-        this.isDraggingStage = false;
-        useProjectStore.getState().setUpdatePreview();
+        // this.isDraggingStage = false;
+        // useProjectStore.getState().setUpdatePreview();
     }
 }
