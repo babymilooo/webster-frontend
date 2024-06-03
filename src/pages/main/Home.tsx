@@ -44,13 +44,17 @@ const Home = () => {
         if (!file) return;
         const reader = new FileReader();
         reader.onload = async (e) => {
+            const projData = await createProject('new');
+            // console.log(projData);
+
             let data: any = null;
             if (isLogin) {
-                data = await updatePicture(file);
+                data = (await updatePicture(file, projData._id)).image;
             } else {
                 data = e.target?.result;
                 if (typeof data !== 'string') return;
             }
+            // console.log(data);
 
             const img = new window.Image();
             img.src = data;
@@ -65,8 +69,8 @@ const Home = () => {
                     navigate('/projects/tmp');
                     return;
                 }
-                const title = 'new';
-                const projData = await createProject(title);
+                // const title = 'new';
+                // const projData = await createProject(title);
                 if (projData) {
                     const formatedProjects = projects
                         ? [...projects, projData]
@@ -88,9 +92,10 @@ const Home = () => {
         if (!file) return;
         const reader = new FileReader();
         reader.onload = async (e) => {
+            const projData = await createProject('new');
             let data: any = null;
             if (isLogin) {
-                data = await updatePicture(file);
+                data = (await updatePicture(file, projData._id)).image;
             } else {
                 data = e.target?.result;
                 if (typeof data !== 'string') return;
@@ -108,8 +113,8 @@ const Home = () => {
                     navigate('/projects/tmp');
                     return;
                 }
-                const title = 'new';
-                const projData = await createProject(title);
+                // const title = 'new';
+                // const projData = await createProject(title);
                 if (projData) {
                     const formatedProjects = projects
                         ? [...projects, projData]

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { API_URL, useProjectStore } from '@/entities/project';
 
-export async function updatePicture(picture: any) {
-    const id = useProjectStore.getState().project?._id;
+export async function updatePicture(picture: any, projId?: string) {
+    const id = useProjectStore.getState().project?._id || projId;
     const formData = new FormData();
     formData.append('image', picture);
     try {
