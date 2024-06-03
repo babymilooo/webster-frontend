@@ -430,8 +430,8 @@ export const Project = () => {
             <DrawAnchorLine stageRef={stageRef} />
 
             <AddText />
-            <div className="flex h-full w-full items-center justify-center overflow-auto bg-canva">
-                <div className="h-fit w-fit border border-solid border-black">
+            <div className="flex h-full w-full overflow-auto bg-canva align-middle">
+                <div className="m-auto h-fit w-fit border border-solid border-black">
                     <div id="canvas" ref={canvasElementRef} />
                 </div>
             </div>
