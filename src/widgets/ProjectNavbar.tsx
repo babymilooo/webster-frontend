@@ -2,6 +2,7 @@ import { updatePicture, useProjectStore } from '@/entities/project';
 import { Label } from '@/shared/ui/label';
 import {
     CircleIcon,
+    DotsHorizontalIcon,
     DownloadIcon,
     FontBoldIcon,
     HomeIcon,
@@ -24,14 +25,25 @@ import {
     SelectValue,
 } from '@/shared/ui/select';
 
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/shared/ui/dropdown-menu';
+
 import WebFont from 'webfontloader';
 
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Img } from 'react-image';
-import { ItalicIcon } from 'lucide-react';
+import { ItalicIcon, SaveIcon } from 'lucide-react';
 import Konva from 'konva';
 import { useUserStore } from '@/entities/user';
+import { useNavigate } from 'react-router-dom';
 export const ProjectNavbar = () => {
+    const navigate = useNavigate();
     const state = useProjectStore((state) => state.state);
     const stage = useProjectStore((state) => state.stage);
     const drawState = useProjectStore((state) => state.drawState);
@@ -549,16 +561,35 @@ export const ProjectNavbar = () => {
         <div className="fixed z-20 mt-[5px] h-[43px] w-full bg-background">
             <div className="flex h-full w-full border-t-[5px] border-dashed px-2">
                 <div className="flex h-full items-center">
-                    <HomeIcon className="h-6 w-6 cursor-pointer text-foreground" />
-                    <DownloadIcon
-                        className="ml-3 h-6 w-6 cursor-pointer text-foreground"
-                        onClick={handleDownload}
-                    />
-                    {isLogin && (
-                        <button type="button" onClick={() => saveProject()}>
-                            Save project to server
-                        </button>
-                    )}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                            <DotsHorizontalIcon className="h-6 w-6 cursor-pointer text-foreground" />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuLabel>settings</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                                <HomeIcon
+                                    className="h-5 w-5 cursor-pointer text-foreground"
+                                    onClick={() => {
+                                        navigate('/home');
+                                        saveProject();
+                                    }}
+                                />
+                                <p className="pl-2">home</p>
+                            </DropdownMenuItem>
+                            {isLogin && (
+                                <DropdownMenuItem onClick={() => saveProject()}>
+                                    <SaveIcon className="h-5 w-5 cursor-pointer text-foreground" />
+                                    <p className="pl-2">save</p>
+                                </DropdownMenuItem>
+                            )}
+                            <DropdownMenuItem onClick={handleDownload}>
+                                <DownloadIcon className="h-5 w-5 cursor-pointer text-foreground" />
+                                <p className="pl-2">download</p>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
                 <div className="ml-4 flex h-full w-full items-center">
                     {renderIcon()}

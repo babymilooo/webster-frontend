@@ -166,7 +166,6 @@ const Home = () => {
                     <div className="h-full w-full rounded-t-lg bg-background">
                         <button onClick={handleCreate}>
                             new
-                            {/* <Link to="/projects/1">new</Link> */}
                         </button>
                         <div
                             className="flex h-10 w-fit items-center justify-center"
