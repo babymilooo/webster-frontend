@@ -12,7 +12,7 @@ import {
     useProjectStore,
 } from '@/entities/project';
 import { useUserStore } from '@/entities/user';
-import $api from '@/app/http/axios';
+import $api, { API_URL } from '@/app/http/axios';
 
 const Home = () => {
     const imageInputRef = useRef<HTMLInputElement | null>(null);
@@ -169,9 +169,7 @@ const Home = () => {
                         </Card>
                     </div>
                     <div className="h-full w-full rounded-t-lg bg-background">
-                        <button onClick={handleCreate}>
-                            new
-                        </button>
+                        <button onClick={handleCreate}>new</button>
                         <div
                             className="flex h-10 w-fit items-center justify-center"
                             onClick={() => imageInputRef.current?.click()}
@@ -209,6 +207,10 @@ const Home = () => {
                                     }}
                                 >
                                     Project {pr.title} {pr._id}
+                                    <img
+                                        src={`${API_URL}/project/${pr._id}/thumbnail`}
+                                        alt="Project thumbnail"
+                                    />
                                 </div>
                             ))}
                         </div>

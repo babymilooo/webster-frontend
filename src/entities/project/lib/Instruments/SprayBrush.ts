@@ -29,7 +29,7 @@ export class SprayBrush implements IBaseBrush {
         if (this.sprayInterval) clearInterval(this.sprayInterval);
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const objRef = this;
-        this.sprayInterval = setInterval(() => {
+        this.sprayInterval = setInterval(async () => {
             const dotPos = getRandomPointInRadius(
                 objRef.x,
                 objRef.y,
