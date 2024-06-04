@@ -178,9 +178,7 @@ export const useProjectStore = create<
                 const stage = useProjectStore.getState().stage;
                 const sendData = () => {
                     if (stage) {
-                        const dataJSON = stage.toJSON();
-                        // console.log(dataJSON);
-                        saveProject(dataJSON);
+                        saveProject(stage);
                     }
                 };
 
@@ -213,7 +211,7 @@ export const useProjectStore = create<
                 if (!stage) return;
                 const isLogin = useUserStore.getState().isLogin;
                 if (!isLogin) return;
-                saveProject(stage.toJSON());
+                saveProject(stage);
             },
         })),
     ),
