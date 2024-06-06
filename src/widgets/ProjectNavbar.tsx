@@ -71,6 +71,13 @@ export const ProjectNavbar = () => {
     const setBackground = useProjectStore(
         (state) => state.setSelectedBackgroundImage,
     );
+
+    const showBackgroundColor = useProjectStore(
+        (state) => state.showBackgroundColorFill,
+    );
+    const setShowBackgroundColor = useProjectStore(
+        (state) => state.setShowBackgroundColorFill,
+    );
     const isLogin = useUserStore((state) => state.isLogin);
 
     const handleBackgroundClick = () => {
@@ -115,15 +122,19 @@ export const ProjectNavbar = () => {
 
     const handleBgChange = (e: ChangeEvent<HTMLInputElement>) => {
         const isChecked = e.target.checked;
-        if (isChecked) {
-            if (bgColor !== '') {
-                handleColorBackgroundChange({
-                    target: { value: bgColor },
-                } as React.ChangeEvent<HTMLInputElement>);
-            }
-        } else {
-            setBgColor('');
+        if (bgColor && bgColor.length !== 0) {
+            setShowBackgroundColor(isChecked);
         }
+
+        // if (isChecked) {
+        //     if (bgColor !== '') {
+        //         handleColorBackgroundChange({
+        //             target: { value: bgColor },
+        //         } as React.ChangeEvent<HTMLInputElement>);
+        //     }
+        // } else {
+        //     setBgColor('');
+        // }
     };
 
     const setFontFamily = (value: string) => {
@@ -634,7 +645,7 @@ export const ProjectNavbar = () => {
                                 </Label>
                                 <input
                                     type="checkbox"
-                                    checked={bgColor !== ''}
+                                    checked={showBackgroundColor}
                                     onChange={handleBgChange}
                                 />
                             </div>
