@@ -1,20 +1,14 @@
+import { useProjectStore } from '@/entities/project';
 import { useInitProjectStore } from '@/entities/project/model/initProjectStore';
+import { useUserStore } from '@/entities/user';
 import { Card, CardContent } from '@/shared/ui/card';
 import Carousel from '@/widgets/Carousel';
-import { ChangeEvent, useRef } from 'react';
+import CreateProjectModal from '@/widgets/CreateProject';
+import { SavedProjectTile } from '@/widgets/SavedProjectTile';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../MainLayout';
 import { PrivateLayout } from '../PrivateLayout';
 import HomeLayout from './HomeLayout';
-import {
-    createProject,
-    updatePicture,
-    useProjectStore,
-} from '@/entities/project';
-import { useUserStore } from '@/entities/user';
-import $api, { API_URL } from '@/app/http/axios';
-import { SavedProjectTile } from '@/widgets/SavedProjectTile';
-import CreateProjectModal from '@/widgets/CreateProject';
 
 const Home = () => {
     const navigate = useNavigate();
