@@ -14,7 +14,10 @@ export const SelectBackground: FC = () => {
     const selectedBackground = useProjectStore(
         (state) => state.selectedBackgroundImage,
     );
-    const setUpdatePreview = useProjectStore(state => state.setUpdatePreview);
+    const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
+    const showBackgroundColor = useProjectStore(
+        (state) => state.showBackgroundColorFill,
+    );
 
     useEffect(() => {
         const stage = useProjectStore.getState().stage;
@@ -55,13 +58,48 @@ export const SelectBackground: FC = () => {
                 height: stage.height(),
                 x: 0,
                 y: 0,
+                visible:
+                    typeof selectedBackground !== 'string' ||
+                    (typeof selectedBackground === 'string' &&
+                        showBackgroundColor),
+                id: 'backgroundImage',
             });
-            image.setAttrs({ handdrawn: true, src: imgElement.src });
+            image.setAttrs({
+                handdrawn: true,
+                src: imgElement.src,
+                isColor: typeof selectedBackground === 'string',
+            });
             backgroundLayer?.add(image);
             backgroundLayer?.batchDraw();
             setUpdatePreview();
         };
-    }, [state, selectedBackground]);
+    }, [state, selectedBackground, showBackgroundColor, setUpdatePreview]);
+
+    useEffect(() => {
+        const stage = useProjectStore.getState().stage;
+        if (!stage) return;
+        if (!backgroundLayer) {
+            backgroundLayer = new Konva.Layer();
+            backgroundLayer.setAttrs({
+                creationIndex: -2,
+                hidden: true,
+                backgroundLayer: true,
+                listening: false,
+                id: 'backgroundLayer',
+            });
+            stage.add(backgroundLayer);
+        }
+        backgroundLayer.moveToBottom();
+
+        const image = backgroundLayer.findOne(
+            '#backgroundImage',
+        ) as Konva.Image | null;
+
+        if (!image) return;
+        if (image.getAttr('isColor')) {
+            image.visible(showBackgroundColor);
+        }
+    }, [showBackgroundColor]);
 
     return null;
 };

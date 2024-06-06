@@ -55,6 +55,7 @@ interface IProjectStoreState {
     textSettings: ITextSettings;
     selectedImage: string | null;
     selectedBackgroundImage: string | null;
+    showBackgroundColorFill: boolean;
 }
 
 interface IProjectStoreActions {
@@ -78,11 +79,12 @@ interface IProjectStoreActions {
     setBrushSettings: (settings: Partial<IBrushSettings>) => void;
     setShapeSettings: (settings: Partial<IShapeSettings>) => void;
     setTextSettings: (settings: Partial<ITextSettings>) => void;
+    setShowBackgroundColorFill: (value: boolean) => void;
 
     saveProject: VoidFunction;
 }
 
-const initState = {
+const initState: IProjectStoreState = {
     project: null,
     isLoaded: false,
     coolDown: false,
@@ -119,6 +121,7 @@ const initState = {
         fontStyle: 'normal',
         textDecoration: 'none',
     },
+    showBackgroundColorFill: false,
 };
 
 export const useProjectStore = create<
@@ -206,6 +209,8 @@ export const useProjectStore = create<
                 set((state) => ({
                     textSettings: { ...state.textSettings, ...settings },
                 })),
+            setShowBackgroundColorFill: (value) =>
+                set({ showBackgroundColorFill: value }),
             saveProject: () => {
                 const stage = getState().stage;
                 if (!stage) return;
