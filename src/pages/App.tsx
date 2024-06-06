@@ -4,7 +4,7 @@ import MainLayout from './MainLayout';
 const App = () => {
     return (
         <MainLayout>
-            <div className="flex h-full select-none flex-col items-center justify-center">
+            <div className="flex min-h-screen select-none flex-col items-center justify-center">
                 <div className=" flex animate-fade-right gap-3 text-5xl  font-bold text-foreground animate-duration-[1500ms] animate-ease-out">
                     <p className="">Welcome to</p>
                     <div className="">ElephArt</div>
