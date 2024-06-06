@@ -1,12 +1,12 @@
-import { API_URL, useProjectStore } from '@/entities/project';
+import { API_URL } from '@/entities/project';
 import $api from '@/app/http/axios';
 
 export async function deleteBg(src: string) {
-    const id = useProjectStore.getState().project?._id;
+    console.log('src', src);
     try {
         const response = await $api.post(
-            `${API_URL}/project/${id}/upload-image`,
-            src,
+            `${API_URL}/project/remove-background`,
+            { imageUrl: src },
         );
         return response.data;
     } catch (e) {

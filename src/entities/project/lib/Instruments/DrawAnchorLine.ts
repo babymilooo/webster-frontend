@@ -50,6 +50,7 @@ export class DrawCurveInstrument implements IInstuments {
                 points: newPoints,
                 stroke: shapeSettings.stroke,
                 strokeWidth: shapeSettings.strokeWidth,
+                opacity: shapeSettings.opacity,
                 lineCap: 'round',
                 lineJoin: 'round',
                 draggable: false,

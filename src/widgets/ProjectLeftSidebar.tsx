@@ -13,7 +13,7 @@ import {
 } from '@radix-ui/react-icons';
 import { PaintBucketIcon } from 'lucide-react';
 
-import { ChangeEvent, useRef } from 'react';
+import { useRef } from 'react';
 
 const ProjectLeftSidebar = () => {
     const setState = useProjectStore((state) => state.setState);
@@ -147,8 +147,14 @@ const ProjectLeftSidebar = () => {
                     />
                 </div>
                 <div className="flex h-10 w-full items-center justify-center">
-                    <PaintBucketIcon
-                        className="h-6 w-6 cursor-pointer text-foreground"
+                    <TooltipIcon
+                        icon={PaintBucketIcon}
+                        tooltipText={{
+                            title: 'Fill mode',
+                            description: 'Fill background with color or image.',
+                            shortcut: 'choose color or image in navbar',
+                        }}
+                        imgSrc="../src/public/fill.jpg"
                         onClick={() => setState('SelectBackground')}
                     />
                 </div>

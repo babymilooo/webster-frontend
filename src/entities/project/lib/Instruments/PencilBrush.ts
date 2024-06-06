@@ -21,6 +21,8 @@ export class PencilBrush implements IBaseBrush {
             stroke: brushSettings.color,
             strokeWidth: brushSettings.width * e.evt.pressure,
             globalCompositeOperation: 'source-over',
+            opacity: brushSettings.opacity,
+
             // round cap for smoother lines
             lineCap: 'round',
             lineJoin: 'round',
@@ -54,6 +56,8 @@ export class PencilBrush implements IBaseBrush {
             stroke: brushSettings.color,
             strokeWidth: brushSettings.width * e.evt.pressure,
             globalCompositeOperation: 'source-over',
+            opacity: brushSettings.opacity,
+
             // round cap for smoother lines
             lineCap: 'round',
             lineJoin: 'round',

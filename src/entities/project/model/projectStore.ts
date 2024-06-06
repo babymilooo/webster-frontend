@@ -18,12 +18,14 @@ interface IBrushSettings {
     width: number;
     color: string;
     selectedBrush?: string | null;
+    opacity?: number;
 }
 
 interface IShapeSettings {
     fill: string;
     stroke: string;
     strokeWidth: number;
+    opacity?: number;
 }
 
 interface ITextSettings {
@@ -35,6 +37,7 @@ interface ITextSettings {
     align: string;
     fontStyle?: string;
     textDecoration?: string;
+    opacity?: number;
 }
 
 interface IProjectStoreState {

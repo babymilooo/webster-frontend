@@ -38,6 +38,7 @@ export class CircleInstrument implements IInstuments {
             fill: shapeSettings.fill,
             stroke: shapeSettings.stroke,
             strokeWidth: shapeSettings.strokeWidth,
+            opacity: shapeSettings.opacity,
             draggable: false,
             name: 'object',
         });

@@ -333,6 +333,23 @@ export const ProjectNavbar = () => {
                                     className="w-16 bg-background p-1"
                                 />
                             </div>
+                            <div className="col-span-1 flex w-full items-center justify-center gap-2">
+                                <Label className="pl-1">Opacity</Label>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="1"
+                                    step="0.1"
+                                    value={shapeSettings.opacity}
+                                    onChange={(e) => {
+                                        console.log(e.target.value);
+                                        setShapeSettings({
+                                            opacity: parseFloat(e.target.value),
+                                        });
+                                    }}
+                                    className="w-16 bg-background p-1"
+                                />
+                            </div>
                         </div>
                     </>
                 );
@@ -391,6 +408,23 @@ export const ProjectNavbar = () => {
                                     onChange={(e) => {
                                         setBrushSettings({
                                             width: parseInt(e.target.value),
+                                        });
+                                    }}
+                                    className="w-16 bg-background p-1"
+                                />
+                            </div>
+                            <div className="col-span-1 flex w-full items-center justify-center gap-2">
+                                <Label className="pl-1">Opacity</Label>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="1"
+                                    step="0.1"
+                                    value={brushSettings.opacity}
+                                    onChange={(e) => {
+                                        console.log(e.target.value);
+                                        setBrushSettings({
+                                            opacity: parseFloat(e.target.value),
                                         });
                                     }}
                                     className="w-16 bg-background p-1"
@@ -555,6 +589,23 @@ export const ProjectNavbar = () => {
                                     onClick={() => {
                                         setUnderline(!underline);
                                     }}
+                                />
+                            </div>
+                            <div className="col-span-1 flex w-full items-center justify-center gap-2">
+                                <Label className="pl-1">Opacity</Label>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="1"
+                                    step="0.1"
+                                    value={textSettings.opacity}
+                                    onChange={(e) => {
+                                        console.log(e.target.value);
+                                        setTextSettings({
+                                            opacity: parseFloat(e.target.value),
+                                        });
+                                    }}
+                                    className="w-16 bg-background p-1"
                                 />
                             </div>
                         </div>

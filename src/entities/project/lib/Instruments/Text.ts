@@ -40,6 +40,7 @@ export class TextInstrument {
             padding: textSettings.padding,
             align: textSettings.align,
             textDecoration: textSettings.textDecoration,
+            opacity: textSettings.opacity,
             draggable: true,
             width: 200,
             name: 'object',

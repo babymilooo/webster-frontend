@@ -72,6 +72,7 @@ export class MarkerBrush implements IBaseBrush {
             closed: true,
             fill: brushSettings.color,
             stroke: brushSettings.color,
+            opacity: brushSettings.opacity,
             strokeWidth: 1,
             draggable: false,
             globalCompositeOperation: 'source-over',
