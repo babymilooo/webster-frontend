@@ -14,6 +14,7 @@ import {
 import { useUserStore } from '@/entities/user';
 import $api, { API_URL } from '@/app/http/axios';
 import { SavedProjectTile } from '@/widgets/SavedProjectTile';
+import CreateProject from '@/widgets/CreateProject';
 
 const Home = () => {
     const imageInputRef = useRef<HTMLInputElement | null>(null);
@@ -152,7 +153,7 @@ const Home = () => {
     return (
         <MainLayout>
             <HomeLayout>
-                {/* <PrivateLayout> */}
+                <PrivateLayout>
                 <div className="flex h-full w-full flex-col gap-4 p-4">
                     <div className="phone:h-[250px] p-1 lg:h-[250px] xl:h-[350px]">
                         <Card className="phone:h-[250px] lg:h-[250px] xl:h-[350px]">
@@ -170,7 +171,8 @@ const Home = () => {
                         </Card>
                     </div>
                     <div className="h-full w-full rounded-t-lg bg-background">
-                        <button onClick={handleCreate}>new</button>
+                        {/* <button onClick={handleCreate}>new</button> */}
+                        <CreateProject />
                         <div
                             className="flex h-10 w-fit items-center justify-center"
                             onClick={() => imageInputRef.current?.click()}
@@ -216,7 +218,7 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                {/* </PrivateLayout> */}
+                </PrivateLayout>
             </HomeLayout>
         </MainLayout>
     );
