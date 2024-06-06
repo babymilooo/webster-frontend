@@ -20,8 +20,8 @@ interface IInitProjectActions {
 }
 
 const initState = {
-    width: 640,
-    height: 480,
+    width: 600,
+    height: 800,
     serializedJSON: null,
     startingImage: null,
     startingBackgroundImage: null,
