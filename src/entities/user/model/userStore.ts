@@ -7,6 +7,14 @@ import { logoutUser } from '../api/logoutUser';
 import { useProjectStore } from '@/entities/project';
 import { useInitProjectStore } from '@/entities/project/model/initProjectStore';
 
+export interface IProject {
+    _id: string;
+    title: string;
+    projectJSON?: string;
+    thumbbnail?: string;
+    owner: string;
+}
+
 interface User {
     _id: number;
     userName: string;
@@ -21,7 +29,7 @@ interface IUserStoreData {
     isLoaded: boolean;
     isLogin: boolean;
     checked: boolean;
-    projects: any[] | null;
+    projects: IProject[] | null;
 }
 
 interface IUserStoreActions {

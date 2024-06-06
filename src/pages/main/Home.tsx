@@ -13,6 +13,7 @@ import {
 } from '@/entities/project';
 import { useUserStore } from '@/entities/user';
 import $api, { API_URL } from '@/app/http/axios';
+import { SavedProjectTile } from '@/widgets/SavedProjectTile';
 
 const Home = () => {
     const imageInputRef = useRef<HTMLInputElement | null>(null);
@@ -198,26 +199,21 @@ const Home = () => {
                                 ref={backgroundImageInputRef}
                             />
                         </div>
-                        <div>
-                            {projects?.map((pr) => (
-                                <div
-                                    key={pr._id}
-                                    onClick={() => {
-                                        navigate(`/projects/${pr._id}`);
-                                    }}
-                                >
-                                    Project {pr.title} {pr._id}
-                                    <img
-                                        src={`${API_URL}/project/${pr._id}/thumbnail`}
-                                        alt="Project thumbnail"
-                                    />
-                                </div>
-                            ))}
-                        </div>
                         <h2 className="mx-4 my-4 text-left text-xl font-bold">
                             You might want to try...
                         </h2>
                         <Carousel />
+                        <h2 className="mx-4 my-4 text-left text-xl font-bold">
+                            Your Projects
+                        </h2>
+                        <div className="m-6 flex flex-row flex-wrap gap-4">
+                            {projects?.map((pr) => (
+                                <SavedProjectTile key={pr._id} project={pr} />
+                            ))}
+                            {(!projects || projects.length === 0) && (
+                                <>You have no projects</>
+                            )}
+                        </div>
                     </div>
                 </div>
                 {/* </PrivateLayout> */}
