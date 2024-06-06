@@ -119,7 +119,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
         setLoading(true);
         const response = await deleteBg(currentShape?.getAttr('src'));
         if (response) {
-            currentShape?.setAttr('src', response.src);
+            currentShape?.setAttr('src', response.image);
             setUpdatePreview();
         }
         setLoading(false);
