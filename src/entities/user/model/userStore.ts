@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { devtools } from 'zustand/middleware';
-import { getUser, loginUser, regUser, signUpGoogle } from '../index';
 import { getProjects } from '../api/getProjects';
 import { logoutUser } from '../api/logoutUser';
 import { useProjectStore } from '@/entities/project';
@@ -14,6 +13,7 @@ export interface IProject {
     thumbbnail?: string;
     owner: string;
 }
+import { getUser, loginUser, regUser, signUpGoogle, logout } from '../index';
 
 interface User {
     _id: number;
@@ -21,6 +21,7 @@ interface User {
     email: string;
     profilePicture: string;
     emailVerified: boolean;
+    isRegisteredViaGoogle: boolean;
     role: string;
 }
 
@@ -120,14 +121,11 @@ export const useUserStore = create<IUserStoreData & IUserStoreActions>()(
                 }
                 set({ isLoaded: true });
             },
-
+            
             logoutUser: async () => {
                 try {
-                    await logoutUser();
-                    set({ user: null });
-                    useUserStore.getState().resetStore();
-                    useProjectStore.getState().resetStore();
-                    useInitProjectStore.getState().resetStore();
+                    await logout();
+                    set({ user: null, isLogin: false });
                 } catch (error) {
                     console.error(error);
                 }
