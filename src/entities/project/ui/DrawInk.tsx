@@ -3,10 +3,9 @@ import { useEffect } from 'react';
 import { InkBrush } from '../lib/Instruments/InkBrush';
 
 export const DrawInk: React.FC = () => {
-    const state = useProjectStore((state) => state.state);
-
+    const drawState = useProjectStore((state) => state.drawState);
     useEffect(() => {
-        if (state !== 'DrawingInk') return;
+        if (drawState !== 'Inc') return;
         const stage = useProjectStore.getState().stage;
         if (!stage) return;
         const brush = new InkBrush();
@@ -16,7 +15,7 @@ export const DrawInk: React.FC = () => {
             if (!stage) return;
             stage.off('pointerdown pointermove pointerup');
         };
-    }, [state]);
+    }, [drawState]);
 
     return null;
 };

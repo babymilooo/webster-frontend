@@ -11,6 +11,8 @@ import {
     Pencil1Icon,
     TextIcon,
 } from '@radix-ui/react-icons';
+import { PaintBucketIcon } from 'lucide-react';
+
 import { ChangeEvent, useRef } from 'react';
 
 const ProjectLeftSidebar = () => {
@@ -103,42 +105,6 @@ const ProjectLeftSidebar = () => {
                 </div>
                 <div className="flex h-10 w-full items-center justify-center">
                     <TooltipIcon
-                        icon={Pencil1Icon}
-                        tooltipText={{
-                            title: 'Drawing Marker mode',
-                            description: 'Draw on the canvas with Marker.',
-                            shortcut: 'LCM to start and end drawing',
-                        }}
-                        imgSrc="../src/public/tooltip-draw.jpg"
-                        onClick={() => setState('DrawingMarker')}
-                    />
-                </div>
-                <div className="flex h-10 w-full items-center justify-center">
-                    <TooltipIcon
-                        icon={Pencil1Icon}
-                        tooltipText={{
-                            title: 'Drawing Ink mode',
-                            description: 'Draw on the canvas with Ink.',
-                            shortcut: 'LCM to start and end drawing',
-                        }}
-                        imgSrc="../src/public/tooltip-draw.jpg"
-                        onClick={() => setState('DrawingInk')}
-                    />
-                </div>
-                <div className="flex h-10 w-full items-center justify-center">
-                    <TooltipIcon
-                        icon={Pencil1Icon}
-                        tooltipText={{
-                            title: 'Drawing Spray mode',
-                            description: 'Draw on the canvas with Spray.',
-                            shortcut: 'LCM to start and end drawing',
-                        }}
-                        imgSrc="../src/public/tooltip-draw.jpg"
-                        onClick={() => setState('DrawingSpray')}
-                    />
-                </div>
-                <div className="flex h-10 w-full items-center justify-center">
-                    <TooltipIcon
                         icon={EraserIcon}
                         tooltipText={{
                             title: 'Erasing mode',
@@ -149,7 +115,6 @@ const ProjectLeftSidebar = () => {
                         onClick={() => setState('Erasing')}
                     />
                 </div>
-
                 <div className="flex h-10 w-full items-center justify-center">
                     <TooltipIcon
                         icon={ImageIcon}
@@ -182,7 +147,7 @@ const ProjectLeftSidebar = () => {
                     />
                 </div>
                 <div className="flex h-10 w-full items-center justify-center">
-                    <ImageIcon
+                    <PaintBucketIcon
                         className="h-6 w-6 cursor-pointer text-foreground"
                         onClick={() => setState('SelectBackground')}
                     />

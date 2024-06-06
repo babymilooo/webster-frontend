@@ -4,10 +4,9 @@ import { InkBrush } from '../lib/Instruments/InkBrush';
 import { SprayBrush } from '../lib/Instruments/SprayBrush';
 
 export const DrawSpray: React.FC = () => {
-    const state = useProjectStore((state) => state.state);
-
+    const drawState = useProjectStore((state) => state.drawState);
     useEffect(() => {
-        if (state !== 'DrawingSpray') return;
+        if (drawState !== 'Spray') return;
         const stage = useProjectStore.getState().stage;
         if (!stage) return;
         const brush = new SprayBrush();
@@ -17,7 +16,7 @@ export const DrawSpray: React.FC = () => {
             if (!stage) return;
             stage.off('pointerdown pointermove pointerup');
         };
-    }, [state]);
+    }, [drawState]);
 
     return null;
 };

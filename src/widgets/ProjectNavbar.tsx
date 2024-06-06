@@ -38,7 +38,13 @@ import WebFont from 'webfontloader';
 
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Img } from 'react-image';
-import { ItalicIcon, SaveIcon } from 'lucide-react';
+import {
+    BrushIcon,
+    ItalicIcon,
+    PencilLineIcon,
+    SaveIcon,
+    SprayCanIcon,
+} from 'lucide-react';
 import Konva from 'konva';
 import { useUserStore } from '@/entities/user';
 import { useNavigate } from 'react-router-dom';
@@ -105,6 +111,19 @@ export const ProjectNavbar = () => {
                 rect.destroy();
             },
         });
+    };
+
+    const handleBgChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const isChecked = e.target.checked;
+        if (isChecked) {
+            if (bgColor !== '') {
+                handleColorBackgroundChange({
+                    target: { value: bgColor },
+                } as React.ChangeEvent<HTMLInputElement>);
+            }
+        } else {
+            setBgColor('');
+        }
     };
 
     const setFontFamily = (value: string) => {
@@ -318,13 +337,35 @@ export const ProjectNavbar = () => {
                     </>
                 );
             case 'Drawing':
-            case 'DrawingMarker':
-            case 'DrawingInk':
-            case 'DrawingSpray':
-                // setBrushSettings({ color: '#000000' });
                 return (
                     <>
-                        <Pencil1Icon className="h-6 w-6 cursor-pointer text-foreground" />
+                        {/* <Pencil1Icon className="h-6 w-6 cursor-pointer text-foreground" /> */}
+                        <div className="ml-10 flex gap-2">
+                            <Pencil1Icon
+                                className={`h-8 w-8 cursor-pointer rounded-md p-[2px] text-foreground ${
+                                    drawState === 'Pencil' ? 'bg-secondary' : ''
+                                }`}
+                                onClick={() => setDrawState('Pencil')}
+                            />
+                            <PencilLineIcon
+                                className={`h-8 w-8 cursor-pointer rounded-md p-[2px] text-foreground ${
+                                    drawState === 'Marker' ? 'bg-secondary' : ''
+                                }`}
+                                onClick={() => setDrawState('Marker')}
+                            />
+                            <BrushIcon
+                                className={`h-8 w-8 cursor-pointer rounded-md p-[2px] text-foreground ${
+                                    drawState === 'Inc' ? 'bg-secondary' : ''
+                                }`}
+                                onClick={() => setDrawState('Inc')}
+                            />
+                            <SprayCanIcon
+                                className={`h-8 w-8 cursor-pointer rounded-md p-[2px] text-foreground ${
+                                    drawState === 'Spray' ? 'bg-secondary' : ''
+                                }`}
+                                onClick={() => setDrawState('Spray')}
+                            />
+                        </div>
                         <div className="ml-5 flex">
                             <div className="col-span-1 flex w-full items-center justify-center p-2">
                                 <Label className="pl-1">Stroke</Label>
@@ -527,7 +568,7 @@ export const ProjectNavbar = () => {
                                 className="flex h-10 w-full items-center justify-center"
                                 onClick={handleBackgroundClick}
                             >
-                                Upload Image
+                                <ImageIcon className="h-6 w-6 cursor-pointer text-foreground" />
                                 <input
                                     type="file"
                                     accept="image/*"
@@ -536,10 +577,17 @@ export const ProjectNavbar = () => {
                                     ref={backgroundInputRef}
                                 />
                             </div>
-                            <div className="col-span-1 flex w-full items-center justify-center p-2">
-                                <Label className="pl-1">Color Background</Label>
+                            <div className="col-span-1 flex w-full items-center justify-center gap-3 p-2">
+                                <Label className="pl-1">
+                                    Background color{' '}
+                                </Label>
+                                <input
+                                    type="checkbox"
+                                    checked={bgColor !== ''}
+                                    onChange={handleBgChange}
+                                />
                             </div>
-                            <div className="col-span-1 flex w-full justify-center gap-2">
+                            <div className="col-span-1 flex w-full items-center justify-center gap-2">
                                 <input
                                     type="color"
                                     value={bgColor}
@@ -568,14 +616,13 @@ export const ProjectNavbar = () => {
                         <DropdownMenuContent>
                             <DropdownMenuLabel>settings</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                                <HomeIcon
-                                    className="h-5 w-5 cursor-pointer text-foreground"
-                                    onClick={() => {
-                                        navigate('/home');
-                                        saveProject();
-                                    }}
-                                />
+                            <DropdownMenuItem
+                                onClick={() => {
+                                    navigate('/home');
+                                    saveProject();
+                                }}
+                            >
+                                <HomeIcon className="h-5 w-5 cursor-pointer text-foreground" />
                                 <p className="pl-2">home</p>
                             </DropdownMenuItem>
                             {isLogin && (
