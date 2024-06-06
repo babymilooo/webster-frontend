@@ -19,6 +19,7 @@ export const ColorCorrection = ({ SelectedShape }: { SelectedShape: any }) => {
     const [hue, setHue] = useState(0);
     const [luminance, setLuminance] = useState(0);
     const [pixelSize, setPixelSize] = useState(1);
+    const [opacity, setOpacity] = useState(1);
     const [imageDataUrl, setImageDataUrl] = useState('');
     const [tempShape, setTempShape] = useState(null);
     const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
@@ -149,6 +150,18 @@ export const ColorCorrection = ({ SelectedShape }: { SelectedShape: any }) => {
         }
     };
 
+    const handleOpacityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newOpacity = Number(e.target.value);
+        setOpacity(newOpacity);
+
+        if (tempShape) {
+            const shape = tempShape as Konva.Shape;
+            shape.cache();
+            shape.opacity(newOpacity);
+            setImageDataUrl(shape.toDataURL());
+        }
+    };
+
     const handleApply = () => {
         if (SelectedShape && tempShape) {
             SelectedShape.cache();
@@ -166,6 +179,7 @@ export const ColorCorrection = ({ SelectedShape }: { SelectedShape: any }) => {
             SelectedShape.hue(hue);
             SelectedShape.luminance(luminance);
             SelectedShape.pixelSize(pixelSize);
+            SelectedShape.opacity(opacity);
             setUpdatePreview();
         }
     };
@@ -256,6 +270,17 @@ export const ColorCorrection = ({ SelectedShape }: { SelectedShape: any }) => {
                             className="w-full"
                         />
                         <label htmlFor="slider">Pixel Size</label>
+                        <label htmlFor="slider">Opacity</label>
+                        <input
+                            id="slider"
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.1"
+                            value={opacity}
+                            onChange={handleOpacityChange}
+                            className="w-full"
+                        />
                     </div>
 
                     <div className="col-span-1 flex h-full w-full items-center justify-center">

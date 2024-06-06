@@ -53,6 +53,7 @@ export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
                 y: 0,
                 width: correctedWidth,
                 height: correctedHeight,
+                opacity: 1,
                 image: imageElement,
                 draggable: true,
             });
