@@ -19,6 +19,10 @@ export const SelectBackground: FC = () => {
         (state) => state.showBackgroundColorFill,
     );
 
+    const addStageToHistory = useProjectStore(
+        (state) => state.addStageToHistory,
+    );
+
     useEffect(() => {
         const stage = useProjectStore.getState().stage;
         if (state !== 'SelectBackground' || !stage || !selectedBackground)
@@ -72,8 +76,15 @@ export const SelectBackground: FC = () => {
             backgroundLayer?.add(image);
             backgroundLayer?.batchDraw();
             setUpdatePreview();
+            addStageToHistory();
         };
-    }, [state, selectedBackground, showBackgroundColor, setUpdatePreview]);
+    }, [
+        state,
+        selectedBackground,
+        showBackgroundColor,
+        setUpdatePreview,
+        addStageToHistory,
+    ]);
 
     useEffect(() => {
         const stage = useProjectStore.getState().stage;
@@ -98,8 +109,9 @@ export const SelectBackground: FC = () => {
         if (!image) return;
         if (image.getAttr('isColor')) {
             image.visible(showBackgroundColor);
+            addStageToHistory();
         }
-    }, [showBackgroundColor]);
+    }, [showBackgroundColor, addStageToHistory]);
 
     return null;
 };

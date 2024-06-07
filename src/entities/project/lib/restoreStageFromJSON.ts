@@ -13,12 +13,13 @@ import { useProjectStore } from '../model/projectStore';
 export const restoreStageFromJSON = (stageJSON: string) => {
     const {
         setUpdatePreview,
-        resetStore,
         setStage,
         toggleLayersSwitch,
         setSelectedLayer,
         setState,
     } = useProjectStore.getState();
+
+    //this may be unneeded
     const applyEventListenersToStage = (stage: Konva.Stage) => {
         stage.on('mousedown', (e) => {
             if (e.target === stage) {
