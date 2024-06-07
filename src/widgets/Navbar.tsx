@@ -14,13 +14,25 @@ const Navbar = () => {
         <header className="fixed top-0 z-50 w-full bg-background">
             <div className="container flex h-14 max-w-screen-2xl items-center">
                 <div className="flex">
-                    <div className="flex cursor-pointer items-center text-xl text-foreground">
+                    <div
+                        className="flex cursor-pointer items-center gap-2 text-xl text-foreground"
+                        onClick={() => {
+                            navigate('/home');
+                        }}
+                    >
                         <Img
-                            src="../src/public/logo.png"
+                            src="../src/public/logo.svg"
                             alt="My Image"
                             loader={<div>Loading...</div>}
                             unloader={<div>Failed to load image.</div>}
-                            className="h-12"
+                            className="h-12 text-foreground"
+                        />
+                        <Img
+                            src="../src/public/logo-name.svg"
+                            alt="My Image"
+                            loader={<div>Loading...</div>}
+                            unloader={<div>Failed to load image.</div>}
+                            className="h-16 pt-1"
                         />
                     </div>
                 </div>
@@ -32,21 +44,13 @@ const Navbar = () => {
                 ) : isLogin ? (
                     <div className="flex flex-1 items-center justify-end space-x-2">
                         <UserCard />
-                        <button
-                            type="button"
-                            onClick={() => {
-                                logout().then(() => navigate('/'));
-                            }}
-                        >
-                            Logout
-                        </button>
                     </div>
                 ) : (
                     <div className="flex flex-1 items-center justify-end space-x-2">
-                        <Button variant="ghost">
+                        <button className=" rounded-3xl border-2 border-foreground px-6 py-3 text-xs font-bold">
                             <Link to="/auth/login">Login</Link>
-                        </Button>
-                        <button className=" rounded-3xl bg-green-600 px-6 py-3 text-xs font-bold">
+                        </button>
+                        <button className=" rounded-3xl bg-foreground px-6 py-3 text-xs font-bold text-background">
                             <Link to="/auth/registration">Sign up</Link>
                         </button>
                     </div>

@@ -53,7 +53,7 @@ const Home = () => {
                                 </CardContent>
                             </Card>
                         </div>
-                        <div className="h-full w-full rounded-t-lg bg-background">
+                        <div className="h-full w-full rounded-lg bg-background">
                             {/* <button onClick={handleCreate}>new</button> */}
                             <CreateProjectModal />
                             <h2 className="mx-4 my-4 text-left text-xl font-bold">
