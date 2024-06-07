@@ -139,7 +139,7 @@ const CreateProjectModal = () => {
     };
 
     const handleCreate = async () => {
-        resetStore();
+        // resetStore();
         if (!isLogin) {
             navigate('/projects/tmp');
             return;

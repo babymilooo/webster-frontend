@@ -11,25 +11,7 @@ import { PrivateLayout } from '../PrivateLayout';
 import HomeLayout from './HomeLayout';
 
 const Home = () => {
-    const navigate = useNavigate();
-    const setProjects = useUserStore((state) => state.setProjects);
-    const setProject = useProjectStore((state) => state.setProject);
     const projects = useUserStore((state) => state.projects);
-    const [
-        setStartImage,
-        setStartBackgroundImage,
-        setStartJSON,
-        setWidth,
-        setHeight,
-        resetStore,
-    ] = useInitProjectStore((state) => [
-        state.setStartingImage,
-        state.setStartingBackgroundImage,
-        state.setSerializedJSON,
-        state.setWidth,
-        state.setHeight,
-        state.resetStore,
-    ]);
 
     const isLogin = useUserStore((state) => state.isLogin);
 

@@ -3,19 +3,17 @@ import Konva from 'konva';
 import { useEffect } from 'react';
 import { clearAllSelection, useProjectStore } from '@/entities/project';
 
-type AddImage = {
-    stageRef: React.RefObject<Konva.Stage>;
-};
-
-export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
+export const AddImage: React.FC = () => {
     const state = useProjectStore((state) => state.state);
     const selectedImage = useProjectStore((state) => state.selectedImage);
     const stage = useProjectStore((state) => state.stage);
     const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
+    const addStageToHistory = useProjectStore(
+        (state) => state.addStageToHistory,
+    );
 
     useEffect(() => {
-        if (!stageRef.current || state !== 'SelectImage' || !selectedImage)
-            return;
+        if (!stage || state !== 'SelectImage' || !selectedImage) return;
 
         const layer = useProjectStore.getState().selectedLayer;
         if (!layer) return;
@@ -64,15 +62,16 @@ export const AddImage: React.FC<AddImage> = ({ stageRef }) => {
             layer?.add(image);
 
             image.on('click tap', () => {
-                clearAllSelection(stageRef.current);
+                clearAllSelection(stage);
                 transformer.nodes([image]);
             });
 
             layer?.add(transformer);
             layer?.batchDraw();
             setUpdatePreview();
+            addStageToHistory();
         };
-    }, [selectedImage, state]);
+    }, [selectedImage, setUpdatePreview, stage, state, addStageToHistory]);
 
     return null;
 };

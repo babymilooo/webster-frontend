@@ -3,16 +3,14 @@ import { useEffect } from 'react';
 import { useProjectStore } from '@/entities/project';
 import { CircleInstrument } from '../lib/Instruments/Circle';
 // import { getLayerCreationIndex } from '../lib/layerCreationIndex';
-type AddCircleProps = {
-    stageRef: React.RefObject<Konva.Stage>;
-};
 
-export const AddCircle: React.FC<AddCircleProps> = () => {
+export const AddCircle: React.FC = () => {
     const state = useProjectStore((state) => state.state);
     const drawState = useProjectStore((state) => state.drawState);
+    const stage = useProjectStore((state) => state.stage);
 
     useEffect(() => {
-        const stage = useProjectStore.getState().stage;
+        // const stage = useProjectStore.getState().stage;
         if (!stage) return;
         if (state === 'CreateFigure' && drawState === 'Circle') {
             const Instrument = new CircleInstrument();
@@ -23,7 +21,7 @@ export const AddCircle: React.FC<AddCircleProps> = () => {
                 stage.off('pointerdown pointermove pointerup');
             };
         }
-    }, [state, drawState]);
+    }, [state, drawState, stage]);
 
     return null;
 };

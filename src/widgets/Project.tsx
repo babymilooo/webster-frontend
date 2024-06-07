@@ -37,12 +37,15 @@ import { DrawSpray } from '@/entities/project/ui/DrawSpray';
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
     const stageRef = useRef<Konva.Stage | null>(null);
-    const drawingLayerRef = useRef<Konva.Layer | null>(null);
+    const storeStage = useProjectStore((state) => state.stage);
 
     const setStage = useProjectStore((state) => state.setStage);
     const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
     const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
     const saveProject = useProjectStore((state) => state.saveProject);
+    const addStageToHistory = useProjectStore(
+        (state) => state.addStageToHistory,
+    );
 
     const toggleLayersSwitch = useProjectStore(
         (state) => state.toggleLayersSwitch,
@@ -91,41 +94,48 @@ export const Project = () => {
         };
     }, [saveProject]);
 
+    const applyEventListenersToStage = (stage: Konva.Stage) => {
+        stage.on('mousedown', (e) => {
+            if (e.target === stage) {
+                clearAllSelection(stage);
+            }
+        });
+
+        stage.on('mouseup', () => {
+            setUpdatePreview();
+        });
+
+        stage.on('dragend transformend', () => {
+            // console.log('dragend transformend');
+            setUpdatePreview();
+            addStageToHistory();
+        });
+
+        stage.on('contextmenu', (e) => {
+            e.evt.preventDefault();
+            if (e.target === stage) {
+                setContextMenuVisible(false);
+                return;
+            }
+            if (e.target instanceof Konva.Shape) {
+                const shape = e.target;
+                setCurrentShape(shape);
+
+                setContextMenuPosition({
+                    x: e.evt.clientX,
+                    y: e.evt.clientY,
+                });
+                setContextMenuVisible(true);
+            }
+        });
+    };
+
     useEffect(() => {
-        const applyEventListenersToStage = (stage: Konva.Stage) => {
-            stage.on('mousedown', (e) => {
-                if (e.target === stage) {
-                    clearAllSelection(stage);
-                }
-            });
+        if (!storeStage) return;
+        applyEventListenersToStage(storeStage);
+    }, [storeStage]);
 
-            stage.on('mouseup', () => {
-                setUpdatePreview();
-            });
-
-            stage.on('dragend transformend', () => {
-                // console.log('dragend transformend');
-                setUpdatePreview();
-            });
-
-            stage.on('contextmenu', (e) => {
-                e.evt.preventDefault();
-                if (e.target === stage) {
-                    setContextMenuVisible(false);
-                    return;
-                }
-                if (e.target instanceof Konva.Shape) {
-                    const shape = e.target;
-                    setCurrentShape(shape);
-
-                    setContextMenuPosition({
-                        x: e.evt.clientX,
-                        y: e.evt.clientY,
-                    });
-                    setContextMenuVisible(true);
-                }
-            });
-        };
+    useEffect(() => {
         const initStage = () => {
             if (!canvasElementRef.current) return;
             resetProjectStore();
@@ -159,7 +169,7 @@ export const Project = () => {
                 const lastIndex = stage.getAttr('lastLayerIndex');
                 if (lastIndex) setLayerCreationIndex(lastIndex);
 
-                stageRef.current = stage;
+                // stageRef.current = stage;
                 setStage(stage);
 
                 //find and aset backgroundLayer and selectionTopLayer
@@ -283,13 +293,14 @@ export const Project = () => {
                 setUpdatePreview();
 
                 applyEventListenersToStage(stage);
+                addStageToHistory();
             } else {
                 const stage = new Konva.Stage({
                     container: canvasElementRef.current,
                     width: correctedWidth,
                     height: correctedHeight,
                 });
-                stageRef.current = stage;
+                // stageRef.current = stage;
                 setStage(stage);
 
                 const startLayer = new Konva.Layer();
@@ -358,6 +369,7 @@ export const Project = () => {
 
                 applyEventListenersToStage(stage);
                 saveProject();
+                addStageToHistory();
             }
         };
 
@@ -376,7 +388,9 @@ export const Project = () => {
         document.addEventListener('mousedown', handleClickOutside);
 
         return () => {
-            stageRef.current?.destroy();
+            const stage = useProjectStore.getState().stage;
+            stage?.destroy();
+            resetProjectStore();
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
@@ -408,26 +422,23 @@ export const Project = () => {
     return (
         <div className="h-full w-full bg-canva">
             <Drag />
-            <AddCircle stageRef={stageRef} />
+            <AddCircle />
             <AddRect />
-            <StartDrawing
-                stageRef={stageRef}
-                drawingLayerRef={drawingLayerRef}
-            />
+            <StartDrawing />
             <DrawMarker />
             <DrawInk />
             <DrawSpray />
 
-            <Erasing stageRef={stageRef} drawingLayerRef={drawingLayerRef} />
+            <Erasing />
 
-            <AddImage stageRef={stageRef} />
+            <AddImage />
             <SelectBackground />
 
-            <SelectionArea stageRef={stageRef} />
+            <SelectionArea />
 
-            <DrawLine stageRef={stageRef} />
+            <DrawLine />
 
-            <DrawAnchorLine stageRef={stageRef} />
+            <DrawAnchorLine />
 
             <AddText />
             <div className="flex h-full w-full overflow-auto bg-canva align-middle">
@@ -441,9 +452,8 @@ export const Project = () => {
                 contextMenuPosition={contextMenuPosition}
                 currentShape={currentShape}
                 setCurrentShape={setCurrentShape}
-                stageRef={stageRef}
             />
-            <ScaleBar stageRef={stageRef} />
+            <ScaleBar />
         </div>
     );
 };

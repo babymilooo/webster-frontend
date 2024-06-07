@@ -5,9 +5,10 @@ import { SprayBrush } from '../lib/Instruments/SprayBrush';
 
 export const DrawSpray: React.FC = () => {
     const drawState = useProjectStore((state) => state.drawState);
+    const stage = useProjectStore((state) => state.stage);
     useEffect(() => {
         if (drawState !== 'Spray') return;
-        const stage = useProjectStore.getState().stage;
+        // const stage = useProjectStore.getState().stage;
         if (!stage) return;
         const brush = new SprayBrush();
         Brushes.applyBrushToStage(stage, brush);
@@ -16,7 +17,7 @@ export const DrawSpray: React.FC = () => {
             if (!stage) return;
             stage.off('pointerdown pointermove pointerup');
         };
-    }, [drawState]);
+    }, [drawState, stage]);
 
     return null;
 };
