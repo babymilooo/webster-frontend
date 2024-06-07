@@ -18,7 +18,9 @@ export class DrawCurveInstrument implements IInstuments {
         if (stage) {
             setOffDragable();
             stage.off('pointerdown pointermove pointerup contextmenu');
-            stage.on('pointerdown', (e) => this.onPointerDown(e));
+            stage.on('pointerdown', (e) => {
+                if (e.evt.button == 0) this.onPointerDown(e);
+            });
             stage.on('pointermove', (e) => this.onPointerMove(e));
             stage.on('pointerup', (e) => this.onPointerUp(e));
             stage.on('contextmenu', (e) => this.handleContextMenu(e));

@@ -14,7 +14,9 @@ export class CircleInstrument implements IInstuments {
         if (stage) {
             setOffDragable();
             stage.off('pointerdown pointermove pointerup');
-            stage.on('pointerdown', () => this.onPointerDown());
+            stage.on('pointerdown', (e) => {
+                if (e.evt.button == 0) this.onPointerDown();
+            });
             stage.on('pointermove', () => this.onPointerMove());
             stage.on('pointerup', () => this.onPointerUp());
             stage.on('pointerup', () => this.setUpdatePreview());
