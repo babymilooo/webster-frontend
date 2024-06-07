@@ -23,6 +23,7 @@ export async function saveProject(stage: Konva.Stage) {
                 const fd = new FormData();
                 fd.append('image', blob);
                 await $api.patch(`/project/${id}/thumbnail`, fd);
+                stageClone.destroy();
             },
         });
     } catch (error) {
