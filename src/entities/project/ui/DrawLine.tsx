@@ -7,9 +7,10 @@ import { DrawLineInstrument } from '../lib/Instruments/DrawLine';
 const DrawLine: React.FC = () => {
     const state = useProjectStore((state) => state.state);
     const drawState = useProjectStore((state) => state.drawState);
+    const stage = useProjectStore((state) => state.stage);
 
     useEffect(() => {
-        const stage = useProjectStore.getState().stage;
+        // const stage = useProjectStore.getState().stage;
         if (!stage) return;
 
         if (state === 'CreateFigure' && drawState === 'Line') {
@@ -23,7 +24,7 @@ const DrawLine: React.FC = () => {
                 // stage.off('contextmenu', handleContextMenu);
             };
         }
-    }, [state, drawState]);
+    }, [state, drawState, stage]);
 
     return null;
 };

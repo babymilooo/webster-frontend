@@ -115,12 +115,14 @@ const initState: IProjectStoreState = {
         width: 10,
         color: '#000000',
         selectedBrush: null,
+        opacity: 1,
     },
 
     shapeSettings: {
         fill: '#000000',
         stroke: '#000000',
         strokeWidth: 4,
+        opacity: 1,
     },
     textSettings: {
         fontSize: 20,
@@ -244,8 +246,14 @@ export const useProjectStore = create<
 
                 if (stack.length - 1 > index) index = stack.length - 1;
 
-                const pastStack = stack.slice(0, index + 1);
+                let pastStack = stack.slice(0, index + 1);
                 pastStack.push(stageJSON);
+                if (pastStack.length > 20) {
+                    pastStack = pastStack.slice(
+                        pastStack.length - 20,
+                        pastStack.length,
+                    );
+                }
                 set({
                     historyStageStack: pastStack,
                     currentHistoryStackIndex: pastStack.length - 1,

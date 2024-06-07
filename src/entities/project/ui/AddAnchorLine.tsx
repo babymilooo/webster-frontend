@@ -6,9 +6,10 @@ import { DrawCurveInstrument } from '../lib/Instruments/DrawAnchorLine';
 const DrawAnchorLine: React.FC = () => {
     const state = useProjectStore((state) => state.state);
     const drawState = useProjectStore((state) => state.drawState);
+    const stage = useProjectStore((state) => state.stage);
 
     useEffect(() => {
-        const stage = useProjectStore.getState().stage;
+        // const stage = useProjectStore.getState().stage;
         if (!stage) return;
 
         if (state === 'CreateFigure' && drawState === 'AnchorLine') {
@@ -19,7 +20,7 @@ const DrawAnchorLine: React.FC = () => {
                 stage.off('pointerdown pointermove pointerup contextmenu');
             };
         }
-    }, [state, drawState]);
+    }, [state, drawState, stage]);
 
     return null;
 };

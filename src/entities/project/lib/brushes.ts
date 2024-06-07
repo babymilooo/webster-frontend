@@ -22,5 +22,8 @@ export class Brushes {
         useProjectStore
             .getState()
             .setBrushSettings({ selectedBrush: brush.type });
+        stage.on('pointerup', () =>
+            useProjectStore.getState().addStageToHistory(),
+        );
     }
 }

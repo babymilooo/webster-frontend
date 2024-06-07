@@ -23,6 +23,9 @@ export class DrawCurveInstrument implements IInstuments {
             stage.on('pointerup', (e) => this.onPointerUp(e));
             stage.on('contextmenu', (e) => this.handleContextMenu(e));
             stage.on('pointerup', () => setUpdatePreview());
+            stage.on('pointerup', () =>
+                useProjectStore.getState().addStageToHistory(),
+            );
         }
     }
 

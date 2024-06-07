@@ -5,10 +5,11 @@ import { getLayerCreationIndex } from '../lib/layerCreationIndex';
 
 export const Erasing: React.FC = () => {
     const state = useProjectStore((state) => state.state);
+    const stage = useProjectStore((state) => state.stage);
 
     useEffect(() => {
         if (state !== 'Erasing') return;
-        const stage = useProjectStore.getState().stage;
+        // const stage = useProjectStore.getState().stage;
         if (!stage) return;
         const brush = new EraserBrush();
         Brushes.applyBrushToStage(stage, brush);
@@ -16,7 +17,7 @@ export const Erasing: React.FC = () => {
             if (!stage) return;
             stage.off('pointerdown pointermove pointerup');
         };
-    }, [state]);
+    }, [state, stage]);
 
     return null;
 };

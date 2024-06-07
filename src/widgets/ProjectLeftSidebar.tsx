@@ -11,7 +11,7 @@ import {
     Pencil1Icon,
     TextIcon,
 } from '@radix-ui/react-icons';
-import { PaintBucketIcon } from 'lucide-react';
+import { ArrowBigLeft, ArrowBigRight, PaintBucketIcon } from 'lucide-react';
 
 import { useRef } from 'react';
 
@@ -19,6 +19,10 @@ const ProjectLeftSidebar = () => {
     const setState = useProjectStore((state) => state.setState);
     const setImage = useProjectStore((state) => state.setSelectredImage);
     const isLogin = useUserStore((state) => state.isLogin);
+    const [backHistory, forwardHistory] = useProjectStore((state) => [
+        state.backHistory,
+        state.forwardHistory,
+    ]);
 
     const inputRef = useRef<HTMLInputElement>(null);
     const handleClick = () => {
@@ -156,6 +160,30 @@ const ProjectLeftSidebar = () => {
                         }}
                         imgSrc="../src/public/fill.jpg"
                         onClick={() => setState('SelectBackground')}
+                    />
+                </div>
+                <div className="flex h-10 w-full items-center justify-center">
+                    <TooltipIcon
+                        icon={ArrowBigLeft}
+                        tooltipText={{
+                            title: 'Fill mode',
+                            description: 'Fill background with color or image.',
+                            shortcut: 'choose color or image in navbar',
+                        }}
+                        imgSrc="../src/public/fill.jpg"
+                        onClick={() => backHistory()}
+                    />
+                </div>
+                <div className="flex h-10 w-full items-center justify-center">
+                    <TooltipIcon
+                        icon={ArrowBigRight}
+                        tooltipText={{
+                            title: 'Fill mode',
+                            description: 'Fill background with color or image.',
+                            shortcut: 'choose color or image in navbar',
+                        }}
+                        imgSrc="../src/public/fill.jpg"
+                        onClick={() => forwardHistory()}
                     />
                 </div>
             </div>
