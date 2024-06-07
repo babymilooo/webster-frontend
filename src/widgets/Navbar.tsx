@@ -1,14 +1,12 @@
 import { Img } from 'react-image';
 import { Skeleton } from '../shared/ui/skeleton';
 import { useUserStore } from '@/entities/user/model/userStore';
-import { Button } from '@/shared/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserCard } from '@/entities/user';
 
 const Navbar = () => {
     const isLogin = useUserStore((state) => state.isLogin);
     const isLoaded = useUserStore((state) => state.isLoaded);
-    const logout = useUserStore((state) => state.logoutUser);
     const navigate = useNavigate();
     return (
         <header className="fixed top-0 z-50 w-full bg-background">

@@ -2,9 +2,6 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { devtools } from 'zustand/middleware';
 import { getProjects } from '../api/getProjects';
-import { logoutUser } from '../api/logoutUser';
-import { useProjectStore } from '@/entities/project';
-import { useInitProjectStore } from '@/entities/project/model/initProjectStore';
 
 export interface IProject {
     _id: string;
@@ -14,6 +11,7 @@ export interface IProject {
     owner: string;
 }
 import { getUser, loginUser, regUser, signUpGoogle, logout } from '../index';
+import { deleteProject, updateProject } from '@/entities/project';
 
 interface User {
     _id: number;
@@ -42,6 +40,8 @@ interface IUserStoreActions {
     registerUser: (email: string, password: string) => void;
     checkAuth: () => object | null;
     logoutUser: () => Promise<void>;
+    updateProject: (title: string, id: string) => void;
+    deleteProject: (id: string) => void;
 }
 
 const initState = {
@@ -60,6 +60,39 @@ export const useUserStore = create<IUserStoreData & IUserStoreActions>()(
                 set({ ...initState });
             },
             setProjects: (projects) => set({ projects }),
+            updateProject: async (title, id) => {
+                try {
+                    const response = await updateProject(title, id);
+                    const setProjects = useUserStore.getState().setProjects;
+                    const projects = useUserStore.getState().projects ?? [];
+                    if (response) {
+                        const updatedProjects = projects.map((project) => {
+                            if (project._id === id) {
+                                return { ...project, title };
+                            }
+                            return project;
+                        });
+                        setProjects(updatedProjects as []);
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            },
+            deleteProject: async (id) => {
+                try {
+                    const response = await deleteProject(id);
+                    const setProjects = useUserStore.getState().setProjects;
+                    const projects = useUserStore.getState().projects ?? [];
+                    if (response) {
+                        const updatedProjects = projects.filter(
+                            (project) => project._id !== id,
+                        );
+                        setProjects(updatedProjects as []);
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            },
             setUser: (user) => set({ user }),
             loginUser: async (email, password) => {
                 try {
@@ -121,7 +154,7 @@ export const useUserStore = create<IUserStoreData & IUserStoreActions>()(
                 }
                 set({ isLoaded: true });
             },
-            
+
             logoutUser: async () => {
                 try {
                     await logout();

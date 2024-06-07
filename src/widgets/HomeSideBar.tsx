@@ -8,12 +8,16 @@ import {
     GearIcon,
     ExitIcon,
 } from '@radix-ui/react-icons';
+import CreateProjectModal from './CreateProject';
 
 const HomeSideBar = () => {
     return (
         <div className="fixed my-4 ml-2 h-full w-[250px] rounded-lg bg-background">
             <div className="mx-4 mt-6 flex h-full flex-col">
                 <UserCard />
+                <div className='mt-2 w-full'>
+                    <CreateProjectModal />
+                </div>
                 <div className="mt-4 w-full">
                     <Link to="/home">
                         <Button

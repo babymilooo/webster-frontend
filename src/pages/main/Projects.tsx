@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import MainLayout from '../MainLayout';
 import HomeLayout from './HomeLayout';
 import { useUserStore } from '@/entities/user';
+import Gallery from '@/widgets/Gallery';
 
 const Projects = () => {
     
@@ -13,10 +14,8 @@ const Projects = () => {
     return (
         <MainLayout>
             <HomeLayout>
-                <div className="flex h-full w-full pl-4 pr-2 pt-4">
-                    <div className="h-full w-full rounded-t-lg bg-background">
-                        asdasd
-                    </div>
+                <div className="flex w-full pl-4 pr-2 pt-4">
+                    <Gallery />
                 </div>
             </HomeLayout>
         </MainLayout>

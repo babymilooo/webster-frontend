@@ -18,11 +18,11 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
         handleCheckAuth();
     }, [checked]);
     return (
-        <div className="min-h-screen bg-muted">
+        <div className="h-screen">
             {checked ? (
-                <main className="min-h-screen">{children}</main>
+                <main className="h-full">{children}</main>
             ) : (
-                <div className="flex min-h-screen items-center justify-center">
+                <div className="flex h-full items-center justify-center">
                     <p className="text-lg text-foreground">
                         Checking authentication...
                     </p>

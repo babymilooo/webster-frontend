@@ -12,3 +12,5 @@ export { useProjectStore } from './model/projectStore';
 export { clearAllSelection } from './lib/clearAllSelection';
 export { AddImage } from './ui/AddImage';
 export { updatePicture } from './api/loadImage';
+export { updateProject } from './api/updateProject';
+export {deleteProject} from './api/deleteProject';

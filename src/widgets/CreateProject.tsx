@@ -15,6 +15,7 @@ import {
 } from '@/shared/ui/dialog';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
+import { PlusCircleIcon } from 'lucide-react';
 import { ChangeEvent, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -139,7 +140,7 @@ const CreateProjectModal = () => {
     };
 
     const handleCreate = async () => {
-        resetStore();
+        // resetStore();
         if (!isLogin) {
             navigate('/projects/tmp');
             return;
@@ -157,8 +158,11 @@ const CreateProjectModal = () => {
 
     return (
         <Dialog>
-            <DialogTrigger className="rounded-lg px-4 py-2 text-center hover:bg-secondary">
-                New Project
+            <DialogTrigger className="rounded-xl px-4 py-2 text-center hover:bg-secondary border-2 border-foreground w-full">
+                <div className="flex items-center justify-center">
+                    <PlusCircleIcon className="mr-2 h-5 w-5" />
+                    <span>New project</span>
+                </div>
             </DialogTrigger>
             <DialogContent className="w-3/5">
                 <DialogTitle>Create Project</DialogTitle>
