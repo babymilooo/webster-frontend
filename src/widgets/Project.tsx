@@ -456,7 +456,6 @@ export const Project = () => {
                 currentShape={currentShape}
                 setCurrentShape={setCurrentShape}
             />
-            <ScaleBar />
         </div>
     );
 };

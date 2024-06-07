@@ -70,7 +70,7 @@ export const ScaleBar: React.FC = () => {
     }, [handleResetZoom, handleZoom]);
 
     return (
-        <div className="fixed bottom-10 z-10 w-full select-none pr-[380px]">
+        <div className="fixed bottom-5 z-10 w-full select-none">
             <div className="flex w-full justify-center">
                 <div className="flex items-center gap-8 rounded-lg border bg-background px-8 py-2 shadow-md">
                     <PlusIcon

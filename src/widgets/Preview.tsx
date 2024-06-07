@@ -96,7 +96,7 @@ const Preview = () => {
     };
 
     return (
-        <div className="h-full">
+        <div className="h-full pt-[1px]">
             {SelectedShape ? (
                 <>
                     <div className="flex h-[226px] w-full flex-col items-center justify-center border-2 border-dashed border-black">
@@ -106,7 +106,8 @@ const Preview = () => {
                             className="h-full w-full object-contain"
                             style={{
                                 aspectRatio: `${
-                                    SelectedShape.width() / SelectedShape.height()
+                                    SelectedShape.width() /
+                                    SelectedShape.height()
                                 }`,
                             }}
                         />

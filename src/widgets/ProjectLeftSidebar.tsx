@@ -52,139 +52,145 @@ const ProjectLeftSidebar = () => {
     };
 
     return (
-        <div className="fixed z-10 h-full w-[80px] bg-background pt-[48px]">
-            <div className="grid w-full grid-cols-2 border-t-4 border-dashed">
-                <div className="flex h-10 w-full items-center justify-center">
-                    <TooltipIcon
-                        icon={CursorArrowIcon}
-                        tooltipText={{
-                            title: 'Drag mode',
-                            description:
-                                'Move and resize objects on the canvas.',
-                            shortcut: 'Drag to move, dblclick to resize',
-                        }}
-                        imgSrc="../src/public/tooltip-drag.jpg"
-                        onClick={() => {
-                            setState('Drag');
-                            setOnDragable();
-                        }}
-                    />
-                </div>
-                <div className="flex h-10 w-full items-center justify-center">
-                    <TooltipIcon
-                        icon={GroupIcon}
-                        tooltipText={{
-                            title: 'Selection mode',
-                            description: 'Select an area to move or resize it.',
-                            shortcut:
-                                'LCM to start and RCM to end selection, drag to move',
-                        }}
-                        imgSrc="../src/public/tooltip-select.jpg"
-                        onClick={() => setState('SelectionArea')}
-                    />
-                </div>
-                <div className="flex h-10 w-full items-center justify-center">
-                    <TooltipIcon
-                        icon={BoxIcon}
-                        tooltipText={{
-                            title: 'Create figure',
-                            description: 'Draw some shapes on the canvas.',
-                            shortcut: 'LCM to start and end drawing',
-                        }}
-                        imgSrc="../src/public/tooltip-shapes.jpg"
-                        onClick={() => setState('CreateFigure')}
-                    />
-                </div>
-                <div className="flex h-10 w-full items-center justify-center">
-                    <TooltipIcon
-                        icon={Pencil1Icon}
-                        tooltipText={{
-                            title: 'Drawing mode',
-                            description: 'Draw on the canvas.',
-                            shortcut: 'LCM to start and end drawing',
-                        }}
-                        imgSrc="../src/public/tooltip-draw.jpg"
-                        onClick={() => setState('Drawing')}
-                    />
-                </div>
-                <div className="flex h-10 w-full items-center justify-center">
-                    <TooltipIcon
-                        icon={EraserIcon}
-                        tooltipText={{
-                            title: 'Erasing mode',
-                            description: 'Erase objects on the canvas.',
-                            shortcut: 'LCM to start and end erasing',
-                        }}
-                        imgSrc="../src/public/tooltip-eraser.jpg"
-                        onClick={() => setState('Erasing')}
-                    />
-                </div>
-                <div className="flex h-10 w-full items-center justify-center">
-                    <TooltipIcon
-                        icon={ImageIcon}
-                        tooltipText={{
-                            title: 'Image mode',
-                            description: 'Add an image to the canvas.',
-                            shortcut: '',
-                        }}
-                        imgSrc="../src/public/tooltip-image.webp"
-                        onClick={handleClick}
-                    />
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        className="hidden"
-                        ref={inputRef}
-                    />
-                </div>
-                <div className="flex h-10 w-full items-center justify-center">
-                    <TooltipIcon
-                        icon={TextIcon}
-                        tooltipText={{
-                            title: 'Text mode',
-                            description: 'Add text to the canvas.',
-                            shortcut: 'LCM to add text',
-                        }}
-                        imgSrc="../src/public/tooltip-text.jpg"
-                        onClick={() => setState('Text')}
-                    />
-                </div>
-                <div className="flex h-10 w-full items-center justify-center">
-                    <TooltipIcon
-                        icon={PaintBucketIcon}
-                        tooltipText={{
-                            title: 'Fill mode',
-                            description: 'Fill background with color or image.',
-                            shortcut: 'choose color or image in navbar',
-                        }}
-                        imgSrc="../src/public/fill.jpg"
-                        onClick={() => setState('SelectBackground')}
-                    />
-                </div>
-                <div className="flex h-10 w-full items-center justify-center">
-                    <TooltipIcon
-                        icon={ArrowBigLeft}
-                        tooltipText={{
-                            title: 'Fill mode',
-                            description: 'Fill background with color or image.',
-                            shortcut: 'choose color or image in navbar',
-                        }}
-                        imgSrc="../src/public/fill.jpg"
-                        onClick={() => backHistory()}
-                    />
-                </div>
-                <div className="flex h-10 w-full items-center justify-center">
-                    <TooltipIcon
-                        icon={ArrowBigRight}
-                        tooltipText={{
-                            title: 'Fill mode',
-                            description: 'Fill background with color or image.',
-                            shortcut: 'choose color or image in navbar',
-                        }}
-                        imgSrc="../src/public/fill.jpg"
-                        onClick={() => forwardHistory()}
-                    />
+        <div className="fixed z-10 h-full left-5">
+            <div className="flex w-full h-full flex-col items-center justify-center">
+                <div className="flex w-full flex-col rounded-lg border bg-background shadow-md">
+                    <div className="flex h-10 w-full items-center justify-center p-1">
+                        <TooltipIcon
+                            icon={CursorArrowIcon}
+                            tooltipText={{
+                                title: 'Drag mode',
+                                description:
+                                    'Move and resize objects on the canvas.',
+                                shortcut: 'Drag to move, dblclick to resize',
+                            }}
+                            imgSrc="../src/public/tooltip-drag.jpg"
+                            onClick={() => {
+                                setState('Drag');
+                                setOnDragable();
+                            }}
+                        />
+                    </div>
+                    <div className="flex h-10 w-full items-center justify-center">
+                        <TooltipIcon
+                            icon={GroupIcon}
+                            tooltipText={{
+                                title: 'Selection mode',
+                                description:
+                                    'Select an area to move or resize it.',
+                                shortcut:
+                                    'LCM to start and RCM to end selection, drag to move',
+                            }}
+                            imgSrc="../src/public/tooltip-select.jpg"
+                            onClick={() => setState('SelectionArea')}
+                        />
+                    </div>
+                    <div className="flex h-10 w-full items-center justify-center">
+                        <TooltipIcon
+                            icon={BoxIcon}
+                            tooltipText={{
+                                title: 'Create figure',
+                                description: 'Draw some shapes on the canvas.',
+                                shortcut: 'LCM to start and end drawing',
+                            }}
+                            imgSrc="../src/public/tooltip-shapes.jpg"
+                            onClick={() => setState('CreateFigure')}
+                        />
+                    </div>
+                    <div className="flex h-10 w-full items-center justify-center">
+                        <TooltipIcon
+                            icon={Pencil1Icon}
+                            tooltipText={{
+                                title: 'Drawing mode',
+                                description: 'Draw on the canvas.',
+                                shortcut: 'LCM to start and end drawing',
+                            }}
+                            imgSrc="../src/public/tooltip-draw.jpg"
+                            onClick={() => setState('Drawing')}
+                        />
+                    </div>
+                    <div className="flex h-10 w-full items-center justify-center">
+                        <TooltipIcon
+                            icon={EraserIcon}
+                            tooltipText={{
+                                title: 'Erasing mode',
+                                description: 'Erase objects on the canvas.',
+                                shortcut: 'LCM to start and end erasing',
+                            }}
+                            imgSrc="../src/public/tooltip-eraser.jpg"
+                            onClick={() => setState('Erasing')}
+                        />
+                    </div>
+                    <div className="flex h-10 w-full items-center justify-center">
+                        <TooltipIcon
+                            icon={ImageIcon}
+                            tooltipText={{
+                                title: 'Image mode',
+                                description: 'Add an image to the canvas.',
+                                shortcut: '',
+                            }}
+                            imgSrc="../src/public/tooltip-image.webp"
+                            onClick={handleClick}
+                        />
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="hidden"
+                            ref={inputRef}
+                        />
+                    </div>
+                    <div className="flex h-10 w-full items-center justify-center">
+                        <TooltipIcon
+                            icon={TextIcon}
+                            tooltipText={{
+                                title: 'Text mode',
+                                description: 'Add text to the canvas.',
+                                shortcut: 'LCM to add text',
+                            }}
+                            imgSrc="../src/public/tooltip-text.jpg"
+                            onClick={() => setState('Text')}
+                        />
+                    </div>
+                    <div className="flex h-10 w-full items-center justify-center">
+                        <TooltipIcon
+                            icon={PaintBucketIcon}
+                            tooltipText={{
+                                title: 'Fill mode',
+                                description:
+                                    'Fill background with color or image.',
+                                shortcut: 'choose color or image in navbar',
+                            }}
+                            imgSrc="../src/public/fill.jpg"
+                            onClick={() => setState('SelectBackground')}
+                        />
+                    </div>
+                    <div className="flex h-10 w-full items-center justify-center">
+                        <TooltipIcon
+                            icon={ArrowBigLeft}
+                            tooltipText={{
+                                title: 'Fill mode',
+                                description:
+                                    'Fill background with color or image.',
+                                shortcut: 'choose color or image in navbar',
+                            }}
+                            imgSrc="../src/public/fill.jpg"
+                            onClick={() => backHistory()}
+                        />
+                    </div>
+                    <div className="flex h-10 w-full items-center justify-center">
+                        <TooltipIcon
+                            icon={ArrowBigRight}
+                            tooltipText={{
+                                title: 'Fill mode',
+                                description:
+                                    'Fill background with color or image.',
+                                shortcut: 'choose color or image in navbar',
+                            }}
+                            imgSrc="../src/public/fill.jpg"
+                            onClick={() => forwardHistory()}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
