@@ -4,17 +4,13 @@ import { useEffect, useRef, useState } from 'react';
 import { clearAllSelection } from '@/entities/project';
 import { DrawLineInstrument } from '../lib/Instruments/DrawLine';
 
-type DrawLineProps = {
-    stageRef: React.RefObject<Konva.Stage>;
-};
-
-const DrawLine: React.FC<DrawLineProps> = ({ stageRef }) => {
+const DrawLine: React.FC = () => {
     const state = useProjectStore((state) => state.state);
     const drawState = useProjectStore((state) => state.drawState);
 
     useEffect(() => {
-        if (!stageRef.current) return;
-        const stage = stageRef.current;
+        const stage = useProjectStore.getState().stage;
+        if (!stage) return;
 
         if (state === 'CreateFigure' && drawState === 'Line') {
             const instrument = new DrawLineInstrument();
@@ -27,7 +23,7 @@ const DrawLine: React.FC<DrawLineProps> = ({ stageRef }) => {
                 // stage.off('contextmenu', handleContextMenu);
             };
         }
-    }, [state, drawState, stageRef]);
+    }, [state, drawState]);
 
     return null;
 };

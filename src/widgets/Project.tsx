@@ -37,7 +37,6 @@ import { DrawSpray } from '@/entities/project/ui/DrawSpray';
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
     const stageRef = useRef<Konva.Stage | null>(null);
-    const drawingLayerRef = useRef<Konva.Layer | null>(null);
 
     const setStage = useProjectStore((state) => state.setStage);
     const setSelectedLayer = useProjectStore((state) => state.setSelectedLayer);
@@ -159,7 +158,7 @@ export const Project = () => {
                 const lastIndex = stage.getAttr('lastLayerIndex');
                 if (lastIndex) setLayerCreationIndex(lastIndex);
 
-                stageRef.current = stage;
+                // stageRef.current = stage;
                 setStage(stage);
 
                 //find and aset backgroundLayer and selectionTopLayer
@@ -289,7 +288,7 @@ export const Project = () => {
                     width: correctedWidth,
                     height: correctedHeight,
                 });
-                stageRef.current = stage;
+                // stageRef.current = stage;
                 setStage(stage);
 
                 const startLayer = new Konva.Layer();
@@ -376,7 +375,9 @@ export const Project = () => {
         document.addEventListener('mousedown', handleClickOutside);
 
         return () => {
-            stageRef.current?.destroy();
+            const stage = useProjectStore.getState().stage;
+            stage?.destroy();
+            resetProjectStore();
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
@@ -408,26 +409,23 @@ export const Project = () => {
     return (
         <div className="h-full w-full bg-canva">
             <Drag />
-            <AddCircle stageRef={stageRef} />
+            <AddCircle />
             <AddRect />
-            <StartDrawing
-                stageRef={stageRef}
-                drawingLayerRef={drawingLayerRef}
-            />
+            <StartDrawing />
             <DrawMarker />
             <DrawInk />
             <DrawSpray />
 
-            <Erasing stageRef={stageRef} drawingLayerRef={drawingLayerRef} />
+            <Erasing />
 
-            <AddImage stageRef={stageRef} />
+            <AddImage />
             <SelectBackground />
 
-            <SelectionArea stageRef={stageRef} />
+            <SelectionArea />
 
-            <DrawLine stageRef={stageRef} />
+            <DrawLine />
 
-            <DrawAnchorLine stageRef={stageRef} />
+            <DrawAnchorLine />
 
             <AddText />
             <div className="flex h-full w-full overflow-auto bg-canva align-middle">
@@ -441,9 +439,8 @@ export const Project = () => {
                 contextMenuPosition={contextMenuPosition}
                 currentShape={currentShape}
                 setCurrentShape={setCurrentShape}
-                stageRef={stageRef}
             />
-            <ScaleBar stageRef={stageRef} />
+            <ScaleBar />
         </div>
     );
 };

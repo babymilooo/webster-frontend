@@ -3,15 +3,7 @@ import { Brushes, EraserBrush, useProjectStore } from '@/entities/project';
 import { useEffect } from 'react';
 import { getLayerCreationIndex } from '../lib/layerCreationIndex';
 
-type ErasingProps = {
-    stageRef?: React.RefObject<Konva.Stage>;
-    drawingLayerRef: React.MutableRefObject<Konva.Layer | null>;
-};
-
-export const Erasing: React.FC<ErasingProps> = ({
-    stageRef,
-    drawingLayerRef,
-}) => {
+export const Erasing: React.FC = () => {
     const state = useProjectStore((state) => state.state);
 
     useEffect(() => {
@@ -24,7 +16,7 @@ export const Erasing: React.FC<ErasingProps> = ({
             if (!stage) return;
             stage.off('pointerdown pointermove pointerup');
         };
-    }, [state, stageRef, drawingLayerRef]);
+    }, [state]);
 
     return null;
 };

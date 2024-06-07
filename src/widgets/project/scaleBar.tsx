@@ -2,15 +2,12 @@ import React, { useState } from 'react';
 import { MinusIcon, PlusIcon, SymbolIcon } from '@radix-ui/react-icons';
 
 import Konva from 'konva';
+import { useProjectStore } from '@/entities/project';
 
-interface ScaleBarProps {
-    stageRef: React.RefObject<Konva.Stage>;
-}
-export const ScaleBar: React.FC<ScaleBarProps> = ({ stageRef }) => {
+export const ScaleBar: React.FC = () => {
     const [zoomPercentage, setZoomPercentage] = useState(100);
-
+    const stage = useProjectStore((state) => state.stage);
     const handleZoom = (direction: 'in' | 'out') => {
-        const stage = stageRef.current;
         if (!stage) return;
 
         const scaleBy = 1.5;
@@ -49,16 +46,10 @@ export const ScaleBar: React.FC<ScaleBarProps> = ({ stageRef }) => {
                     </span>
                     <SymbolIcon
                         onClick={() => {
-                            stageRef.current?.width(
-                                stageRef.current?.width() /
-                                    stageRef.current?.scaleX(),
-                            );
-                            stageRef.current?.height(
-                                stageRef.current?.height() /
-                                    stageRef.current?.scaleY(),
-                            );
-                            stageRef.current?.scale({ x: 1, y: 1 });
-                            stageRef.current?.position({ x: 0, y: 0 });
+                            stage?.width(stage?.width() / stage?.scaleX());
+                            stage?.height(stage?.height() / stage?.scaleY());
+                            stage?.scale({ x: 1, y: 1 });
+                            stage?.position({ x: 0, y: 0 });
                             setZoomPercentage(100);
                         }}
                         className=" cursor-pointer"

@@ -3,16 +3,7 @@ import { PencilBrush, useProjectStore } from '@/entities/project';
 import { Brushes } from '@/entities/project';
 import { useEffect } from 'react';
 
-
-type StartDrawing = {
-    stageRef?: React.RefObject<Konva.Stage>;
-    drawingLayerRef: React.MutableRefObject<Konva.Layer | null>;
-};
-
-export const StartDrawing: React.FC<StartDrawing> = ({
-    stageRef,
-    drawingLayerRef,
-}) => {
+export const StartDrawing: React.FC = () => {
     const drawState = useProjectStore((state) => state.drawState);
     useEffect(() => {
         if (drawState !== 'Pencil') return;
@@ -25,7 +16,7 @@ export const StartDrawing: React.FC<StartDrawing> = ({
             if (!stage) return;
             stage.off('pointerdown pointermove pointerup');
         };
-    }, [drawState, stageRef, drawingLayerRef]);
+    }, [drawState]);
 
     return null;
 };

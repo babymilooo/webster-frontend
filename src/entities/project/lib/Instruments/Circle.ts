@@ -18,6 +18,9 @@ export class CircleInstrument implements IInstuments {
             stage.on('pointermove', () => this.onPointerMove());
             stage.on('pointerup', () => this.onPointerUp());
             stage.on('pointerup', () => this.setUpdatePreview());
+            const addStageToHistory =
+                useProjectStore.getState().addStageToHistory;
+            stage.on('pointerup', () => addStageToHistory());
         }
     }
     onPointerDown() {
