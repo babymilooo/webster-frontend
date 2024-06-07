@@ -28,7 +28,7 @@ const Settings = () => {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setProfilePic(reader.result);
+                setProfilePic(reader.result as string);
             };
             reader.readAsDataURL(file);
         }
@@ -77,8 +77,8 @@ const Settings = () => {
                                             </h2>
                                             <p className="mb-4">
                                                 Make changes to your account
-                                                here. Click save when you're
-                                                done.
+                                                here. Click save when
+                                                you&apos;re done.
                                             </p>
                                             <div className="flex">
                                                 <div
@@ -87,7 +87,7 @@ const Settings = () => {
                                                             .getElementById(
                                                                 'profile-picture',
                                                             )
-                                                            .click()
+                                                            ?.click()
                                                     }
                                                     className="mr-4 cursor-pointer"
                                                 >
@@ -155,7 +155,8 @@ const Settings = () => {
                                             </h2>
                                             <p className="mb-4">
                                                 Change your password here. After
-                                                saving, you'll be logged out.
+                                                saving, you&apos;ll be logged
+                                                out.
                                             </p>
                                             <div className="flex flex-col items-center">
                                                 <div className="w-1/2">

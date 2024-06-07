@@ -33,6 +33,7 @@ import { ScaleBar } from './project/scaleBar';
 import { DrawMarker } from '@/entities/project/ui/DrawMarker';
 import { DrawInk } from '@/entities/project/ui/DrawInk';
 import { DrawSpray } from '@/entities/project/ui/DrawSpray';
+import { KeyboardShortcuts } from '@/entities/project/ui/KeyboardShortcuts';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
@@ -441,6 +442,8 @@ export const Project = () => {
             <DrawAnchorLine />
 
             <AddText />
+
+            <KeyboardShortcuts />
             <div className="flex h-full w-full overflow-auto bg-canva align-middle">
                 <div className="m-auto h-fit w-fit border border-solid border-black">
                     <div id="canvas" ref={canvasElementRef} />
