@@ -17,7 +17,7 @@ const SignUpGoogle = () => {
     }, [redirectUrl]);
 
     return (
-        <button className=" mt-8 flex w-1/2  items-center justify-center gap-2 rounded-lg border bg-white p-[9px] text-sm text-black" onClick={handleSignUp}>
+        <button className=" mt-4 flex w-1/2  items-center justify-center gap-2 rounded-lg border bg-white p-[9px] text-sm text-black" onClick={handleSignUp}>
             <Img
                 src="../src/public/google.svg"
                 alt="My Image"

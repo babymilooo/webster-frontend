@@ -120,6 +120,11 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
         const response = await deleteBg(currentShape?.getAttr('src'));
         if (response) {
             currentShape?.setAttr('src', response.image);
+            const image = (currentShape as Konva.Image).image();
+            if (image) {
+                (image as HTMLImageElement).src = response.image;
+            }
+
             setUpdatePreview();
         }
         setLoading(false);

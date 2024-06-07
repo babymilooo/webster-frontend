@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Registration = () => {
     return (
-        <div className="relative grid h-full grid-cols-5">
+        <div className="relative grid min-h-screen grid-cols-5">
             {/* Псевдоэлемент для фонового изображения */}
             <div
                 className="absolute inset-0 col-span-5 scale-x-[-1] transform bg-center bg-no-repeat"
@@ -21,10 +21,12 @@ const Registration = () => {
                     </p>
                     <RegUser />
 
-                    <p className="mt-8 w-1/2 border-t"></p>
-                    <p className="absolute bottom-[384px] mt-4 bg-background px-3 text-xs text-muted-foreground">
-                        Or, Login with
-                    </p>
+                    <div className="mt-4 flex w-1/2 items-center text-sm">
+                        <hr className="flex-grow border-t border-gray-300" />
+                        <span className="mx-2 text-xs text-muted-foreground">or, sign up with</span>
+                        <hr className="flex-grow border-t border-gray-300" />
+                    </div>
+
                     <SignUpGoogle />
 
                     <span className="mt-4 w-1/2 text-center text-xs text-foreground">
