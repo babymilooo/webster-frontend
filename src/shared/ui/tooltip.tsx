@@ -18,9 +18,9 @@ const TooltipIcon = ({
     const [isHovered, setIsHovered] = useState(false);
 
     return (
-        <div className="relative flex h-10 w-full items-center justify-center bg-background">
+        <div className="relative flex h-10 w-full items-center justify-center">
             <div
-                className="cursor-pointer p-2 bg-background"
+                className="cursor-pointer p-2"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 onClick={onClick}
