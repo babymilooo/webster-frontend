@@ -6,6 +6,9 @@ import HomeLayout from './HomeLayout';
 import Gallery from '@/widgets/Gallery';
 
 const Home = () => {
+    const projects = useUserStore((state) => state.projects);
+
+    const isLogin = useUserStore((state) => state.isLogin);
 
     return (
         <MainLayout>
@@ -29,7 +32,7 @@ const Home = () => {
                         </div>
                         <div className="h-full w-full rounded-lg bg-background">
                             {/* <button onClick={handleCreate}>new</button> */}
-                            
+                            <CreateProjectModal />
                             <h2 className="mx-4 my-4 text-left text-xl font-bold">
                                 You might want to try...
                             </h2>
