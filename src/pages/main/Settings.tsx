@@ -143,12 +143,12 @@ const Settings = () => {
                                         {activeTab === 'Account' && (
                                             <div className="border-t-2 border-gray-200 bg-white p-4 ">
                                                 <h2 className="text-xl font-bold ">
-                                                    Password
+                                                    Account
                                                 </h2>
                                                 <p className="mb-4">
-                                                    Change your password here.
-                                                    After saving, you'll be
-                                                    logged out.
+                                                    Make changes to your account
+                                                    here. Click save when you're
+                                                    done.
                                                 </p>
                                                 <div className="flex">
                                                     <div
