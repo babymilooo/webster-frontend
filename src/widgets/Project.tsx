@@ -142,30 +142,46 @@ export const Project = () => {
             resetProjectStore();
 
             //adjust canvas size if larger than screen
-            const workingSpace = document.getElementById(
-                'workingSpace',
-            ) as HTMLDivElement;
-            let correctedWidth = startWidth;
-            let correctedHeight = startHeight;
-            if (correctedHeight > workingSpace.clientHeight) {
-                const coef = correctedHeight / workingSpace.clientHeight;
-                correctedHeight = correctedHeight / coef;
-                correctedWidth = correctedWidth / coef;
-            }
+            // const workingSpace = document.getElementById(
+            //     'workingSpace',
+            // ) as HTMLDivElement;
+            const correctedWidth = startWidth;
+            const correctedHeight = startHeight;
+            // if (correctedHeight > workingSpace.clientHeight) {
+            //     const coef = correctedHeight / workingSpace.clientHeight;
+            //     correctedHeight = correctedHeight / coef;
+            //     correctedWidth = correctedWidth / coef;
+            // }
 
-            if (correctedWidth > workingSpace.clientWidth) {
-                const coef = correctedWidth / workingSpace.clientWidth;
-                correctedHeight = correctedHeight / coef;
-                correctedWidth = correctedWidth / coef;
-            }
+            // if (correctedWidth > workingSpace.clientWidth) {
+            //     const coef = correctedWidth / workingSpace.clientWidth;
+            //     correctedHeight = correctedHeight / coef;
+            //     correctedWidth = correctedWidth / coef;
+            // }
+
+            // console.log(
+            //     startWidth,
+            //     startHeight,
+            //     workingSpace.clientHeight,
+            //     workingSpace.clientWidth,
+            //     correctedWidth,
+            //     correctedHeight,
+            // );
 
             resetLayerCreationIndex();
+            // console.log(useInitProjectStore.getState());
+
             if (startJSON) {
+                // console.log('start json');
+
+                // console.log(startJSON);
+
                 const stage = Konva.Stage.create(
                     startJSON,
                     canvasElementRef.current,
                 ) as Konva.Stage;
                 // console.log(stage);
+                // console.log(stage.width(), stage.height());
 
                 const lastIndex = stage.getAttr('lastLayerIndex');
                 if (lastIndex) setLayerCreationIndex(lastIndex);
@@ -295,6 +311,7 @@ export const Project = () => {
 
                 applyEventListenersToStage(stage);
                 addStageToHistory();
+                // console.log('created stage');
             } else {
                 const stage = new Konva.Stage({
                     container: canvasElementRef.current,
@@ -302,6 +319,10 @@ export const Project = () => {
                     height: correctedHeight,
                 });
                 // stageRef.current = stage;
+                // console.log(stage);
+                // console.log('Created New Stage');
+                // console.log(stage.width(), stage.height());
+
                 setStage(stage);
 
                 const startLayer = new Konva.Layer();
@@ -371,6 +392,7 @@ export const Project = () => {
                 applyEventListenersToStage(stage);
                 saveProject();
                 addStageToHistory();
+                // console.log('created stage');
             }
         };
 
