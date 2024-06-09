@@ -668,7 +668,7 @@ export const ProjectNavbar = () => {
         }
     };
     return (
-        <div className="fixed top-[70px] z-20 h-[50px] w-full">
+        <div className="fixed top-[70px] z-20 h-[50px] w-full pr-[300px]">
             <div className="flex flex-row h-full w-full  items-center justify-center">
                 <div className='flex bg-background p-2 min-w-[500px] rounded-lg border shadow-md'>
                     <div className="flex h-full items-center">

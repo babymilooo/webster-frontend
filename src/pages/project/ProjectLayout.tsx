@@ -6,7 +6,7 @@ import { ReactNode } from 'react';
 
 const ProjectLayout = ({ children }: { children: ReactNode }) => {
     return (
-        <div className="h-full w-full pt-[50px]">
+        <div className="h-full w-full pt-[50px] pr-[300px]">
             <ProjectNavbar />
             <ProjectLeftSidebar />
             <ProjectRightSidebar />
