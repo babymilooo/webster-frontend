@@ -6,6 +6,7 @@ import { createProject } from '../index';
 import { setOffDragable, setOnDraggableLayer } from '../lib/setDragable';
 import { saveProject } from '../api/saveProject';
 import { useUserStore } from '@/entities/user';
+import { restoreStageFromJSON } from '../lib/restoreStageFromJSON';
 
 interface Project {
     _id: string;
@@ -59,6 +60,9 @@ interface IProjectStoreState {
     selectedImage: string | null;
     selectedBackgroundImage: string | null;
     showBackgroundColorFill: boolean;
+
+    historyStageStack: string[];
+    currentHistoryStackIndex: number;
 }
 
 interface IProjectStoreActions {
@@ -85,6 +89,10 @@ interface IProjectStoreActions {
     setShowBackgroundColorFill: (value: boolean) => void;
 
     saveProject: VoidFunction;
+
+    addStageToHistory: (stageJSON?: string) => void;
+    backHistory: VoidFunction;
+    forwardHistory: VoidFunction;
 }
 
 const initState: IProjectStoreState = {
@@ -107,12 +115,14 @@ const initState: IProjectStoreState = {
         width: 10,
         color: '#000000',
         selectedBrush: null,
+        opacity: 1,
     },
 
     shapeSettings: {
         fill: '#000000',
         stroke: '#000000',
         strokeWidth: 4,
+        opacity: 1,
     },
     textSettings: {
         fontSize: 20,
@@ -125,6 +135,9 @@ const initState: IProjectStoreState = {
         textDecoration: 'none',
     },
     showBackgroundColorFill: false,
+
+    historyStageStack: [],
+    currentHistoryStackIndex: 0,
 };
 
 export const useProjectStore = create<
@@ -220,6 +233,62 @@ export const useProjectStore = create<
                 const isLogin = useUserStore.getState().isLogin;
                 if (!isLogin) return;
                 saveProject(stage);
+            },
+
+            addStageToHistory: (stageJSON) => {
+                if (!stageJSON) {
+                    const stage = getState().stage;
+                    if (!stage) return;
+                    stageJSON = stage.toJSON();
+                }
+                const stack = getState().historyStageStack;
+                let index = getState().currentHistoryStackIndex;
+
+                if (stack.length - 1 > index) index = stack.length - 1;
+
+                let pastStack = stack.slice(0, index + 1);
+                pastStack.push(stageJSON);
+                if (pastStack.length > 20) {
+                    pastStack = pastStack.slice(
+                        pastStack.length - 20,
+                        pastStack.length,
+                    );
+                }
+                set({
+                    historyStageStack: pastStack,
+                    currentHistoryStackIndex: pastStack.length - 1,
+                });
+            },
+
+            backHistory: () => {
+                const stack = getState().historyStageStack;
+                const index = getState().currentHistoryStackIndex - 1;
+                if (
+                    !stack ||
+                    stack.length === 0 ||
+                    stack.length === 1 ||
+                    index < 0
+                )
+                    return;
+                const newStageJSON = stack[index];
+                if (!newStageJSON) return;
+                restoreStageFromJSON(newStageJSON);
+                set({ currentHistoryStackIndex: index });
+            },
+            forwardHistory: () => {
+                const stack = getState().historyStageStack;
+                const index = getState().currentHistoryStackIndex + 1;
+                if (
+                    !stack ||
+                    stack.length === 0 ||
+                    stack.length === 1 ||
+                    index < 0
+                )
+                    return;
+                const newStageJSON = stack[index];
+                if (!newStageJSON) return;
+                restoreStageFromJSON(newStageJSON);
+                set({ currentHistoryStackIndex: index });
             },
         })),
     ),

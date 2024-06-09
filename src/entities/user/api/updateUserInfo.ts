@@ -2,7 +2,7 @@ import axios from 'axios';
 import { API_URL } from '../index';
 
 export async function updateInfo(userName: string) {
-    const response = await axios.patch(
+    const response = await axios.post(
         `${API_URL}/user/edit-profile`,
         { userName },
         {
@@ -33,22 +33,15 @@ export async function changePassword(
 
 export async function updateProfilePicture(imageFile: any) {
     const formData = new FormData();
-    formData.append('avatar', imageFile);
-    console.log('FormData entries:');
-    for (let pair of formData.entries()) {
-        console.log(pair[0]+ ': ' + pair[1]); 
-    }
-    try {
-        const response = await axios.patch(`${API_URL}/user/edit-profile-avatar`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            withCredentials: true,
-        });
-        console.log(response.data);
-        return response.data;
-    } catch (error: any) {
-        console.error('Error updating profile picture:', error.response ? error.response.data : error.message);
-        throw error;
-    }
+    formData.append('profilePicture', imageFile);
+    
+    return true;
+    // const response = await axios.patch(`${API_URL}/user/update-profile-picture`, formData, {
+    //     headers: {
+    //         'Content-Type': 'multipart/form-data',
+    //     },
+    //     withCredentials: true,
+    // });
+
+    // return response.data;
 }

@@ -12,4 +12,3 @@ export { logout } from '../user/api/logout.ts';
 export { updateInfo } from '../user/api/updateUserInfo.ts';
 export { changePassword } from '../user/api/updateUserInfo.ts';
 export { updateProfilePicture } from '../user/api/updateUserInfo.ts';
-export {deleteAccount} from '../user/api/deleteAccount.ts';

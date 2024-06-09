@@ -10,17 +10,7 @@ export interface IProject {
     thumbbnail?: string;
     owner: string;
 }
-import {
-    getUser,
-    loginUser,
-    regUser,
-    signUpGoogle,
-    logout,
-    updateInfo,
-    changePassword,
-    updateProfilePicture,
-    deleteAccount,
-} from '../index';
+import { getUser, loginUser, regUser, signUpGoogle, logout } from '../index';
 import { deleteProject, updateProject } from '@/entities/project';
 
 interface User {
@@ -52,10 +42,6 @@ interface IUserStoreActions {
     logoutUser: () => Promise<void>;
     updateProject: (title: string, id: string) => void;
     deleteProject: (id: string) => void;
-    updatePassword: (oldPassword: string, newPassword: string) => Promise<void>;
-    updateInfoUser: (userName: string) => Promise<void>;
-    updateAvatar: (newPicture: any) => Promise<void>;
-    deleteUser: () => Promise<void>;
 }
 
 const initState = {
@@ -176,55 +162,6 @@ export const useUserStore = create<IUserStoreData & IUserStoreActions>()(
                 } catch (error) {
                     console.error(error);
                 }
-                set({ isLoaded: true });
-            },
-
-            updatePassword: async (oldPassword, newPassword) => {
-                try {
-                    await changePassword(oldPassword, newPassword);
-                } catch (error) {
-                    console.error(error);
-                }
-                set({ isLoaded: true });
-            },
-
-            updateInfoUser: async (userName) => {
-                try {
-                    const response = await updateInfo(userName);
-                    const user = response;
-                    if (user) set({ user });
-                } catch (error) {
-                    console.error(error);
-                }
-                set({ isLoaded: true });
-            },
-
-            updateAvatar: async (newPicture: any) => {
-                try {
-                    const response = await updateProfilePicture(newPicture);
-                    const userProfile = response;
-                    if (userProfile)
-                        set((state: any) => ({
-                            user: {
-                                ...state.user,
-                                profilePicture: userProfile.profilePicture,
-                            },
-                        }));
-                } catch (error) {
-                    console.error(error);
-                }
-                set({ isLoaded: true });
-            },
-
-            deleteUser: async () => {
-                try {
-                    const response = await deleteAccount();
-                    if (response.status == 200)
-                        set({ user: null, isLogin: false });
-                } catch (error) {
-                    console.error(error);
-                }
-                set({ isLoaded: true });
             },
         })),
     ),

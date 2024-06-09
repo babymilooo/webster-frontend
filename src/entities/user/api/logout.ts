@@ -5,5 +5,6 @@ export async function logout() {
     const response = await $api.post(`${API_URL}/auth/logout`, {
         withCredentials: true,
     });
+    console.log(response);
     return response.data;
 }
