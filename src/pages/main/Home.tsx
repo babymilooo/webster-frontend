@@ -5,6 +5,7 @@ import { PrivateLayout } from '../PrivateLayout';
 import HomeLayout from './HomeLayout';
 import Gallery from '@/widgets/Gallery';
 import { useUserStore } from '@/entities/user';
+import CreateProjectModal from '@/widgets/CreateProject';
 
 const Home = () => {
     const projects = useUserStore((state) => state.projects);

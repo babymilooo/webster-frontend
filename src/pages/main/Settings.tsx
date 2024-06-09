@@ -21,7 +21,15 @@ const Settings = () => {
 
     const handleDeleteAccount = () => {};
 
-    const handleSavePassword = () => {};
+    const handleSavePassword = () => {
+        const patchPassword = async () => {
+            if (
+                currentPassword.trim().length == 0 ||
+                newPassword.trim().length == 0
+            )
+                return;
+        };
+    };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
