@@ -1,76 +1,39 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { MinusIcon, PlusIcon, SymbolIcon } from '@radix-ui/react-icons';
 
 import Konva from 'konva';
-import { useProjectStore } from '@/entities/project';
-import { isUniversalCtrlPressed } from '@/shared/lib/utils';
 
-export const ScaleBar: React.FC = () => {
+interface ScaleBarProps {
+    stageRef: React.RefObject<Konva.Stage>;
+}
+export const ScaleBar: React.FC<ScaleBarProps> = ({ stageRef }) => {
     const [zoomPercentage, setZoomPercentage] = useState(100);
-    const stage = useProjectStore((state) => state.stage);
-    const handleZoom = useCallback(
-        (direction: 'in' | 'out') => {
-            if (!stage) return;
 
-            const scaleBy = 1.5;
-            const oldScale = stage.scaleX();
-            const newScale =
-                direction === 'in' ? oldScale * scaleBy : oldScale / scaleBy;
-
-            stage.scale({ x: newScale, y: newScale });
-            if (direction === 'in') {
-                stage.width(stage.width() * scaleBy);
-                stage.height(stage.height() * scaleBy);
-            } else {
-                stage.width(stage.width() / scaleBy);
-                stage.height(stage.height() / scaleBy);
-            }
-            stage.batchDraw();
-
-            const percentage = Math.round(newScale * 100);
-            setZoomPercentage(percentage);
-        },
-        [stage],
-    );
-
-    const handleResetZoom = useCallback(() => {
+    const handleZoom = (direction: 'in' | 'out') => {
+        const stage = stageRef.current;
         if (!stage) return;
-        stage?.width(stage?.width() / stage?.scaleX());
-        stage?.height(stage?.height() / stage?.scaleY());
-        stage?.scale({ x: 1, y: 1 });
-        setZoomPercentage(100);
-    }, [stage]);
 
-    //Keyboard Shortcuts
-    useEffect(() => {
-        const handleKeyDown = (ev: KeyboardEvent) => {
-            //Ctrl +, on laptop w/out numpad it is Ctrl =
-            if (
-                (ev.key == '+' || ev.key == '=') &&
-                isUniversalCtrlPressed(ev)
-            ) {
-                ev.preventDefault();
-                return handleZoom('in');
-            }
-            //Ctrl -
-            if (ev.key == '-' && isUniversalCtrlPressed(ev)) {
-                ev.preventDefault();
-                return handleZoom('out');
-            }
-            // Ctrl 0
-            if (ev.key == '0' && isUniversalCtrlPressed(ev)) {
-                ev.preventDefault();
-                return handleResetZoom();
-            }
-        };
-        addEventListener('keydown', handleKeyDown);
-        return () => {
-            removeEventListener('keydown', handleKeyDown);
-        };
-    }, [handleResetZoom, handleZoom]);
+        const scaleBy = 1.5;
+        const oldScale = stage.scaleX();
+        const newScale =
+            direction === 'in' ? oldScale * scaleBy : oldScale / scaleBy;
+
+        stage.scale({ x: newScale, y: newScale });
+        if (direction === 'in') {
+            stage.width(stage.width() * scaleBy);
+            stage.height(stage.height() * scaleBy);
+        } else {
+            stage.width(stage.width() / scaleBy);
+            stage.height(stage.height() / scaleBy);
+        }
+        stage.batchDraw();
+
+        const percentage = Math.round(newScale * 100);
+        setZoomPercentage(percentage);
+    };
 
     return (
-        <div className="fixed bottom-5 z-10 w-full select-none pr-[300px]">
+        <div className="fixed bottom-10 z-10 w-full select-none pr-[380px]">
             <div className="flex w-full justify-center">
                 <div className="flex items-center gap-8 rounded-lg border bg-background px-8 py-2 shadow-md">
                     <PlusIcon
@@ -85,7 +48,19 @@ export const ScaleBar: React.FC = () => {
                         {zoomPercentage}%
                     </span>
                     <SymbolIcon
-                        onClick={handleResetZoom}
+                        onClick={() => {
+                            stageRef.current?.width(
+                                stageRef.current?.width() /
+                                    stageRef.current?.scaleX(),
+                            );
+                            stageRef.current?.height(
+                                stageRef.current?.height() /
+                                    stageRef.current?.scaleY(),
+                            );
+                            stageRef.current?.scale({ x: 1, y: 1 });
+                            stageRef.current?.position({ x: 0, y: 0 });
+                            setZoomPercentage(100);
+                        }}
                         className=" cursor-pointer"
                     />
                 </div>

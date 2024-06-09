@@ -16,6 +16,7 @@ interface ContextMenuProps {
     contextMenuPosition: { x: number; y: number };
     currentShape: Konva.Shape | null;
     setCurrentShape: (shape: Konva.Shape | null) => void;
+    stageRef: React.RefObject<Konva.Stage>;
 }
 
 export const ContextMenu: React.FC<ContextMenuProps> = ({
@@ -24,6 +25,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     contextMenuPosition,
     currentShape,
     setCurrentShape,
+    stageRef,
 }) => {
     const isLogin = useUserStore((state) => state.isLogin);
     const [loading, setLoading] = useState(false);
@@ -35,7 +37,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     const handleMoveToLayer = () => {
         const selectedLayer = useProjectStore.getState().selectedLayer;
         const stage = useProjectStore.getState().stage;
-        if (!selectedLayer || !stage) return;
+        if (!selectedLayer || !stageRef.current) return;
 
         const selectedLayerZindex = selectedLayer.getZIndex();
         const layers = stage
@@ -53,7 +55,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
             targetLayer.setAttrs({ creationIndex: getLayerCreationIndex() });
             const transf = new Konva.Transformer();
             targetLayer.add(transf);
-            stage.add(targetLayer);
+            stageRef.current.add(targetLayer);
             toggleLayersSwitch();
         }
 
@@ -97,7 +99,6 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
 
     const handleDelete = () => {
         if (currentShape) {
-            const stage = useProjectStore.getState().stage;
             if (
                 currentShape.hasName('hidden') ||
                 currentShape.hasName('_anchor')
@@ -108,7 +109,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
             currentShape.destroy();
             setCurrentShape(null);
             setContextMenuVisible(false);
-            stage?.batchDraw();
+            stageRef.current?.batchDraw();
             toggleLayersSwitch();
             setUpdatePreview();
         }

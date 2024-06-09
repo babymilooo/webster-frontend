@@ -233,11 +233,11 @@ export const ProjectNavbar = () => {
         switch (state) {
             case 'Drag':
                 return (
-                    <CursorArrowIcon className="h-8 w-8 cursor-pointer text-foreground" />
+                    <CursorArrowIcon className="h-6 w-6 cursor-pointer text-foreground" />
                 );
             case 'SelectionArea':
                 return (
-                    <GroupIcon className="h-8 w-8 cursor-pointer text-foreground" />
+                    <GroupIcon className="h-6 w-6 cursor-pointer text-foreground" />
                 );
             case 'CreateFigure':
                 return (
@@ -668,44 +668,40 @@ export const ProjectNavbar = () => {
         }
     };
     return (
-        <div className="fixed top-[70px] z-20 h-[50px] w-full pr-[300px]">
-            <div className="flex flex-row h-full w-full  items-center justify-center">
-                <div className='flex bg-background p-2 min-w-[500px] rounded-lg border shadow-md'>
-                    <div className="flex h-full items-center">
-                        <DropdownMenu>
-                            <DropdownMenuTrigger>
-                                <DotsHorizontalIcon className="h-8 w-8 cursor-pointer text-foreground" />
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                                <DropdownMenuLabel>settings</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem
-                                    onClick={() => {
-                                        navigate('/home');
-                                        saveProject();
-                                    }}
-                                >
-                                    <HomeIcon className="h-6 w-6 cursor-pointer text-foreground" />
-                                    <p className="pl-2">home</p>
+        <div className="fixed z-20 mt-[5px] h-[43px] w-full bg-background">
+            <div className="flex h-full w-full border-t-[5px] border-dashed px-2">
+                <div className="flex h-full items-center">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                            <DotsHorizontalIcon className="h-6 w-6 cursor-pointer text-foreground" />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuLabel>settings</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                                onClick={() => {
+                                    navigate('/home');
+                                    saveProject();
+                                }}
+                            >
+                                <HomeIcon className="h-5 w-5 cursor-pointer text-foreground" />
+                                <p className="pl-2">home</p>
+                            </DropdownMenuItem>
+                            {isLogin && (
+                                <DropdownMenuItem onClick={() => saveProject()}>
+                                    <SaveIcon className="h-5 w-5 cursor-pointer text-foreground" />
+                                    <p className="pl-2">save</p>
                                 </DropdownMenuItem>
-                                {isLogin && (
-                                    <DropdownMenuItem
-                                        onClick={() => saveProject()}
-                                    >
-                                        <SaveIcon className="h-6 w-6 cursor-pointer text-foreground" />
-                                        <p className="pl-2">save</p>
-                                    </DropdownMenuItem>
-                                )}
-                                <DropdownMenuItem onClick={handleDownload}>
-                                    <DownloadIcon className="h-6 w-6 cursor-pointer text-foreground" />
-                                    <p className="pl-2">download</p>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </div>
-                    <div className="ml-4 flex h-full w-full items-center">
-                        {renderIcon()}
-                    </div>
+                            )}
+                            <DropdownMenuItem onClick={handleDownload}>
+                                <DownloadIcon className="h-5 w-5 cursor-pointer text-foreground" />
+                                <p className="pl-2">download</p>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+                <div className="ml-4 flex h-full w-full items-center">
+                    {renderIcon()}
                 </div>
             </div>
         </div>
