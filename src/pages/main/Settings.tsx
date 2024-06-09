@@ -1,7 +1,13 @@
 import { useUserStore } from '@/entities/user';
-import { useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import MainLayout from '../MainLayout';
 import HomeLayout from './HomeLayout';
+import { passwordRegex } from '@/shared/lib/passwordRegex';
+import $api from '@/app/http/axios';
+import { useNavigate } from 'react-router-dom';
+import { API_URL } from '@/entities/project';
+
+const userAvatarURL = `${API_URL}/user/my-avatar`;
 
 const Settings = () => {
     const user = useUserStore((state) => state.user);
@@ -13,13 +19,55 @@ const Settings = () => {
     const [username, setUsername] = useState(user?.userName);
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    const [profilePic, setProfilePic] = useState(user?.profilePicture);
+    const [profilePic, setProfilePic] = useState(userAvatarURL);
+    const [profilePicBlob, setProfilePicBlob] = useState<Blob | null>(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handleSaveChanges = () => {};
+    const [logoutUser, checkAuth] = useUserStore((state) => [
+        state.logoutUser,
+        state.checkAuth,
+    ]);
+    const navigate = useNavigate();
 
-    const handleDeleteAccount = () => {};
+    useEffect(() => {
+        const testImage = new window.Image();
+        testImage.src = userAvatarURL;
+        testImage.onerror = () => setProfilePic('src/public/bg-logo.png');
+    }, []);
+
+    const handleSaveChanges = () => {
+        const patchNameAndAvatar = async () => {
+            if (!username || username.trim().length === 0) return;
+            try {
+                const resp = await $api.patch('/user/edit-profile', {
+                    userName: username,
+                });
+                if (profilePicBlob) {
+                    const fd = new FormData();
+                    fd.append('image', profilePicBlob);
+                    const resp = await $api.patch('/user/set-avatar', fd);
+                }
+                await checkAuth();
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        patchNameAndAvatar();
+    };
+
+    const handleDeleteAccount = () => {
+        const deleteAccount = async () => {
+            try {
+                const resp = await $api.delete('/user/delete-profile');
+                logoutUser();
+                navigate('/auth/login');
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        deleteAccount();
+    };
 
     const handleSavePassword = () => {
         const patchPassword = async () => {
@@ -28,10 +76,25 @@ const Settings = () => {
                 newPassword.trim().length == 0
             )
                 return;
+            if (!newPassword.match(passwordRegex)) {
+                return;
+            }
+            try {
+                const resp = await $api.patch('/user/edit-password', {
+                    currentPassword,
+                    newPassword,
+                });
+                logoutUser();
+                navigate('/auth/login');
+            } catch (error) {
+                console.error(error);
+            }
         };
+        patchPassword();
     };
 
-    const handleImageChange = (e) => {
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files) return;
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -39,6 +102,7 @@ const Settings = () => {
                 setProfilePic(reader.result as string);
             };
             reader.readAsDataURL(file);
+            setProfilePicBlob(file);
         }
     };
 
@@ -178,6 +242,7 @@ const Settings = () => {
                                                         }
                                                         className="mb-2 w-full rounded border p-2"
                                                         placeholder="Current Password"
+                                                        autoComplete="current-password"
                                                     />
                                                     <input
                                                         type="password"
@@ -189,7 +254,21 @@ const Settings = () => {
                                                         }
                                                         className="mb-6 w-full rounded border p-2"
                                                         placeholder="New Password"
+                                                        autoComplete="new-password"
                                                     />
+                                                    <p
+                                                        className="mb-4"
+                                                        hidden={
+                                                            newPassword.trim()
+                                                                .length == 0 ||
+                                                            !!newPassword.match(
+                                                                passwordRegex,
+                                                            )
+                                                        }
+                                                    >
+                                                        Password is not strong
+                                                        enough
+                                                    </p>
                                                     <button
                                                         onClick={
                                                             handleSavePassword

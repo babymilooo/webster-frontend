@@ -38,7 +38,7 @@ interface IUserStoreActions {
     loginUser: (email: string, password: string) => void;
     loginGoogle: () => void;
     registerUser: (email: string, password: string) => void;
-    checkAuth: () => object | null;
+    checkAuth: () => Promise<object | null>;
     logoutUser: () => Promise<void>;
     updateProject: (title: string, id: string) => void;
     deleteProject: (id: string) => void;
