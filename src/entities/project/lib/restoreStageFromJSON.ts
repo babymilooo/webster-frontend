@@ -17,10 +17,12 @@ export const restoreStageFromJSON = (stageJSON: string) => {
         toggleLayersSwitch,
         setSelectedLayer,
         setState,
+        addStageToHistory,
     } = useProjectStore.getState();
 
     //this may be unneeded
     const applyEventListenersToStage = (stage: Konva.Stage) => {
+        stage.off('mousedown mouseup dragend transformend');
         stage.on('mousedown', (e) => {
             if (e.target === stage) {
                 clearAllSelection(stage);
@@ -34,6 +36,7 @@ export const restoreStageFromJSON = (stageJSON: string) => {
         stage.on('dragend transformend', () => {
             // console.log('dragend transformend');
             setUpdatePreview();
+            addStageToHistory();
         });
 
         // stage.on('contextmenu', (e) => {

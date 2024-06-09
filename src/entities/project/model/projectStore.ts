@@ -244,9 +244,8 @@ export const useProjectStore = create<
                 const stack = getState().historyStageStack;
                 let index = getState().currentHistoryStackIndex;
 
-                if (stack.length - 1 > index) index = stack.length - 1;
-
                 let pastStack = stack.slice(0, index + 1);
+                if (stack.length - 1 > index) index = stack.length - 1;
                 pastStack.push(stageJSON);
                 if (pastStack.length > 20) {
                     pastStack = pastStack.slice(
@@ -273,6 +272,7 @@ export const useProjectStore = create<
                 const newStageJSON = stack[index];
                 if (!newStageJSON) return;
                 restoreStageFromJSON(newStageJSON);
+
                 set({ currentHistoryStackIndex: index });
             },
             forwardHistory: () => {
@@ -288,6 +288,7 @@ export const useProjectStore = create<
                 const newStageJSON = stack[index];
                 if (!newStageJSON) return;
                 restoreStageFromJSON(newStageJSON);
+
                 set({ currentHistoryStackIndex: index });
             },
         })),

@@ -31,6 +31,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
         (state) => state.toggleLayersSwitch,
     );
     const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
+    const addStageToHistory = useProjectStore(
+        (state) => state.addStageToHistory,
+    );
 
     const handleMoveToLayer = () => {
         const selectedLayer = useProjectStore.getState().selectedLayer;
@@ -80,6 +83,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
         setUpdatePreview();
         setOffDragable();
         setOnDragable();
+        addStageToHistory();
     };
 
     const handlePulse = () => {
@@ -111,6 +115,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
             stage?.batchDraw();
             toggleLayersSwitch();
             setUpdatePreview();
+            addStageToHistory();
         }
     };
 
@@ -125,6 +130,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
             }
 
             setUpdatePreview();
+            addStageToHistory();
         }
         setLoading(false);
     };

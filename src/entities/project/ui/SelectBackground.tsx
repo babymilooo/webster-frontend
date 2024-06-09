@@ -58,8 +58,8 @@ export const SelectBackground: FC = () => {
             const image = new Konva.Image({
                 image: imgElement,
                 draggable: false,
-                width: stage.width(),
-                height: stage.height(),
+                width: stage.width() / stage.scaleX(),
+                height: stage.height() / stage.scaleY(),
                 x: 0,
                 y: 0,
                 visible:

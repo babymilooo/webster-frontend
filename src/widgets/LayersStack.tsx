@@ -13,12 +13,13 @@ export const LayersStack: FC = () => {
     const toggleLayersSwitch = useProjectStore(
         (state) => state.toggleLayersSwitch,
     );
+    const updatePreview = useProjectStore((state) => state.updatePreview);
     const layers = useMemo(
         () =>
             stage
                 ?.getLayers()
                 .toSorted((a, b) => b.getZIndex() - a.getZIndex()),
-        [stage, layersSwitch],
+        [stage, layersSwitch, updatePreview],
     );
 
     const addLayerHandle = () => {
