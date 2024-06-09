@@ -4,6 +4,7 @@ import MainLayout from '../MainLayout';
 import { PrivateLayout } from '../PrivateLayout';
 import HomeLayout from './HomeLayout';
 import Gallery from '@/widgets/Gallery';
+import { useUserStore } from '@/entities/user';
 
 const Home = () => {
     const projects = useUserStore((state) => state.projects);
