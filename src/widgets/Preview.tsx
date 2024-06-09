@@ -11,6 +11,10 @@ const Preview = () => {
     const SelectedShape = useProjectStore((state) => state.selectedShape);
     const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
 
+    useEffect(() => {
+        console.log(UpdatePreview);
+    }, [UpdatePreview]);
+
     const [fill, setFill] = useState<string>(
         (SelectedShape as Konva.Shape)?.fill() || '',
     );
@@ -99,7 +103,7 @@ const Preview = () => {
         <div className="h-full pt-[1px]">
             {SelectedShape ? (
                 <>
-                    <div className="flex h-[226px] w-full flex-col items-center justify-center border-2 border-dashed border-black">
+                    <div className="flex max-h-[200px] w-full flex-col items-center justify-center border-2 border-dashed border-black">
                         <img
                             src={SelectedShape.toDataURL({})}
                             alt="preview"

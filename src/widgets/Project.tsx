@@ -107,7 +107,8 @@ export const Project = () => {
         });
 
         stage.on('dragend transformend', () => {
-            // console.log('dragend transformend');
+            console.log('dragend transformend');
+
             setUpdatePreview();
             addStageToHistory();
         });
@@ -443,7 +444,7 @@ export const Project = () => {
     }, [instrumentState]);
 
     return (
-        <div className="h-full w-full bg-canva">
+        <div className="h-full w-full">
             <Drag />
             <AddCircle />
             <AddRect />
@@ -466,7 +467,7 @@ export const Project = () => {
             <AddText />
 
             <KeyboardShortcuts />
-            <div className="flex h-full w-full overflow-auto bg-canva align-middle">
+            <div className="flex h-full w-full overflow-auto align-middle">
                 <div className="m-auto h-fit w-fit border border-solid border-black">
                     <div id="canvas" ref={canvasElementRef} />
                 </div>

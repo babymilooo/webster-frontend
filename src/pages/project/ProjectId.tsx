@@ -41,7 +41,7 @@ const ProjectId = () => {
         <MainLayout>
             <ProjectLayout>
                 <div
-                    className="flex h-full w-full flex-col items-center justify-center bg-neutral-200"
+                    className="flex h-full w-full flex-col items-center justify-center "
                     id="workingSpace"
                 >
                     {loaded && <Project />}
