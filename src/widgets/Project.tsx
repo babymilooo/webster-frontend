@@ -472,7 +472,12 @@ export const Project = () => {
 
             <KeyboardShortcuts />
             <div className="flex h-full w-full overflow-auto align-middle">
-                <div className="m-auto h-fit w-fit border border-solid border-black">
+                <div
+                    className="m-auto h-fit w-fit border border-solid border bg-center"
+                    style={{
+                        backgroundImage: "url('/src/public/bg-project.png')",
+                    }}
+                >
                     <div id="canvas" ref={canvasElementRef} />
                 </div>
             </div>
