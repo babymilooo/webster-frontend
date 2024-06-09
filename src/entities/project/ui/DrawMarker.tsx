@@ -4,10 +4,9 @@ import { MarkerBrush } from '../lib/Instruments/MarkerBrush';
 
 export const DrawMarker: React.FC = () => {
     const drawState = useProjectStore((state) => state.drawState);
-    const stage = useProjectStore((state) => state.stage);
     useEffect(() => {
         if (drawState !== 'Marker') return;
-        // const stage = useProjectStore.getState().stage;
+        const stage = useProjectStore.getState().stage;
         if (!stage) return;
         const brush = new MarkerBrush();
         Brushes.applyBrushToStage(stage, brush);
@@ -16,7 +15,7 @@ export const DrawMarker: React.FC = () => {
             if (!stage) return;
             stage.off('pointerdown pointermove pointerup');
         };
-    }, [drawState, stage]);
+    }, [drawState]);
 
     return null;
 };

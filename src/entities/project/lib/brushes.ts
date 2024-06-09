@@ -14,9 +14,7 @@ export class Brushes {
         const setUpdatePreview = useProjectStore.getState().setUpdatePreview;
         setOffDragable();
         stage.off('pointerdown pointermove pointerup');
-        stage.on('pointerdown', (e) => {
-            if (e.evt.button == 0) brush.onPointerDown(e);
-        });
+        stage.on('pointerdown', (e) => brush.onPointerDown(e));
         stage.on('pointermove', (e) => brush.onPointerMove(e));
         stage.on('pointerup', (e) => brush.onPointerUp(e));
         stage.on('pointerup', () => setUpdatePreview());
@@ -24,8 +22,5 @@ export class Brushes {
         useProjectStore
             .getState()
             .setBrushSettings({ selectedBrush: brush.type });
-        stage.on('pointerup', () =>
-            useProjectStore.getState().addStageToHistory(),
-        );
     }
 }

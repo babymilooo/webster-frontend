@@ -3,14 +3,17 @@ import { useProjectStore } from '../model/projectStore';
 import { useEffect } from 'react';
 import { DrawCurveInstrument } from '../lib/Instruments/DrawAnchorLine';
 
-const DrawAnchorLine: React.FC = () => {
+type DrawLineProps = {
+    stageRef: React.RefObject<Konva.Stage>;
+};
+
+const DrawAnchorLine: React.FC<DrawLineProps> = ({ stageRef }) => {
     const state = useProjectStore((state) => state.state);
     const drawState = useProjectStore((state) => state.drawState);
-    const stage = useProjectStore((state) => state.stage);
 
     useEffect(() => {
-        // const stage = useProjectStore.getState().stage;
-        if (!stage) return;
+        if (!stageRef.current) return;
+        const stage = stageRef.current;
 
         if (state === 'CreateFigure' && drawState === 'AnchorLine') {
             const instrument = new DrawCurveInstrument();
@@ -20,7 +23,7 @@ const DrawAnchorLine: React.FC = () => {
                 stage.off('pointerdown pointermove pointerup contextmenu');
             };
         }
-    }, [state, drawState, stage]);
+    }, [state, drawState, stageRef]);
 
     return null;
 };

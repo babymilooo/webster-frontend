@@ -15,6 +15,8 @@ export async function saveProject(stage: Konva.Stage) {
         const height = stageClone.height();
         const scale = Math.min(desiredSize / width, desiredSize / height);
         await stageClone.toBlob({
+            x: 0,
+            y: 0,
             pixelRatio: scale,
             mimeType: 'image/jpg',
             quality: 0.3,
@@ -23,7 +25,6 @@ export async function saveProject(stage: Konva.Stage) {
                 const fd = new FormData();
                 fd.append('image', blob);
                 await $api.patch(`/project/${id}/thumbnail`, fd);
-                stageClone.destroy();
             },
         });
     } catch (error) {

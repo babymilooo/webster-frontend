@@ -3,6 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useProjectStore } from '@/entities/project';
 import { SelectionAreaInstrument } from '../lib/Instruments/SelectionArea';
 
+type SelectionAreaProps = {
+    stageRef?: React.RefObject<Konva.Stage>;
+};
+
 let selectionTopLayer: Konva.Layer | null = null;
 
 export function setSelectionTopLayer(layer: Konva.Layer) {
@@ -10,7 +14,7 @@ export function setSelectionTopLayer(layer: Konva.Layer) {
     return selectionTopLayer;
 }
 
-export const SelectionArea: React.FC = () => {
+export const SelectionArea: React.FC<SelectionAreaProps> = () => {
     // const isDrawingRef = useRef(false);
     // const selectionRectRef = useRef<Konva.Rect | null>(null);
     // const layerRef = useRef<Konva.Layer | null>(null);

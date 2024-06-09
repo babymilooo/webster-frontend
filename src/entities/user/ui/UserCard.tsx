@@ -1,11 +1,11 @@
 import { useUserStore } from '@/entities/user';
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 
 export const UserCard = () => {
     const user = useUserStore((state) => state.user);
     return (
         <div className="flex items-center select-none">
-            <Avatar>
+            <Avatar className="w-10 h-10 rounded-full overflow-hidden">
                 <AvatarImage
                     src={user?.profilePicture}
                     alt="@avatar"
@@ -19,3 +19,4 @@ export const UserCard = () => {
         </div>
     );
 };
+

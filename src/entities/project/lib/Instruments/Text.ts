@@ -70,7 +70,6 @@ export class TextInstrument {
         // Update transformer to allow only horizontal and vertical scaling
         transformer.nodes([newText]);
         layer.add(transformer);
-        useProjectStore.getState().addStageToHistory();
     };
 
     static editText = (
@@ -176,11 +175,9 @@ export class TextInstrument {
             if (e.key === 'Enter' && !e.shiftKey) {
                 textNode.text(textarea.value);
                 removeTextarea();
-                useProjectStore.getState().addStageToHistory();
             }
             if (e.key === 'Escape') {
                 removeTextarea();
-                useProjectStore.getState().addStageToHistory();
             }
         });
 
@@ -199,8 +196,6 @@ export class TextInstrument {
                 removeTextarea();
             }
             useProjectStore.getState().setUpdatePreview();
-
-            useProjectStore.getState().addStageToHistory();
         };
         setTimeout(() => {
             window.addEventListener('click', handleOutsideClick);
