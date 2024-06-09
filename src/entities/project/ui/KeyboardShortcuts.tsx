@@ -14,8 +14,11 @@ export const KeyboardShortcuts: FC = () => {
         if (!stage) return;
 
         const handleKeyDown = (ev: KeyboardEvent) => {
-            // Ctrl Shift Z
-            if (ev.key == 'z' && isUniversalCtrlPressed(ev) && ev.shiftKey) {
+            // Ctrl Shift Z and Ctrl Y
+            if (
+                (ev.key == 'z' && isUniversalCtrlPressed(ev) && ev.shiftKey) ||
+                (ev.key == 'y' && isUniversalCtrlPressed(ev))
+            ) {
                 return forwardHistory();
             }
             //Ctrl Z
