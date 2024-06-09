@@ -217,8 +217,8 @@ export const ProjectNavbar = () => {
                 y: 0,
                 scaleX: 1,
                 scaleY: 1,
-                width: stage.width(),
-                height: stage.height(),
+                width: stage.width() / stage.scaleX(),
+                height: stage.height() / stage.scaleY(),
                 transformerEnabled: false,
                 onFinish: () => {
                     const dataURL = stagetemp.toDataURL({ pixelRatio: 1 });
@@ -353,7 +353,7 @@ export const ProjectNavbar = () => {
                                     step="0.1"
                                     value={shapeSettings.opacity}
                                     onChange={(e) => {
-                                        console.log(e.target.value);
+                                        // console.log(e.target.value);
                                         setShapeSettings({
                                             opacity: parseFloat(e.target.value),
                                         });
@@ -433,7 +433,7 @@ export const ProjectNavbar = () => {
                                     step="0.1"
                                     value={brushSettings.opacity}
                                     onChange={(e) => {
-                                        console.log(e.target.value);
+                                        // console.log(e.target.value);
                                         setBrushSettings({
                                             opacity: parseFloat(e.target.value),
                                         });
@@ -611,7 +611,7 @@ export const ProjectNavbar = () => {
                                     step="0.1"
                                     value={textSettings.opacity}
                                     onChange={(e) => {
-                                        console.log(e.target.value);
+                                        // console.log(e.target.value);
                                         setTextSettings({
                                             opacity: parseFloat(e.target.value),
                                         });
@@ -669,8 +669,8 @@ export const ProjectNavbar = () => {
     };
     return (
         <div className="fixed top-[70px] z-20 h-[50px] w-full pr-[300px]">
-            <div className="flex flex-row h-full w-full  items-center justify-center">
-                <div className='flex bg-background p-2 min-w-[500px] rounded-lg border shadow-md'>
+            <div className="flex h-full w-full flex-row  items-center justify-center">
+                <div className="flex min-w-[500px] rounded-lg border bg-background p-2 shadow-md">
                     <div className="flex h-full items-center">
                         <DropdownMenu>
                             <DropdownMenuTrigger>

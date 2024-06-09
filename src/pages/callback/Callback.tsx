@@ -21,11 +21,13 @@ const Callback = () => {
                     const response = await signUpGoogleCallback(code);
                     if (response?.status === 200) {
                         setUser(response.data);
-                        return navigate('/home');
+                        navigate('/home', { replace: true });
+                        window.location.reload();
                     }
                 } catch (error) {
                     console.error(error);
-                    return navigate('/auth/login');
+                    navigate('/auth/login', { replace: true });
+                    window.location.reload();
                 }
             }
         })();

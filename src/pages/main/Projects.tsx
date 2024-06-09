@@ -7,9 +7,9 @@ import Gallery from '@/widgets/Gallery';
 const Projects = () => {
     
     const projects = useUserStore((state) => state.projects);
-    useEffect(() => {
-        console.log(projects);
-    }, []);
+    // useEffect(() => {
+    //     console.log(projects);
+    // }, []);
 
     return (
         <MainLayout>

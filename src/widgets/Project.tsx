@@ -96,6 +96,7 @@ export const Project = () => {
     }, [saveProject]);
 
     const applyEventListenersToStage = (stage: Konva.Stage) => {
+        stage.off('mousedown mouseup dragend transformend contextmenu');
         stage.on('mousedown', (e) => {
             if (e.target === stage) {
                 clearAllSelection(stage);
@@ -189,6 +190,9 @@ export const Project = () => {
 
                 // stageRef.current = stage;
                 setStage(stage);
+                stage.width(stage.width() / stage.scaleX());
+                stage.height(stage.height() / stage.scaleY());
+                stage.scale({ x: 1, y: 1 });
 
                 //find and aset backgroundLayer and selectionTopLayer
                 const backgroundLayer = stage.findOne('#backgroundLayer') as
@@ -255,7 +259,7 @@ export const Project = () => {
                 for (const image of images) {
                     const src = image.getAttr('src');
                     const attrs = image.getAttr('attrs');
-                    console.log(attrs);
+                    // console.log(attrs);
                     const imageElement = new window.Image();
                     imageElement.src = src;
                     imageElement.crossOrigin = 'anonymous';
