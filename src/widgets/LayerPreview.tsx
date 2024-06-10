@@ -28,9 +28,9 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
         const sortedShapes = selectedShapes.sort(
             (a, b) => b.getZIndex() - a.getZIndex(),
         );
-        sortedShapes.map((shape, index) => {
-            console.log(shape.getZIndex());
-        });
+        // sortedShapes.map((shape, index) => {
+        //     console.log(shape.getZIndex());
+        // });
         setShapes(sortedShapes);
     }, [layer, UpdatePreview]);
 
