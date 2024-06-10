@@ -100,47 +100,50 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
                         }}
                     >
                         {shape.visible() && (
-                            <div className="h-20 w-20 p-2">
-                                <img
-                                    src={shape.toDataURL()}
-                                    alt="preview"
-                                    className="h-full w-full object-contain"
-                                    style={{
-                                        aspectRatio: `${
-                                            shape.width() / shape.height()
-                                        }`,
-                                    }}
-                                />
-                            </div>
+                            <>
+                                <div className="h-20 w-20 p-2">
+                                    <img
+                                        src={shape.toDataURL()}
+                                        alt="preview"
+                                        className="h-full w-full object-contain"
+                                        style={{
+                                            aspectRatio: `${
+                                                shape.width() / shape.height()
+                                            }`,
+                                        }}
+                                    />
+                                </div>
+
+                                <div className="mr-4 flex items-center gap-4">
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation(); // Prevent triggering the parent onClick
+                                            handleMoveUp(shape);
+                                        }}
+                                    >
+                                        up
+                                    </button>
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation(); // Prevent triggering the parent onClick
+                                            handleMoveDown(shape);
+                                        }}
+                                    >
+                                        down
+                                    </button>
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation(); // Prevent triggering the parent onClick
+                                            shape.destroy();
+                                            layer.draw();
+                                            setUpdatePreview();
+                                        }}
+                                    >
+                                        delete
+                                    </button>
+                                </div>
+                            </>
                         )}
-                        <div className="mr-4 flex items-center gap-4">
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation(); // Prevent triggering the parent onClick
-                                    handleMoveUp(shape);
-                                }}
-                            >
-                                up
-                            </button>
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation(); // Prevent triggering the parent onClick
-                                    handleMoveDown(shape);
-                                }}
-                            >
-                                down
-                            </button>
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation(); // Prevent triggering the parent onClick
-                                    shape.destroy();
-                                    layer.draw();
-                                    setUpdatePreview();
-                                }}
-                            >
-                                delete
-                            </button>
-                        </div>
                     </div>
                 ))}
         </div>

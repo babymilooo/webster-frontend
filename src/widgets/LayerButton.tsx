@@ -49,6 +49,7 @@ export const LayerButton: FC<{ layer: Konva.Layer; index?: number }> = ({
                     onClick={() => {
                         layer.moveUp();
                         toggleLayersSwitch();
+                        setUpdatePreview();
                     }}
                 >
                     Up
@@ -58,6 +59,7 @@ export const LayerButton: FC<{ layer: Konva.Layer; index?: number }> = ({
                     onClick={() => {
                         layer.moveDown();
                         toggleLayersSwitch();
+                        setUpdatePreview();
                     }}
                 >
                     Down
