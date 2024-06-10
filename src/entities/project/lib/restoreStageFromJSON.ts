@@ -161,6 +161,7 @@ export const restoreStageFromJSON = (stageJSON: string) => {
             fig.on('dblclick', () => {
                 clearAllSelection(stage);
                 transformer.nodes([fig]);
+                transformer.moveToTop();
                 transformer.show();
                 layer.batchDraw();
             });

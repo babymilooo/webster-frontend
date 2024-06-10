@@ -68,6 +68,7 @@ export const AddImage: React.FC = () => {
             image.on('click tap', () => {
                 clearAllSelection(stage);
                 transformer.nodes([image]);
+                transformer.moveToTop();
             });
 
             layer?.add(transformer);

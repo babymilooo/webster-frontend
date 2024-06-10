@@ -120,6 +120,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     };
 
     const handleDeleteBackground = async () => {
+        if (!isLogin) return;
         setLoading(true);
         const response = await deleteBg(currentShape?.getAttr('src'));
         if (response) {

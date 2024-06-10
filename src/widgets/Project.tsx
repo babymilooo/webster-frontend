@@ -286,6 +286,7 @@ export const Project = () => {
                         fig.on('dblclick', () => {
                             clearAllSelection(stage);
                             transformer.nodes([fig]);
+                            transformer.moveToTop();
                             transformer.show();
                             layer.batchDraw();
                         });
@@ -305,6 +306,7 @@ export const Project = () => {
                         text.on('dblclick', () => {
                             TextInstrument.editText(text, layer, transformer);
                             transformer.nodes([text]);
+                            transformer.moveToTop();
                             transformer.show();
                             layer.batchDraw();
                         });
