@@ -69,6 +69,11 @@ export const ScaleBar: React.FC = () => {
         };
     }, [handleResetZoom, handleZoom]);
 
+    useEffect(() => {
+        if (!stage) return;
+        setZoomPercentage(stage.scaleX() * 100);
+    }, [stage]);
+
     return (
         <div className="fixed bottom-5 w-full select-none pr-[300px]">
             <div className="flex w-full justify-center">

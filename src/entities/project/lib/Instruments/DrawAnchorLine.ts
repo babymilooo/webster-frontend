@@ -59,7 +59,8 @@ export class DrawCurveInstrument implements IInstuments {
                 lineCap: 'round',
                 lineJoin: 'round',
                 draggable: false,
-                tension: 1,
+                // tension: 1,
+                bezier: true,
             });
 
             newLine.addName('selectable');
