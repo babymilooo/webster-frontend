@@ -52,8 +52,8 @@ const ProjectLeftSidebar = () => {
     };
 
     return (
-        <div className="fixed z-10 h-full left-5">
-            <div className="flex w-full h-full flex-col items-center justify-center">
+        <div className="fixed left-5 z-10 h-full">
+            <div className="flex h-full w-full flex-col items-center justify-center">
                 <div className="flex w-full flex-col rounded-lg border bg-background shadow-md">
                     <div className="flex h-10 w-full items-center justify-center p-1">
                         <TooltipIcon
@@ -169,10 +169,9 @@ const ProjectLeftSidebar = () => {
                         <TooltipIcon
                             icon={ArrowBigLeft}
                             tooltipText={{
-                                title: 'Fill mode',
-                                description:
-                                    'Fill background with color or image.',
-                                shortcut: 'choose color or image in navbar',
+                                title: 'Undo Action',
+                                description: 'Undo Your Latest Action',
+                                shortcut: 'Ctrl Z',
                             }}
                             imgSrc="../src/public/fill.jpg"
                             onClick={() => backHistory()}
@@ -182,10 +181,9 @@ const ProjectLeftSidebar = () => {
                         <TooltipIcon
                             icon={ArrowBigRight}
                             tooltipText={{
-                                title: 'Fill mode',
-                                description:
-                                    'Fill background with color or image.',
-                                shortcut: 'choose color or image in navbar',
+                                title: 'Redo Action',
+                                description: 'Redo the undone action',
+                                shortcut: 'Ctrl Shift Z or Ctrl Y',
                             }}
                             imgSrc="../src/public/fill.jpg"
                             onClick={() => forwardHistory()}

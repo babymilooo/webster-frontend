@@ -13,6 +13,7 @@ import Settings from './pages/main/Settings';
 import ProjectId from './pages/project/ProjectId';
 import Callback from './pages/callback/Callback';
 import Logout from './pages/main/Logout';
+import { RestorePasswordPage } from './pages/auth/restorePassword';
 const rootElement = document.getElementById('root') as HTMLElement;
 const root = ReactDOM.createRoot(rootElement);
 
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
         element: <App />,
     },
     {
+        path: '/auth/password-reset/:token',
+        element: <RestorePasswordPage />,
+    },
+    {
         path: '/auth/login',
         element: <Login />,
     },
@@ -29,6 +34,7 @@ const router = createBrowserRouter([
         path: '/auth/registration',
         element: <Registration />,
     },
+
     {
         path: '/home',
         element: <Home />,
@@ -55,8 +61,8 @@ const router = createBrowserRouter([
     },
     {
         path: '/logout',
-        element: <Logout/>,
-    }
+        element: <Logout />,
+    },
 ]);
 
 root.render(
