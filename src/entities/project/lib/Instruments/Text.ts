@@ -60,6 +60,7 @@ export class TextInstrument {
         newText.on('dblclick', () => {
             TextInstrument.editText(newText, layer, transformer);
             transformer.nodes([newText]);
+            transformer.moveToTop();
             transformer.show();
             layer.batchDraw();
         });

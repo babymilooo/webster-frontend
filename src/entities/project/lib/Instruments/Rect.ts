@@ -16,7 +16,7 @@ export class RectInstrument implements IInstuments {
         if (stage) {
             setOffDragable();
             stage.off('pointerdown pointermove pointerup');
-            stage.on('pointerdown',  (e) => {
+            stage.on('pointerdown', (e) => {
                 if (e.evt.button == 0) this.onPointerDown();
             });
             stage.on('pointermove', () => this.onPointerMove());
@@ -57,6 +57,9 @@ export class RectInstrument implements IInstuments {
         newRect.on('dblclick', () => {
             clearAllSelection(stage);
             transformer.nodes([newRect]);
+            transformer.moveToTop();
+            transformer.show();
+            layer.batchDraw();
         });
 
         layer.add(newRect);

@@ -7,6 +7,7 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
     const [shapes, setShapes] = useState<Konva.Node[] | null>(null);
     const UpdatePreview = useProjectStore((state) => state.updatePreview);
     const SelectedShape = useProjectStore((state) => state.selectedShape);
+    const setUpdatePreview = useProjectStore((state) => state.setUpdatePreview);
     const setSelectedShape = useProjectStore(
         (state) => state.setSelectredShape,
     );
@@ -24,42 +25,124 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
                 return false;
             return true;
         });
-        setShapes(selectedShapes);
+        const sortedShapes = selectedShapes.sort(
+            (a, b) => b.getZIndex() - a.getZIndex(),
+        );
+        sortedShapes.map((shape, index) => {
+            console.log(shape.getZIndex());
+        });
+        setShapes(sortedShapes);
     }, [layer, UpdatePreview]);
 
+    const handleMoveUp = (shape: Konva.Node) => {
+        if (shapes && shapes.length > 0) {
+            const index = shapes.indexOf(shape);
+            if (index > 0) {
+                const prevShape = shapes[index - 1];
+                const currentZIndex = shape.getZIndex();
+                const prevZIndex = prevShape.getZIndex();
+                shape.setZIndex(prevZIndex);
+                prevShape.setZIndex(currentZIndex);
+                layer.draw();
+                updateShapes();
+            }
+        }
+    };
+
+    const handleMoveDown = (shape: Konva.Node) => {
+        if (!shapes) return;
+        const index = shapes.indexOf(shape);
+        if (index < shapes.length - 1) {
+            const nextShape = shapes[index + 1];
+            const currentZIndex = shape.getZIndex();
+            const nextZIndex = nextShape.getZIndex();
+            shape.setZIndex(nextZIndex);
+            nextShape.setZIndex(currentZIndex);
+            layer.draw();
+            updateShapes();
+        }
+    };
+
+    const updateShapes = () => {
+        const shapes = layer.find('Circle, Rect, Ellipse, Line, Text, Image');
+        const selectedShapes = shapes.filter((shape) => {
+            if (
+                shape.getAttr('handdrawn') ||
+                shape.hasName('_anchor') ||
+                shape.hasName('guid-line')
+            )
+                return false;
+            return true;
+        });
+
+        const sortedShapes = selectedShapes.sort(
+            (a, b) => b.getZIndex() - a.getZIndex(),
+        );
+        setShapes(sortedShapes);
+    };
+
     return (
-        <div className="">
-            {shapes?.map((shape, index) => (
-                <div
-                    key={index}
-                    className={`${
-                        shape == SelectedShape
-                            ? 'bg-secondary'
-                            : 'bg-background'
-                    }`}
-                    onClick={() => {
-                        clearAllSelection(stage);
-                        transformer.nodes([shape]);
-                        setSelectedShape(shape);
-                        setSelectedLayer(layer);
-                    }}
-                >
-                    {shape.visible() && (
-                        <div className="h-20 w-20 p-2">
-                            <img
-                                src={shape.toDataURL()}
-                                alt="preview"
-                                className="h-full w-full object-contain"
-                                style={{
-                                    aspectRatio: `${
-                                        shape.width() / shape.height()
-                                    }`,
+        <div>
+            {shapes &&
+                shapes.map((shape, index) => (
+                    <div
+                        key={index}
+                        className={`${
+                            shape == SelectedShape
+                                ? 'bg-secondary'
+                                : 'bg-background'
+                        } flex justify-between`}
+                        onClick={() => {
+                            clearAllSelection(stage);
+                            transformer.nodes([shape]);
+                            setSelectedShape(shape);
+                            setSelectedLayer(layer);
+                        }}
+                    >
+                        {shape.visible() && (
+                            <div className="h-20 w-20 p-2">
+                                <img
+                                    src={shape.toDataURL()}
+                                    alt="preview"
+                                    className="h-full w-full object-contain"
+                                    style={{
+                                        aspectRatio: `${
+                                            shape.width() / shape.height()
+                                        }`,
+                                    }}
+                                />
+                            </div>
+                        )}
+                        <div className="mr-4 flex items-center gap-4">
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Prevent triggering the parent onClick
+                                    handleMoveUp(shape);
                                 }}
-                            />
+                            >
+                                up
+                            </button>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Prevent triggering the parent onClick
+                                    handleMoveDown(shape);
+                                }}
+                            >
+                                down
+                            </button>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Prevent triggering the parent onClick
+                                    shape.destroy();
+                                    layer.draw();
+                                    setUpdatePreview();
+                                }}
+                            >
+                                delete
+                            </button>
                         </div>
-                    )}
-                </div>
-            ))}
+                    </div>
+                ))}
         </div>
     );
 };
