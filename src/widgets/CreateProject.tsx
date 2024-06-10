@@ -16,10 +16,13 @@ import {
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
 import { PlusCircleIcon } from 'lucide-react';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, FC, ReactNode, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const CreateProjectModal = () => {
+const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
+    className,
+    children,
+}) => {
     const imageInputRef = useRef<HTMLInputElement | null>(null);
     const backgroundImageInputRef = useRef<HTMLInputElement | null>(null);
     const navigate = useNavigate();
@@ -158,11 +161,12 @@ const CreateProjectModal = () => {
 
     return (
         <Dialog>
-            <DialogTrigger className="rounded-xl px-4 py-2 text-center hover:bg-secondary border-2 border-foreground w-full">
-                <div className="flex items-center justify-center">
+            <DialogTrigger className={className}>
+                {/* <div className="flex items-center justify-center">
                     <PlusCircleIcon className="mr-2 h-5 w-5" />
                     <span>New project</span>
-                </div>
+                </div> */}
+                {children}
             </DialogTrigger>
             <DialogContent className="w-3/5">
                 <DialogTitle>Create Project</DialogTitle>

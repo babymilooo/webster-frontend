@@ -9,14 +9,20 @@ import {
     ExitIcon,
 } from '@radix-ui/react-icons';
 import CreateProjectModal from './CreateProject';
+import { PlusCircleIcon } from 'lucide-react';
 
 const HomeSideBar = () => {
     return (
         <div className="fixed my-4 ml-2 h-full w-[250px] rounded-lg bg-background">
             <div className="mx-4 mt-6 flex h-full flex-col">
                 <UserCard />
-                <div className='mt-2 w-full'>
-                    <CreateProjectModal />
+                <div className="mt-2 w-full">
+                    <CreateProjectModal className="w-full rounded-xl border-2 border-foreground px-4 py-2 text-center hover:bg-secondary">
+                        <div className="flex items-center justify-center">
+                            <PlusCircleIcon className="mr-2 h-5 w-5" />
+                            <span>New project</span>
+                        </div>
+                    </CreateProjectModal>
                 </div>
                 <div className="mt-4 w-full">
                     <Link to="/home">
