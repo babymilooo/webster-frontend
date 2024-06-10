@@ -72,6 +72,7 @@ export class DrawCurveInstrument implements IInstuments {
             newLine.on('dblclick', () => {
                 clearAllSelection(stage);
                 transformer.nodes([newLine]);
+                transformer.moveToTop();
                 transformer.show();
                 layer.batchDraw();
             });

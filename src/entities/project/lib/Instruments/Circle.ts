@@ -52,6 +52,7 @@ export class CircleInstrument implements IInstuments {
         newCircle.on('dblclick', () => {
             clearAllSelection(stage);
             transformer.nodes([newCircle]);
+            transformer.moveToTop();
             transformer.show();
             layer.batchDraw();
         });

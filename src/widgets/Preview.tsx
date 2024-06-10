@@ -103,7 +103,13 @@ const Preview = () => {
         <div className="h-full pt-[1px]">
             {SelectedShape ? (
                 <>
-                    <div className="flex max-h-[200px] w-full flex-col items-center justify-center border-2 border-dashed border-black">
+                    <div
+                        className="flex max-h-[200px] w-full flex-col items-center justify-center border-2 border-dashed border-canva bg-center"
+                        style={{
+                            backgroundImage:
+                                "url('/src/public/bg-project.png')",
+                        }}
+                    >
                         <img
                             src={SelectedShape.toDataURL({})}
                             alt="preview"
@@ -227,7 +233,10 @@ const Preview = () => {
                 <img
                     src={src}
                     alt="preview"
-                    className="border-2 border-dashed border-black"
+                    className="border-2 border-dashed border-black bg-center"
+                    style={{
+                        backgroundImage: "url('/src/public/bg-project.png')",
+                    }}
                 />
             )}
         </div>
