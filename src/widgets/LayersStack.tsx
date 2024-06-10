@@ -42,7 +42,7 @@ export const LayersStack: FC = () => {
     };
 
     return (
-        <div className="mt-4 flex h-full w-full flex-col overflow-auto border-t-4 border-dashed">
+        <div className="flex h-full w-full flex-col overflow-auto">
             <div className="grid grid-cols-4">
                 <div className="col-span-3 flex items-center pl-2 text-xl font-bold">
                     layers
