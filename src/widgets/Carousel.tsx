@@ -81,8 +81,8 @@ const Carousel: React.FC = () => {
                                 imageSrc={card.imageSrc}
                                 caption={card.caption}
                                 dimensions={card.dimensions}
-                                width={card.width}
-                                height={card.height}
+                                width={Math.round(card.width)}
+                                height={Math.round(card.height)}
                             />
                         </CarouselItem>
                     ))}

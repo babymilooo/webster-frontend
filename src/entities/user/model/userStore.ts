@@ -9,6 +9,8 @@ export interface IProject {
     projectJSON?: string;
     thumbbnail?: string;
     owner: string;
+    createdAt: string;
+    updatedAt: string;
 }
 import {
     getUser,

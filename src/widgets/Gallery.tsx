@@ -17,15 +17,19 @@ const Gallery = () => {
 
     return (
         <div className="m-4 flex flex-wrap gap-4">
-            {projects?.map((pr) => (
-                <SavedProjectTile
-                    key={pr._id}
-                    project={pr}
-                    isMenuVisible={visibleMenu === pr._id}
-                    onMenuToggle={() => handleMenuToggle(pr._id)}
-                    onTitleUpdate={handleTitleUpdate}
-                />
-            ))}
+            {projects
+                ?.toSorted((a, b) => {
+                    return Date.parse(b.updatedAt) - Date.parse(a.updatedAt);
+                })
+                .map((pr) => (
+                    <SavedProjectTile
+                        key={pr._id}
+                        project={pr}
+                        isMenuVisible={visibleMenu === pr._id}
+                        onMenuToggle={() => handleMenuToggle(pr._id)}
+                        onTitleUpdate={handleTitleUpdate}
+                    />
+                ))}
             {(!projects || projects.length === 0) && <>You have no projects</>}
         </div>
     );
