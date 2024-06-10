@@ -3,6 +3,8 @@ import { Label } from '@/shared/ui/label';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '@/entities/user';
+import { RestorePasswordEmailModal } from './RestorePasswordEmailModal';
+
 export const LoginUser = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -33,9 +35,7 @@ export const LoginUser = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
-            <span className="mt-2 w-1/2 cursor-pointer text-end text-xs text-foreground text-green-600 underline">
-                Forgot password?
-            </span>
+            <RestorePasswordEmailModal />
             <button
                 className=" mt-4 w-1/2 rounded-lg bg-green-600 p-[12px] text-sm text-background text-white"
                 onClick={handleLogin}

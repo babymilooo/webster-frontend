@@ -51,6 +51,7 @@ export const RestorePasswordPage: FC = () => {
                         type="password"
                         placeholder="New password"
                         autoComplete="new-password"
+                        className="m-2 w-96"
                     />
                     <Input
                         value={confirmPassword}
@@ -58,8 +59,12 @@ export const RestorePasswordPage: FC = () => {
                         type="password"
                         placeholder="Confirm Password"
                         autoComplete="confirm-password"
+                        className="m-2 w-96"
                     />
-                    <p hidden={!newPassword.match(passwordRegex)}>
+                    <p
+                        hidden={!!newPassword.match(passwordRegex)}
+                        className="text-sm"
+                    >
                         Password must be at least 8 characters long, contain at
                         least one letter, one number, and one special character.
                     </p>
@@ -70,7 +75,9 @@ export const RestorePasswordPage: FC = () => {
                             confirmPassword.trim().length === 0 ||
                             loading
                         }
+                        className="m-2"
                         onClick={handleClick}
+                        type="submit"
                     >
                         Reset Password
                     </Button>
