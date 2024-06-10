@@ -1,5 +1,5 @@
 import { clearAllSelection, useProjectStore } from '@/entities/project';
-import { EyeNoneIcon } from '@radix-ui/react-icons';
+import { ArrowDownIcon, ArrowUpIcon, EyeNoneIcon } from '@radix-ui/react-icons';
 import Konva from 'konva';
 import { EyeIcon } from 'lucide-react';
 import { FC, useState } from 'react';
@@ -43,36 +43,32 @@ export const LayerButton: FC<{ layer: Konva.Layer; index?: number }> = ({
             <span className="flex items-center justify-center align-middle">
                 Layer {layer.getAttr('creationIndex')}
             </span>
-            <div className="flex gap-2">
-                <button
-                    type="button"
+            <div className="flex items-center gap-2">
+                <ArrowUpIcon
                     onClick={() => {
                         layer.moveUp();
                         toggleLayersSwitch();
                         setUpdatePreview();
                     }}
-                >
-                    Up
-                </button>
-                <button
-                    type="button"
+                    className="h-5 w-5"
+                />
+                <ArrowDownIcon
                     onClick={() => {
                         layer.moveDown();
                         toggleLayersSwitch();
                         setUpdatePreview();
                     }}
-                >
-                    Down
-                </button>
+                    className="h-5 w-5"
+                />
                 <div className="flex items-center">
                     {toggle ? (
                         <EyeIcon
-                            className="h-7 w-7"
+                            className="h-6 w-6"
                             onClick={handleToggleVisibility}
                         />
                     ) : (
                         <EyeNoneIcon
-                            className="h-7 w-7"
+                            className="h-6 w-6"
                             onClick={handleToggleVisibility}
                         />
                     )}
