@@ -1,6 +1,8 @@
 import { clearAllSelection, useProjectStore } from '@/entities/project';
+import { ArrowDownIcon, ArrowUpIcon, TrashIcon } from '@radix-ui/react-icons';
 import Konva from 'konva';
 import { FC, useEffect, useState } from 'react';
+import { Img } from 'react-image';
 
 const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
     const stage = useProjectStore((state) => state.stage);
@@ -100,47 +102,48 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
                         }}
                     >
                         {shape.visible() && (
-                            <div className="h-20 w-20 p-2">
-                                <img
-                                    src={shape.toDataURL()}
-                                    alt="preview"
-                                    className="h-full w-full object-contain"
-                                    style={{
-                                        aspectRatio: `${
-                                            shape.width() / shape.height()
-                                        }`,
-                                    }}
-                                />
-                            </div>
+                            <>
+                                <div className="h-20 w-20 p-2">
+                                    <img
+                                        src={shape.toDataURL()}
+                                        alt="preview"
+                                        className="h-full w-full object-contain"
+                                        style={{
+                                            aspectRatio: `${
+                                                shape.width() / shape.height()
+                                            }`,
+                                        }}
+                                    />
+                                </div>
+                                <div className="mr-4 flex items-center gap-1">
+                                    <ArrowUpIcon
+                                        className="h-5 w-5 cursor-pointer"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleMoveUp(shape);
+                                        }}
+                                    />
+
+                                    <ArrowDownIcon
+                                        className="h-5 w-5 cursor-pointer"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleMoveDown(shape);
+                                        }}
+                                    />
+
+                                    <TrashIcon
+                                        className="h-5 w-5 cursor-pointer"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            shape.destroy();
+                                            layer.draw();
+                                            setUpdatePreview();
+                                        }}
+                                    />
+                                </div>
+                            </>
                         )}
-                        <div className="mr-4 flex items-center gap-4">
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation(); // Prevent triggering the parent onClick
-                                    handleMoveUp(shape);
-                                }}
-                            >
-                                up
-                            </button>
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation(); // Prevent triggering the parent onClick
-                                    handleMoveDown(shape);
-                                }}
-                            >
-                                down
-                            </button>
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation(); // Prevent triggering the parent onClick
-                                    shape.destroy();
-                                    layer.draw();
-                                    setUpdatePreview();
-                                }}
-                            >
-                                delete
-                            </button>
-                        </div>
                     </div>
                 ))}
         </div>
