@@ -29,6 +29,7 @@ const ProjectId = () => {
             }
             const resp = await $api.get(`/project/${id}`);
             const data = resp.data;
+            setStartJSON(null);
             if (data.projectJSON) setStartJSON(data.projectJSON);
             setProject(data);
             setLoaded(true);
