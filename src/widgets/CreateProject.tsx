@@ -81,6 +81,7 @@ const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
                 setWidth(img.width);
                 setStartImage(data);
                 setStartBackgroundImage(null);
+                setStartJSON(null);
                 img.remove();
                 if (!isLogin) {
                     navigate('/projects/tmp');
@@ -124,6 +125,7 @@ const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
                 setWidth(img.width);
                 setStartImage(null);
                 setStartBackgroundImage(data);
+                setStartJSON(null);
                 img.remove();
                 if (!isLogin) {
                     navigate('/projects/tmp');
