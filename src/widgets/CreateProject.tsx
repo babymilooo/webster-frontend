@@ -144,6 +144,8 @@ const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
 
     const handleCreate = async () => {
         // resetStore();
+        setStartImage(null);
+        setStartBackgroundImage(null);
         if (!isLogin) {
             navigate('/projects/tmp');
             return;
@@ -161,9 +163,7 @@ const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
 
     return (
         <Dialog>
-            <DialogTrigger className={className}>
-                {children}
-            </DialogTrigger>
+            <DialogTrigger className={className}>{children}</DialogTrigger>
             <DialogContent className="w-1/3">
                 <DialogTitle>Create Project</DialogTitle>
                 <div className="grid grid-cols-2">
@@ -176,7 +176,7 @@ const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
                             onChange={(e) => setTitle(e.target.value)}
                         />
                         <div className="grid grid-cols-5 items-center gap-4">
-                            <Label className="col-span-1 text-lg font-bold text-center">
+                            <Label className="col-span-1 text-center text-lg font-bold">
                                 Width
                             </Label>
                             <div className="col-span-4">
@@ -190,7 +190,7 @@ const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
                                 />
                             </div>
 
-                            <Label className="col-span-1 text-lg font-bold text-center">
+                            <Label className="col-span-1 text-center text-lg font-bold">
                                 Height
                             </Label>
                             <div className="col-span-4">
@@ -206,10 +206,10 @@ const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
                         </div>
                     </div>
                     <div className="col-span-1 flex flex-col">
-                        <p className='p-2 text-xs text-center font-bold text-muted-foreground'>
+                        <p className="p-2 text-center text-xs font-bold text-muted-foreground">
                             write a title for your project and select an image
                         </p>
-                        
+
                         <button
                             className="rounded-lg px-4 py-2 text-center hover:bg-secondary disabled:text-gray-500"
                             onClick={() => imageInputRef.current?.click()}
@@ -242,9 +242,11 @@ const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
                         />
                     </div>
                 </div>
-                <DialogClose className='flex items-end justify-end gap-4'>
+                <DialogClose className="flex items-end justify-end gap-4">
                     <Button variant="ghost">Close</Button>
-                    <Button onClick={handleCreate} className='w-[150px]'>Create</Button>
+                    <Button onClick={handleCreate} className="w-[150px]">
+                        Create
+                    </Button>
                 </DialogClose>
             </DialogContent>
         </Dialog>
