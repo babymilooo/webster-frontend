@@ -160,7 +160,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
                                 Loading...
                             </div>
                         ) : (
-                            currentShape?.getAttr('src') &&
+                            currentShape?.getClassName() === 'Image' &&
                             isLogin && (
                                 <button
                                     onClick={() => handleDeleteBackground()}

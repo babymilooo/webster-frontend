@@ -10,6 +10,7 @@ import Konva from 'konva';
 import { useState, useEffect } from 'react';
 import { Button } from '@/shared/ui/button';
 import { useProjectStore } from '../model/projectStore';
+import { Label } from '@/shared/ui/label';
 
 export const ColorCorrection = ({ SelectedShape }: { SelectedShape: any }) => {
     const [blurRadius, setBlurRadius] = useState(0);
@@ -18,7 +19,7 @@ export const ColorCorrection = ({ SelectedShape }: { SelectedShape: any }) => {
     const [saturation, setSaturation] = useState(0);
     const [hue, setHue] = useState(0);
     const [luminance, setLuminance] = useState(0);
-    const [pixelSize, setPixelSize] = useState(1);
+    const [pixelSize, setPixelSize] = useState(0);
     const [opacity, setOpacity] = useState(1);
     const [imageDataUrl, setImageDataUrl] = useState('');
     const [tempShape, setTempShape] = useState(null);
@@ -192,95 +193,128 @@ export const ColorCorrection = ({ SelectedShape }: { SelectedShape: any }) => {
             <DialogContent className="w-3/5">
                 <DialogTitle>Edit your photo</DialogTitle>
                 <div className="grid h-full w-full grid-cols-2">
-                    <div className="col-span-1 h-full w-full">
-                        <input
-                            id="slider"
-                            type="range"
-                            min="0"
-                            max="40"
-                            step="0.05"
-                            value={blurRadius}
-                            onChange={handleBlurChange}
-                            className="w-full"
-                        />
-                        <label htmlFor="slider">Blur</label>
-                        <input
-                            id="slider"
-                            type="range"
-                            min="-1"
-                            max="1"
-                            step="0.05"
-                            value={brightness}
-                            onChange={handleBrightnessChange}
-                            className="w-full"
-                        />
-                        <label htmlFor="slider">Brightness</label>
-                        <input
-                            id="slider"
-                            type="range"
-                            min="-100"
-                            max="100"
-                            step="1"
-                            value={contrast}
-                            onChange={handleContrastChange}
-                            className="w-full"
-                        />
-                        <label htmlFor="slider">Contrast</label>
-                        <input
-                            id="slider"
-                            type="range"
-                            min="0"
-                            max="2"
-                            step="0.05"
-                            value={saturation}
-                            onChange={handleSaturationChange}
-                            className="w-full"
-                        />
-                        <label htmlFor="slider">Saturation</label>
-                        <input
-                            id="slider"
-                            type="range"
-                            min="0"
-                            max="360"
-                            step="1"
-                            value={hue}
-                            onChange={handleHueChange}
-                            className="w-full"
-                        />
-                        <label htmlFor="slider">Hue</label>
-                        <input
-                            id="slider"
-                            type="range"
-                            min="0"
-                            max="1"
-                            step="0.05"
-                            value={luminance}
-                            onChange={handleLuminanceChange}
-                            className="w-full"
-                        />
-                        <label htmlFor="slider">Luminance</label>
-                        <input
-                            id="slider"
-                            type="range"
-                            min="1"
-                            max="100"
-                            step="1"
-                            value={pixelSize}
-                            onChange={handlePixelSizeChange}
-                            className="w-full"
-                        />
-                        <label htmlFor="slider">Pixel Size</label>
-                        <label htmlFor="slider">Opacity</label>
-                        <input
-                            id="slider"
-                            type="range"
-                            min="0"
-                            max="1"
-                            step="0.1"
-                            value={opacity}
-                            onChange={handleOpacityChange}
-                            className="w-full"
-                        />
+                    <div className="col-span-1 grid h-full w-full grid-cols-5">
+                        <Label className="col-span-1 flex items-center">
+                            Blur
+                        </Label>
+                        <div className="col-span-4 flex items-center">
+                            <input
+                                type="range"
+                                min="0"
+                                max="40"
+                                step="0.05"
+                                value={blurRadius}
+                                onChange={handleBlurChange}
+                                className=" h-2 w-full cursor-pointer appearance-none rounded-lg bg-neutral-200 text-red-500 "
+                            />
+                        </div>
+
+                        <Label className="col-span-1 flex items-center">
+                            Brightness
+                        </Label>
+                        <div className="col-span-4 flex items-center">
+                            <input
+                                id="slider"
+                                type="range"
+                                min="-1"
+                                max="1"
+                                step="0.05"
+                                value={brightness}
+                                onChange={handleBrightnessChange}
+                                className=" h-2 w-full cursor-pointer appearance-none rounded-lg bg-neutral-200 text-red-500 "
+                            />
+                        </div>
+                        <Label className="col-span-1 flex items-center">
+                            Contrast
+                        </Label>
+                        <div className="col-span-4 flex items-center">
+                            <input
+                                id="slider"
+                                type="range"
+                                min="-100"
+                                max="100"
+                                step="1"
+                                value={contrast}
+                                onChange={handleContrastChange}
+                                className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-neutral-200 text-red-500 "
+                            />
+                        </div>
+                        <Label className="col-span-1 flex items-center">
+                            Saturation
+                        </Label>
+                        <div className="col-span-4 flex items-center">
+                            <input
+                                id="slider"
+                                type="range"
+                                min="0"
+                                max="2"
+                                step="0.05"
+                                value={saturation}
+                                onChange={handleSaturationChange}
+                                className=" h-2 w-full cursor-pointer appearance-none rounded-lg bg-neutral-200 text-red-500 "
+                            />
+                        </div>
+                        <Label className="col-span-1 flex items-center">
+                            Hue
+                        </Label>
+                        <div className="col-span-4 flex items-center">
+                            <input
+                                id="slider"
+                                type="range"
+                                min="0"
+                                max="360"
+                                step="1"
+                                value={hue}
+                                onChange={handleHueChange}
+                                className=" h-2 w-full cursor-pointer appearance-none rounded-lg bg-neutral-200 text-red-500 "
+                            />
+                        </div>
+                        <Label className="col-span-1 flex items-center">
+                            Luminance
+                        </Label>
+                        <div className="col-span-4 flex items-center">
+                            <input
+                                id="slider"
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.05"
+                                value={luminance}
+                                onChange={handleLuminanceChange}
+                                className=" h-2 w-full cursor-pointer appearance-none rounded-lg bg-neutral-200 text-red-500 "
+                            />
+                        </div>
+                        <Label className="col-span-1 flex items-center">
+                            Pixel Size
+                        </Label>
+                        <div className="col-span-4 flex items-center">
+                            <input
+                                id="slider"
+                                type="range"
+                                min="1"
+                                max="100"
+                                step="1"
+                                value={pixelSize}
+                                onChange={handlePixelSizeChange}
+                                className=" h-2 w-full cursor-pointer appearance-none rounded-lg bg-neutral-200 text-red-500 "
+                            />
+                        </div>
+
+                        <Label className="col-span-1 flex items-center">
+                            Opacity
+                        </Label>
+                        <div className="col-span-4 flex items-center">
+                            <input
+                                id="slider"
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.1"
+                                value={opacity}
+                                onChange={handleOpacityChange}
+                                className=" h-2 w-full cursor-pointer appearance-none rounded-lg bg-neutral-200 text-red-500 "
+                            />
+                        </div>
                     </div>
 
                     <div className="col-span-1 flex h-full w-full items-center justify-center">
