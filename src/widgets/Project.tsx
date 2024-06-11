@@ -475,7 +475,7 @@ export const Project = () => {
             <KeyboardShortcuts />
             <div className="flex h-full w-full overflow-auto align-middle">
                 <div
-                    className="m-auto h-fit w-fit border-solid border bg-center"
+                    className="m-auto h-fit w-fit border border-solid bg-center"
                     style={{
                         backgroundImage: "url('/src/public/bg-project.png')",
                     }}
