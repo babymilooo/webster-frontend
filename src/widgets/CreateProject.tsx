@@ -162,77 +162,89 @@ const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
     return (
         <Dialog>
             <DialogTrigger className={className}>
-                {/* <div className="flex items-center justify-center">
-                    <PlusCircleIcon className="mr-2 h-5 w-5" />
-                    <span>New project</span>
-                </div> */}
                 {children}
             </DialogTrigger>
-            <DialogContent className="w-3/5">
+            <DialogContent className="w-1/3">
                 <DialogTitle>Create Project</DialogTitle>
-                <div className="flex flex-col gap-4">
-                    <Input
-                        value={title}
-                        required
-                        type="text"
-                        placeholder="Project Title"
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                    <Label>Width</Label>
-                    <Input
-                        value={initWidth}
-                        required
-                        type="number"
-                        placeholder="Project Width"
-                        onChange={(e) => setWidth(Number(e.target.value))}
-                    />
-                    <Label>Height</Label>
-                    <Input
-                        value={initHeight}
-                        required
-                        type="number"
-                        placeholder="Project Height"
-                        onChange={(e) => setHeight(Number(e.target.value))}
-                    />
-                    <button
-                        className="rounded-lg px-4 py-2 text-center hover:bg-secondary disabled:text-gray-500"
-                        onClick={handleCreate}
-                        disabled={!title || title.trim().length == 0}
-                    >
-                        Create New Project
-                    </button>
+                <div className="grid grid-cols-2">
+                    <div className="col-span-1 flex flex-col gap-4">
+                        <Input
+                            value={title}
+                            required
+                            type="text"
+                            placeholder="Project Title"
+                            onChange={(e) => setTitle(e.target.value)}
+                        />
+                        <div className="grid grid-cols-5 items-center gap-4">
+                            <Label className="col-span-1 text-lg font-bold text-center">
+                                Width
+                            </Label>
+                            <div className="col-span-4">
+                                <Input
+                                    value={initWidth}
+                                    required
+                                    placeholder="Project Width"
+                                    onChange={(e) =>
+                                        setWidth(Number(e.target.value))
+                                    }
+                                />
+                            </div>
 
-                    <button
-                        className="rounded-lg px-4 py-2 text-center hover:bg-secondary disabled:text-gray-500"
-                        onClick={() => imageInputRef.current?.click()}
-                        disabled={!title || title.trim().length == 0}
-                    >
-                        Create Project with image
-                    </button>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleSelectImageForProject}
-                        className="hidden"
-                        ref={imageInputRef}
-                    />
-                    <button
-                        className="rounded-lg px-4 py-2 text-center hover:bg-secondary disabled:text-gray-500"
-                        onClick={() => backgroundImageInputRef.current?.click()}
-                        disabled={!title || title.trim().length == 0}
-                    >
-                        Create Project with background image
-                    </button>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleSelectbackgroundImageForProject}
-                        className="hidden"
-                        ref={backgroundImageInputRef}
-                    />
+                            <Label className="col-span-1 text-lg font-bold text-center">
+                                Height
+                            </Label>
+                            <div className="col-span-4">
+                                <Input
+                                    value={initHeight}
+                                    required
+                                    placeholder="Project Height"
+                                    onChange={(e) =>
+                                        setHeight(Number(e.target.value))
+                                    }
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-span-1 flex flex-col">
+                        <p className='p-2 text-xs text-center font-bold text-muted-foreground'>
+                            write a title for your project and select an image
+                        </p>
+                        
+                        <button
+                            className="rounded-lg px-4 py-2 text-center hover:bg-secondary disabled:text-gray-500"
+                            onClick={() => imageInputRef.current?.click()}
+                            disabled={!title || title.trim().length == 0}
+                        >
+                            Create Project with image
+                        </button>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleSelectImageForProject}
+                            className="hidden"
+                            ref={imageInputRef}
+                        />
+                        <button
+                            className="rounded-lg px-4 py-2 text-center hover:bg-secondary disabled:text-gray-500"
+                            onClick={() =>
+                                backgroundImageInputRef.current?.click()
+                            }
+                            disabled={!title || title.trim().length == 0}
+                        >
+                            Create Project with background image
+                        </button>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleSelectbackgroundImageForProject}
+                            className="hidden"
+                            ref={backgroundImageInputRef}
+                        />
+                    </div>
                 </div>
-                <DialogClose>
-                    <Button>Close</Button>
+                <DialogClose className='flex items-end justify-end gap-4'>
+                    <Button variant="ghost">Close</Button>
+                    <Button onClick={handleCreate} className='w-[150px]'>Create</Button>
                 </DialogClose>
             </DialogContent>
         </Dialog>
