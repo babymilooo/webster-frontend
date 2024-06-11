@@ -146,6 +146,7 @@ const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
         // resetStore();
         setStartImage(null);
         setStartBackgroundImage(null);
+        setStartJSON(null);
         if (!isLogin) {
             navigate('/projects/tmp');
             return;
