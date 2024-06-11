@@ -60,7 +60,8 @@ const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
         const reader = new FileReader();
         reader.onload = async (e) => {
             if (!title || title.trim().length == 0) return;
-            const projData = await createProject(title);
+            let projData = null;
+            if (isLogin) projData = await createProject(title);
             // console.log(projData);
 
             let data: any = null;
@@ -91,9 +92,8 @@ const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
                         : [projData];
                     setProjects(formatedProjects as []);
                     setProject(projData);
+                    navigate(`/projects/${projData._id}`);
                 }
-
-                navigate(`/projects/${projData._id}`);
             };
         };
         reader.readAsDataURL(file);
@@ -107,7 +107,8 @@ const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
         const reader = new FileReader();
         reader.onload = async (e) => {
             if (!title || title.trim().length == 0) return;
-            const projData = await createProject(title);
+            let projData = null;
+            if (isLogin) projData = await createProject(title);
             let data: any = null;
             if (isLogin) {
                 data = (await updatePicture(file, projData._id)).image;
@@ -134,9 +135,8 @@ const CreateProjectModal: FC<{ className?: string; children?: ReactNode }> = ({
                         : [projData];
                     setProjects(formatedProjects as []);
                     setProject(projData);
+                    navigate(`/projects/${projData._id}`);
                 }
-
-                navigate(`/projects/${projData._id}`);
             };
         };
         reader.readAsDataURL(file);
