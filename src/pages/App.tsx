@@ -29,7 +29,7 @@ const App = () => {
                             )}
                         </button>
                         <span className="mx-4 text-gray-600">or </span>
-                        <button className="mt-5 animate-jump rounded-3xl border-2 border-foreground px-5 py-3 font-bold animate-delay-[1000ms] animate-duration-[1000ms] animate-once animate-ease-out">
+                        <button className="mt-5 animate-jump rounded-3xl bg-foreground text-background border border-foreground px-8 py-3 font-bold animate-delay-[1000ms] animate-duration-[1000ms] animate-once animate-ease-out">
                             <CreateProjectModal>Try it</CreateProjectModal>
                         </button>
                     </div>

@@ -4,7 +4,7 @@ import Konva from 'konva';
 import { FC, useEffect, useState } from 'react';
 import { Img } from 'react-image';
 
-const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
+export const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
     const stage = useProjectStore((state) => state.stage);
     const [shapes, setShapes] = useState<Konva.Node[] | null>(null);
     const UpdatePreview = useProjectStore((state) => state.updatePreview);
@@ -149,5 +149,3 @@ const LayerPreview: FC<{ layer: Konva.Layer }> = ({ layer }) => {
         </div>
     );
 };
-
-export default LayerPreview;

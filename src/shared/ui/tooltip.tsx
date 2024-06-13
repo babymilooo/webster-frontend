@@ -32,7 +32,7 @@ const TooltipIcon = ({
                     <img
                         src={imgSrc}
                         alt="Description"
-                        className="mb-2 w-full rounded-t-lg"
+                        className="mb-2 w-full rounded-t-lg h-[140px]"
                     />
                     <div className='p-2 text-foreground'>
                         <h3 className="font-bold">{tooltipText.title}</h3>

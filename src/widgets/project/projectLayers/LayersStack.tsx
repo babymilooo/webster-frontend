@@ -1,9 +1,9 @@
 import { useProjectStore } from '@/entities/project';
 import { FC, useMemo } from 'react';
-import { LayerButton } from './LayerButton';
+import { LayerButton } from '@/widgets/project/index';
 import Konva from 'konva';
 import { getLayerCreationIndex } from '@/entities/project/lib/layerCreationIndex';
-import LayerPreview from './LayerPreview';
+import { LayerPreview } from '@/widgets/project/index';
 import { ScrollArea } from '@/shared/ui/scroll-area';
 import KonvaSnappingDemo from '@/entities/project/lib/SnapPositions';
 

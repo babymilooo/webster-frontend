@@ -28,8 +28,7 @@ import { useInitProjectStore } from '@/entities/project/model/initProjectStore';
 import { Drag } from '@/entities/project/ui/Drag';
 import { setSelectionTopLayer } from '@/entities/project/ui/SelectionArea';
 import { TextInstrument } from '@/entities/project/lib/Instruments/Text';
-import { ContextMenu } from './project/contextMenu';
-import { ScaleBar } from './project/scaleBar';
+import { ContextMenu } from '@/widgets/project/index';
 import { DrawMarker } from '@/entities/project/ui/DrawMarker';
 import { DrawInk } from '@/entities/project/ui/DrawInk';
 import { DrawSpray } from '@/entities/project/ui/DrawSpray';
@@ -37,7 +36,6 @@ import { KeyboardShortcuts } from '@/entities/project/ui/KeyboardShortcuts';
 
 export const Project = () => {
     const canvasElementRef = useRef<HTMLDivElement | null>(null);
-    const stageRef = useRef<Konva.Stage | null>(null);
     const storeStage = useProjectStore((state) => state.stage);
 
     const setStage = useProjectStore((state) => state.setStage);

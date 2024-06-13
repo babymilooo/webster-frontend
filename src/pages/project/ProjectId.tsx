@@ -1,5 +1,5 @@
 import MainLayout from '../MainLayout';
-import { Project } from '@/widgets/Project';
+import { Project } from '@/widgets/project/index';
 import ProjectLayout from './ProjectLayout';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';

@@ -1,0 +1,10 @@
+export { Project } from '@/widgets/project/Project';
+export { ProjectLeftSidebar } from '@/widgets/project/projectNavigation/ProjectLeftSidebar';
+export { ProjectNavbar } from '@/widgets/project/projectNavigation/projectNavbar';
+export { ProjectRightSidebar } from '@/widgets/project/projectNavigation/projectRightSidebar';
+export { ScaleBar } from '@/widgets/project/projectNavigation/ScaleBar';
+export { ContextMenu } from '@/widgets/project/ContextMenu';
+export { LayersStack } from '@/widgets/project/projectLayers/LayersStack';
+export { LayerButton } from '@/widgets/project/projectLayers/LayerButton';
+export { LayerPreview } from '@/widgets/project/projectLayers/LayerPreview';
+export { Preview } from '@/widgets/project/projectLayers/Preview';

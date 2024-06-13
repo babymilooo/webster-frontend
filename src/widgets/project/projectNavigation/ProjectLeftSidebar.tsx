@@ -11,11 +11,11 @@ import {
     Pencil1Icon,
     TextIcon,
 } from '@radix-ui/react-icons';
-import { ArrowBigLeft, ArrowBigRight, PaintBucketIcon } from 'lucide-react';
+import { ArrowBigLeft, ArrowBigRight, PaintBucketIcon, RedoIcon, UndoIcon } from 'lucide-react';
 
 import { useRef } from 'react';
 
-const ProjectLeftSidebar = () => {
+export const ProjectLeftSidebar = () => {
     const setState = useProjectStore((state) => state.setState);
     const setImage = useProjectStore((state) => state.setSelectredImage);
     const isLogin = useUserStore((state) => state.isLogin);
@@ -167,25 +167,25 @@ const ProjectLeftSidebar = () => {
                     </div>
                     <div className="flex h-10 w-full items-center justify-center">
                         <TooltipIcon
-                            icon={ArrowBigLeft}
+                            icon={UndoIcon}
                             tooltipText={{
                                 title: 'Undo Action',
                                 description: 'Undo Your Latest Action',
                                 shortcut: 'Ctrl Z',
                             }}
-                            imgSrc="../src/public/fill.jpg"
+                            imgSrc="../src/public/undo-44.svg"
                             onClick={() => backHistory()}
                         />
                     </div>
                     <div className="flex h-10 w-full items-center justify-center">
                         <TooltipIcon
-                            icon={ArrowBigRight}
+                            icon={RedoIcon}
                             tooltipText={{
                                 title: 'Redo Action',
                                 description: 'Redo the undone action',
                                 shortcut: 'Ctrl Shift Z or Ctrl Y',
                             }}
-                            imgSrc="../src/public/fill.jpg"
+                            imgSrc="../src/public/redo-43.svg"
                             onClick={() => forwardHistory()}
                         />
                     </div>
@@ -194,5 +194,3 @@ const ProjectLeftSidebar = () => {
         </div>
     );
 };
-
-export default ProjectLeftSidebar;

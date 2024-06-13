@@ -14,7 +14,7 @@ import {
 } from '@/shared/ui/select';
 import { FontBoldIcon, TextIcon } from '@radix-ui/react-icons';
 import { ItalicIcon } from 'lucide-react';
-const Preview = () => {
+export const Preview = () => {
     const selectedLayer = useProjectStore((state) => state.selectedLayer);
     const UpdatePreview = useProjectStore((state) => state.updatePreview);
     const [src, setSrc] = useState<any>(null);
@@ -410,5 +410,3 @@ const Preview = () => {
         </div>
     );
 };
-
-export default Preview;
